@@ -1,0 +1,26 @@
+{
+  "states": ["sunny", "cloudy", "rain", "heavy_rain", "storm"],
+  "persistence": 0.5,
+  "distributionByMonth": {
+    "1":  { "sunny": 0.65, "cloudy": 0.27, "rain": 0.07, "heavy_rain": 0.01, "storm": 0 },
+    "2":  { "sunny": 0.70, "cloudy": 0.25, "rain": 0.05, "heavy_rain": 0,    "storm": 0 },
+    "3":  { "sunny": 0.70, "cloudy": 0.24, "rain": 0.06, "heavy_rain": 0,    "storm": 0 },
+    "4":  { "sunny": 0.60, "cloudy": 0.25, "rain": 0.13, "heavy_rain": 0.02, "storm": 0 },
+    "5":  { "sunny": 0.35, "cloudy": 0.30, "rain": 0.28, "heavy_rain": 0.07, "storm": 0 },
+    "6":  { "sunny": 0.25, "cloudy": 0.30, "rain": 0.33, "heavy_rain": 0.11, "storm": 0.01 },
+    "7":  { "sunny": 0.25, "cloudy": 0.30, "rain": 0.32, "heavy_rain": 0.12, "storm": 0.01 },
+    "8":  { "sunny": 0.22, "cloudy": 0.30, "rain": 0.33, "heavy_rain": 0.13, "storm": 0.02 },
+    "9":  { "sunny": 0.20, "cloudy": 0.28, "rain": 0.34, "heavy_rain": 0.14, "storm": 0.04 },
+    "10": { "sunny": 0.22, "cloudy": 0.28, "rain": 0.32, "heavy_rain": 0.13, "storm": 0.05 },
+    "11": { "sunny": 0.35, "cloudy": 0.30, "rain": 0.25, "heavy_rain": 0.07, "storm": 0.03 },
+    "12": { "sunny": 0.55, "cloudy": 0.30, "rain": 0.12, "heavy_rain": 0.03, "storm": 0 }
+  },
+  "forecastAccuracy": { "today": 0.85, "plus1": 0.7, "plus2": 0.55 },
+  "neighbors": {
+    "sunny": ["cloudy"],
+    "cloudy": ["sunny", "rain"],
+    "rain": ["cloudy", "heavy_rain"],
+    "heavy_rain": ["rain", "storm"],
+    "storm": ["heavy_rain"]
+  }
+}

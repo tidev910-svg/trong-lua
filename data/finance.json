@@ -1,0 +1,21 @@
+{
+  "storeCredit": { "markup": 0.15, "minUyTin": 30, "limit": 12000000 },
+  "loanShark": {
+    "maxTotal": 10000000,
+    "interestPer30Days": 0.10,
+    "termDays": 30,
+    "minUyTin": 10,
+    "refuseIfTotalDebtOver": 15000000,
+    "latePenaltyRate": 0.05
+  },
+  "advanceSale": {
+    "priceFactor": 0.7,
+    "expectedYieldFactor": 0.9,
+    "maxRatioOfExpected": 0.6,
+    "shortfallPenalty": 1.1,
+    "forcedPriceFactor": 0.5
+  },
+  "rentExtension": { "days": 30, "uyTinCost": 15, "nextYearRentIncrease": 0.1, "maxPerYear": 1 },
+  "uyTin": { "onTimePayment": 3, "latePenalty": -10, "min": 0, "max": 100 },
+  "debtSpiral": { "lateDaysToWarning": 7, "finalDeadlineDays": 14, "reRentSurcharge": 0.2 }
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "variety_a",
+    "name": "Giống A – cực ngắn ngày",
+    "note": "Giá trị tạm; thay bằng giống thật sau khi kiểm chứng",
+    "baseDurationDays": 90,
+    "seedCostPerPlot": 250000,
+    "baseYieldKg": { "DX": 800, "HT": 680, "TD": 620 },
+    "priceMultiplier": 0.92,
+    "pestSusceptibility": { "brown_planthopper": 1.0, "rice_blast": 0.8 },
+    "lodgingSusceptibility": 0.9
+  },
+  {
+    "id": "variety_b",
+    "name": "Giống B – ngắn ngày chất lượng cao",
+    "note": "Giá trị tạm; thay bằng giống thật sau khi kiểm chứng",
+    "baseDurationDays": 102,
+    "seedCostPerPlot": 350000,
+    "baseYieldKg": { "DX": 780, "HT": 640, "TD": 580 },
+    "priceMultiplier": 1.15,
+    "pestSusceptibility": { "brown_planthopper": 1.1, "rice_blast": 1.3 },
+    "lodgingSusceptibility": 1.2
+  }
+]

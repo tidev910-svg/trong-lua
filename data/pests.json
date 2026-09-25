@@ -1,0 +1,64 @@
+[
+  {
+    "id": "brown_planthopper",
+    "name": "Rầy nâu",
+    "spawnChance": 0.004,
+    "initialDensity": 0.02,
+    "growthRate": 0.12,
+    "weatherFactor": { "sunny": 1.2, "cloudy": 1.0, "rain": 0.8, "heavy_rain": 0.7, "storm": 0.6 },
+    "stageFactor": { "germination": 0.5, "tillering": 1.0, "panicle": 1.2, "flowering": 1.2, "ripening": 1.0 },
+    "visibleThreshold": 0.15,
+    "damageThreshold": 0.3,
+    "damagePerDay": 0.06,
+    "spreadThreshold": 0.4,
+    "spreadChance": 0.2,
+    "sprayEffectiveness": 0.85,
+    "preventiveDays": 7,
+    "preventiveFactor": 0.3,
+    "regionalAlert": {
+      "chancePerDayByMonth": {
+        "1": 0.01, "2": 0.01, "3": 0.015, "4": 0.015, "5": 0.01, "6": 0.01,
+        "7": 0.015, "8": 0.015, "9": 0.01, "10": 0.01, "11": 0.01, "12": 0.01
+      },
+      "durationDays": 14,
+      "spawnMultiplier": 3
+    },
+    "signs": {
+      "light": "Gốc lúa lác đác rầy nhỏ màu nâu",
+      "medium": "Gốc lúa có nhiều rầy, bẹ lá hơi vàng",
+      "heavy": "Lúa khô cháy từng chòm, rầy bám dày ở gốc"
+    },
+    "signLevels": { "medium": 0.35, "heavy": 0.6 }
+  },
+  {
+    "id": "rice_blast",
+    "name": "Đạo ôn",
+    "spawnChance": 0.003,
+    "initialDensity": 0.02,
+    "growthRate": 0.10,
+    "weatherFactor": { "sunny": 0.7, "cloudy": 1.1, "rain": 1.4, "heavy_rain": 1.5, "storm": 1.2 },
+    "stageFactor": { "germination": 0.6, "tillering": 1.2, "panicle": 0.8, "flowering": 1.5, "ripening": 0.5 },
+    "visibleThreshold": 0.12,
+    "damageThreshold": 0.25,
+    "damagePerDay": 0.07,
+    "spreadThreshold": 0.35,
+    "spreadChance": 0.25,
+    "sprayEffectiveness": 0.8,
+    "preventiveDays": 7,
+    "preventiveFactor": 0.3,
+    "regionalAlert": {
+      "chancePerDayByMonth": {
+        "1": 0.008, "2": 0.005, "3": 0.005, "4": 0.008, "5": 0.012, "6": 0.015,
+        "7": 0.015, "8": 0.015, "9": 0.015, "10": 0.012, "11": 0.012, "12": 0.01
+      },
+      "durationDays": 14,
+      "spawnMultiplier": 3
+    },
+    "signs": {
+      "light": "Lá có vài vết hình thoi màu nâu xám",
+      "medium": "Nhiều vết hình thoi, lá bắt đầu cháy",
+      "heavy": "Cổ bông thâm đen, bông lúa lép trắng"
+    },
+    "signLevels": { "medium": 0.3, "heavy": 0.55 }
+  }
+]

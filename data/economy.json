@@ -1,0 +1,24 @@
+{
+  "plotCount": 5,
+  "plotAreaM2": 1000,
+  "startCash": 3000000,
+  "familyLoan": { "amount": 5000000, "dueDay": 364, "latePenaltyUyTin": 20 },
+  "rentPerYear": 10000000,
+  "rentInstallments": [
+    { "day": 0, "amount": 5000000 },
+    { "day": 150, "amount": 5000000 }
+  ],
+  "livingCostPerDay": 40000,
+  "startUyTin": 50,
+  "energy": { "max": 100, "nightRestore": 60, "restHalfDay": 25, "fieldVisit": 5 },
+  "hiredWork": {
+    "wageHalfDay": 150000,
+    "energyCost": 35,
+    "uyTinGain": 0.5,
+    "uyTinGainCapPerSeason": 8,
+    "availabilityByMonth": {
+      "1": 0.45, "2": 0.75, "3": 0.75, "4": 0.5, "5": 0.45, "6": 0.45,
+      "7": 0.7, "8": 0.7, "9": 0.5, "10": 0.45, "11": 0.6, "12": 0.45
+    }
+  }
+}

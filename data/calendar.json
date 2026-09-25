@@ -1,0 +1,12 @@
+{
+  "startMonth": 11,
+  "startDayOfMonth": 15,
+  "daysInYear": 365,
+  "tetDay": 80,
+  "tetExtraCost": 3500000,
+  "seasonBySowingMonth": {
+    "11": "DX", "12": "DX", "1": "DX",
+    "2": "HT", "3": "HT", "4": "HT", "5": "HT",
+    "6": "TD", "7": "TD", "8": "TD", "9": "TD", "10": "TD"
+  }
+}

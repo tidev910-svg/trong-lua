@@ -1,0 +1,3748 @@
+{
+ "description": "Bot safe, seed 13: 722 actions, ends \"yearEnd\" on day 364.",
+ "save": {
+  "version": 1,
+  "seed": 13,
+  "actions": [
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "prepareAndSow",
+    "plotId": 0,
+    "variety": "variety_a",
+    "method": "broadcast",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "prepareAndSow",
+    "plotId": 1,
+    "variety": "variety_a",
+    "method": "broadcast",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "prepareAndSow",
+    "plotId": 2,
+    "variety": "variety_a",
+    "method": "broadcast",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "prepareAndSow",
+    "plotId": 3,
+    "variety": "variety_a",
+    "method": "broadcast",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "prepareAndSow",
+    "plotId": 4,
+    "variety": "variety_a",
+    "method": "broadcast",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 0,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 1,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 2,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 3,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 4,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 0
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 0
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 0
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 0,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 1,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 2,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 3,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 4,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 0
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 0
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 1
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 2,
+    "pest": "brown_planthopper",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 0
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 1
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 0
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 2,
+    "pest": "brown_planthopper",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 1
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 1,
+    "pest": "brown_planthopper",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 0
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 2,
+    "pest": "brown_planthopper",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 0
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 1,
+    "pest": "brown_planthopper",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 0
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "harvest",
+    "plotId": 0,
+    "method": "machine"
+   },
+   {
+    "type": "sellLot",
+    "lotId": "lot-4"
+   },
+   {
+    "type": "harvest",
+    "plotId": 1,
+    "method": "machine"
+   },
+   {
+    "type": "sellLot",
+    "lotId": "lot-5"
+   },
+   {
+    "type": "harvest",
+    "plotId": 2,
+    "method": "machine"
+   },
+   {
+    "type": "sellLot",
+    "lotId": "lot-6"
+   },
+   {
+    "type": "prepareAndSow",
+    "plotId": 0,
+    "variety": "variety_a",
+    "method": "broadcast",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "spray",
+    "plotId": 0,
+    "pest": "rice_blast",
+    "mode": "preventive",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "prepareAndSow",
+    "plotId": 1,
+    "variety": "variety_a",
+    "method": "broadcast",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 1,
+    "pest": "rice_blast",
+    "mode": "preventive",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "prepareAndSow",
+    "plotId": 2,
+    "variety": "variety_a",
+    "method": "broadcast",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "harvest",
+    "plotId": 3,
+    "method": "machine"
+   },
+   {
+    "type": "sellLot",
+    "lotId": "lot-8"
+   },
+   {
+    "type": "harvest",
+    "plotId": 4,
+    "method": "machine"
+   },
+   {
+    "type": "sellLot",
+    "lotId": "lot-9"
+   },
+   {
+    "type": "acknowledge"
+   },
+   {
+    "type": "spray",
+    "plotId": 2,
+    "pest": "rice_blast",
+    "mode": "preventive",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "prepareAndSow",
+    "plotId": 3,
+    "variety": "variety_a",
+    "method": "broadcast",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 3,
+    "pest": "rice_blast",
+    "mode": "preventive",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "prepareAndSow",
+    "plotId": 4,
+    "variety": "variety_a",
+    "method": "broadcast",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 0
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 0,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 1,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 2,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 3,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 4,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 0
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 0
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 0
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 0,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 1,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 2,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 3,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 4,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 0,
+    "pest": "brown_planthopper",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 0
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "repay",
+    "loanId": "rent-2",
+    "amount": 5000000
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 0,
+    "pest": "rice_blast",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 1
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 0,
+    "pest": "brown_planthopper",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 1
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 1,
+    "pest": "brown_planthopper",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 1
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 1
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 0,
+    "pest": "brown_planthopper",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "spray",
+    "plotId": 3,
+    "pest": "rice_blast",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 0
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 0,
+    "pest": "rice_blast",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 1,
+    "pest": "brown_planthopper",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 0,
+    "pest": "brown_planthopper",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 4
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 1,
+    "pest": "brown_planthopper",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "harvest",
+    "plotId": 1,
+    "method": "machine"
+   },
+   {
+    "type": "sellLot",
+    "lotId": "lot-11"
+   },
+   {
+    "type": "prepareAndSow",
+    "plotId": 1,
+    "variety": "variety_a",
+    "method": "broadcast",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "harvest",
+    "plotId": 2,
+    "method": "machine"
+   },
+   {
+    "type": "sellLot",
+    "lotId": "lot-13"
+   },
+   {
+    "type": "spray",
+    "plotId": 3,
+    "pest": "rice_blast",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "spray",
+    "plotId": 1,
+    "pest": "brown_planthopper",
+    "mode": "preventive",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "prepareAndSow",
+    "plotId": 2,
+    "variety": "variety_a",
+    "method": "broadcast",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "spray",
+    "plotId": 2,
+    "pest": "brown_planthopper",
+    "mode": "preventive",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "harvest",
+    "plotId": 3,
+    "method": "machine"
+   },
+   {
+    "type": "sellLot",
+    "lotId": "lot-15"
+   },
+   {
+    "type": "prepareAndSow",
+    "plotId": 3,
+    "variety": "variety_a",
+    "method": "broadcast",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "spray",
+    "plotId": 3,
+    "pest": "brown_planthopper",
+    "mode": "preventive",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "harvest",
+    "plotId": 4,
+    "method": "machine"
+   },
+   {
+    "type": "sellLot",
+    "lotId": "lot-17"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 0,
+    "pest": "brown_planthopper",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "harvest",
+    "plotId": 0,
+    "method": "machine"
+   },
+   {
+    "type": "sellLot",
+    "lotId": "lot-19"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 1,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 2,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 3,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 1,
+    "pest": "rice_blast",
+    "mode": "preventive",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "spray",
+    "plotId": 2,
+    "pest": "rice_blast",
+    "mode": "preventive",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "spray",
+    "plotId": 3,
+    "pest": "rice_blast",
+    "mode": "preventive",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 1,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 2,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "fertilize",
+    "plotId": 3,
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 1
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 1
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 1,
+    "pest": "rice_blast",
+    "mode": "preventive",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "spray",
+    "plotId": 2,
+    "pest": "rice_blast",
+    "mode": "preventive",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "spray",
+    "plotId": 3,
+    "pest": "rice_blast",
+    "mode": "preventive",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "spray",
+    "plotId": 1,
+    "pest": "rice_blast",
+    "mode": "cure",
+    "payWith": "store_credit"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 1
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 2
+   },
+   {
+    "type": "adjustWater",
+    "plotId": 3
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "hired_work"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 2
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "harvest",
+    "plotId": 1,
+    "method": "machine"
+   },
+   {
+    "type": "sellLot",
+    "lotId": "lot-21"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "harvest",
+    "plotId": 2,
+    "method": "machine"
+   },
+   {
+    "type": "sellLot",
+    "lotId": "lot-22"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "field"
+   },
+   {
+    "type": "harvest",
+    "plotId": 3,
+    "method": "machine"
+   },
+   {
+    "type": "sellLot",
+    "lotId": "lot-23"
+   },
+   {
+    "type": "acknowledge"
+   },
+   {
+    "type": "endHalfDay"
+   },
+   {
+    "type": "chooseActivity",
+    "activity": "rest"
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   },
+   {
+    "type": "repay",
+    "loanId": "family-1",
+    "amount": 5000000
+   },
+   {
+    "type": "skipUntil",
+    "defaultActivity": "hired_work",
+    "stopOn": [
+     "severeForecast",
+     "pestAlert",
+     "stageChange",
+     "debtDueSoon"
+    ],
+    "maxDays": 7
+   }
+  ]
+ },
+ "expected": {
+  "day": 364,
+  "phase": {
+   "kind": "gameOver",
+   "reason": "yearEnd"
+  },
+  "rngState": 1752144002,
+  "cash": 32832792,
+  "uyTin": 100,
+  "debtStage": 0,
+  "landAccess": true,
+  "netWorth": 32832792,
+  "settledSeasons": [
+   "DX-1",
+   "HT-1"
+  ],
+  "loans": [],
+  "plots": [
+   {
+    "id": 0,
+    "status": "harvested",
+    "growth": null,
+    "health": null,
+    "water": null
+   },
+   {
+    "id": 1,
+    "status": "harvested",
+    "growth": null,
+    "health": null,
+    "water": null
+   },
+   {
+    "id": 2,
+    "status": "harvested",
+    "growth": null,
+    "health": null,
+    "water": null
+   },
+   {
+    "id": 3,
+    "status": "harvested",
+    "growth": null,
+    "health": null,
+    "water": null
+   },
+   {
+    "id": 4,
+    "status": "harvested",
+    "growth": null,
+    "health": null,
+    "water": null
+   }
+  ],
+  "ledgerEntries": 917,
+  "logEntries": 129
+ }
+}

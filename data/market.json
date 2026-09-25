@@ -1,0 +1,17 @@
+{
+  "basePriceByMonth": {
+    "1": 7400, "2": 7800, "3": 7800, "4": 7600, "5": 7200, "6": 6900,
+    "7": 6800, "8": 6800, "9": 7000, "10": 7000, "11": 7100, "12": 7300
+  },
+  "dailyVolatility": 0.01,
+  "maxDeviation": 0.12,
+  "harvestGlut": {
+    "windows": [
+      { "startDay": 110, "endDay": 145 },
+      { "startDay": 235, "endDay": 275 },
+      { "startDay": 340, "endDay": 364 }
+    ],
+    "priceMultiplier": 0.9
+  },
+  "trader": { "base": 0.92, "uyTinBonus": 0.08 }
+}

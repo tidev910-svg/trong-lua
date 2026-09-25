@@ -1,0 +1,57 @@
+{
+  "germinationDays": 7,
+  "stageDays": { "panicle": 25, "flowering": 7, "ripening": 28 },
+  "harvestWindowDays": 7,
+  "overdueLossPerDay": 0.03,
+  "growthRateByMonth": {
+    "1": 0.9, "2": 0.92, "3": 1.0, "4": 1.05, "5": 1.05, "6": 1.05,
+    "7": 1.05, "8": 1.05, "9": 1.0, "10": 1.0, "11": 0.95, "12": 0.9
+  },
+  "lowHealthCare": { "threshold": 0.5, "growthFactor": 0.8 },
+  "healthBands": [
+    { "min": 0.8, "label": "Tốt" },
+    { "min": 0.6, "label": "Khá" },
+    { "min": 0.4, "label": "Yếu" },
+    { "min": 0, "label": "Kém" }
+  ],
+  "water": {
+    "start": 55, "min": 30, "max": 80,
+    "adjustTarget": 55, "adjustCost": 50000, "adjustEnergy": 10,
+    "deltaByWeather": { "sunny": -5, "cloudy": -2, "rain": 4, "heavy_rain": 9, "storm": 15 },
+    "stressHealthPerDay": 0.01,
+    "stressGrowthFactor": 0.7
+  },
+  "landPrep": { "costPerPlot": 400000, "energy": 15 },
+  "sowing": {
+    "broadcast":  { "seedMultiplier": 1.5, "laborCost": 0,      "energy": 15, "yieldFactor": 1.0,  "lodgingRisk": 1.0 },
+    "transplant": { "seedMultiplier": 1.0, "laborCost": 400000, "energy": 10, "yieldFactor": 1.05, "lodgingRisk": 0.5 }
+  },
+  "fertilizer": {
+    "costPerApp": 350000,
+    "energy": 15,
+    "recommendedStages": ["tillering", "panicle"],
+    "nutrientFactorByCorrectApps": { "0": 0.7, "1": 0.85, "2": 1.0 },
+    "offStageEfficiency": 0.3
+  },
+  "spray": { "costPerApp": 300000, "energy": 20 },
+  "harvest": {
+    "machineCostPerPlot": 300000,
+    "handEnergyPerPlot": 45,
+    "freshRiceLossPerDay": 0.02,
+    "maxWaitDays": 3
+  },
+  "storm": {
+    "floweringLossChance": 0.5,
+    "floweringHealthLoss": 0.3,
+    "lodgingChanceBase": 0.1,
+    "lodgingHealthLoss": 0.15
+  },
+  "flood": {
+    "yearChance": 0.35,
+    "windowStartMonth": 9,
+    "windowEndMonth": 11,
+    "warningDaysRange": [3, 6],
+    "warningDayError": [-2, 2],
+    "healthLossRange": [0.4, 0.8]
+  }
+}
