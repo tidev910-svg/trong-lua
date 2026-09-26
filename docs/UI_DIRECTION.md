@@ -55,7 +55,7 @@ Lớp phủ theo thứ tự: nền → đường, kênh → cây → nhà, sổ,
 
 ## HUD
 
-- **Lịch bóc** (trên trái): khoen treo, dải đỏ "Tháng N", số ngày lớn màu đỏ, thứ trong tuần, tên vụ, số ngày đến Tết. Lật trang (rotateX) mỗi khi sang ngày.
+- **Lịch bóc** (trên trái): khoen treo, dải đỏ "Tháng N", số ngày lớn màu đỏ, tên vụ, số ngày đến Tết (không hiện thứ trong tuần). Lật trang (rotateX) mỗi khi sang ngày.
 - **Ví** (trên phải): tiền mặt chữ viết tay (đỏ khi âm), thanh sức lực, thanh uy tín, **dự báo** hôm nay kèm icon và độ tin cậy (ví dụ "Dự báo hôm nay: Mưa (khá chắc)"). Không hiện thời tiết thật của hôm nay vì đó là thông tin ẩn.
 - **Thanh pha** (dưới giữa): vòng cung mặt trời chỉ sáng/chiều/tối, câu hướng dẫn theo pha, nút theo ngữ cảnh ("Mở bản tin", "Xong việc, về nhà").
 - **Nhãn hover**: nhãn đen nhỏ theo con trỏ, nói vật thể làm gì ("Nhà: nghỉ ngơi").
@@ -141,4 +141,4 @@ Các điểm file mẫu và spec lệch nhau hoặc bỏ trống, đã chốt nh
 - **Tên event:** camelCase như code (`wentToField`, `hiredWorkDone`, `restDone`, `dayStarted`, `skipDayPassed`, `skipStopped`).
 - **"Bắt đầu ngày"** chỉ đóng vở bản tin phía UI, không phải action. Bấm vào ruộng khi chưa chọn việc = dispatch `chooseActivity: field`.
 - **Pha tối** không có trong core: `runNight` chạy ngay khi hết buổi chiều; trời tối dần là animation phát từ event.
-- **Chờ chốt:** thứ trong tuần trên lịch bóc. File mẫu tính `day % 7` (tức day 0 là Chủ nhật), data không có thông tin này. Hoặc thêm `startWeekday` vào `calendar.json`, hoặc bỏ dòng thứ.
+- **Lịch bóc không hiện thứ trong tuần** (bỏ dòng "Thứ Sáu" của file mẫu): data không có thứ của day 0, và thêm vào chỉ là quy ước.
