@@ -17,6 +17,7 @@ import { pause } from "./motion";
 import { Briefing } from "./paper/Briefing";
 import { SkipDialog } from "./paper/SkipDialog";
 import { LedgerBook, ledgerDoneText } from "./paper/LedgerBook";
+import { SettlementBook } from "./paper/SettlementBook";
 import { saleText, TraderBook } from "./paper/TraderBook";
 import { PinnedNote, type Box } from "./paper/PinnedNote";
 import { PlotNote } from "./paper/PlotNote";
@@ -348,6 +349,22 @@ export function App() {
             void play(out.events, view, out.view);
           }}
           onClose={() => setBook(view.phase.kind === "briefing" && !dayBegun ? "briefing" : null)}
+        />
+      )}
+
+      {view.settlement && (
+        <SettlementBook
+          key={view.settlement.seasonKey}
+          settlement={view.settlement}
+          onClose={() => {
+            const ack = getActionOptions(view, { kind: "day" }).find((o) => o.id === "acknowledge");
+            if (!ack?.enabled) return;
+            const before = view;
+            const out = game.perform(ack.action);
+            if (!out.ok) return say(out.reason);
+            if (out.view.phase.kind === "briefing" && !dayBegun) setBook("briefing");
+            void play(out.events, before, out.view);
+          }}
         />
       )}
 

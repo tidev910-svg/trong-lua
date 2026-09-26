@@ -551,6 +551,15 @@ button {
   justify-content: space-between;
   gap: 12px;
 }
+.ledger-line.fade {
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+.ledger-line.fade.in {
+  opacity: 1;
+  transform: none;
+}
 .ledger-line.total {
   font-size: 28px;
   line-height: 44px;
@@ -694,6 +703,9 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .ledger-line.fade {
+    transition: none;
+  }
   .farmer {
     transition: none;
   }
