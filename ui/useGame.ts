@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { loadData } from "../data/loadData";
 import { getPlayerView, type PlayerView } from "../core/playerView";
 import { playtestStats } from "../core/playtest";
@@ -75,12 +75,17 @@ export function useGame(): Game {
     writeSave(opened);
     return opened;
   });
+  // Latest session, updated as soon as an action is accepted: two clicks before the next render must
+  // both apply (the second on top of the first), not both start from the same old state.
+  const latest = useRef(session);
+  latest.current = session;
   const [message, setMessage] = useState<string | null>(null);
   const view = useMemo(() => getPlayerView(session.state, data), [session]);
 
   const perform = useCallback(
     (action: Action): ActOutcome => {
-      const out = dispatch(session, action, data);
+      const current = latest.current;
+      const out = dispatch(current, action, data);
       if (!out.result.ok) {
         setMessage(out.result.reason);
         return { ok: false, reason: out.result.reason };
@@ -88,11 +93,12 @@ export function useGame(): Game {
       setMessage(null);
       const next = out.session;
       // Autosave at the end of each day and when the run ends (spec §13).
-      if (next.state.day !== session.state.day || next.state.phase.kind === "gameOver") writeSave(next);
+      if (next.state.day !== current.state.day || next.state.phase.kind === "gameOver") writeSave(next);
+      latest.current = next;
       setSession(next);
       return { ok: true, events: out.events, view: getPlayerView(next.state, data) };
     },
-    [session],
+    [],
   );
   const act = useCallback((action: Action) => perform(action).ok, [perform]);
 

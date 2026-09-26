@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 
 /** A box in the coordinates of the container the note is placed in (CSS pixels). */
 export interface Box {
@@ -67,20 +67,32 @@ export function PinnedNote({ title, children, anchor, container, index, onClose 
 
   useEffect(() => {
     const note = ref.current;
-    (note?.querySelector<HTMLElement>(".act:not([disabled])") ?? note?.querySelector<HTMLElement>("button"))?.focus();
+    const opener = document.activeElement;
     const onPointerDown = (e: PointerEvent) => {
       if (note && e.target instanceof Node && !note.contains(e.target)) onCloseRef.current();
     };
+    // On the document: focus may still be on the scene object that opened the note.
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onCloseRef.current();
+    };
     document.addEventListener("pointerdown", onPointerDown);
-    return () => document.removeEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+      // Give focus back to the scene object that opened the note, unless the player moved it elsewhere.
+      const lost = document.activeElement === null || document.activeElement === document.body || (note?.contains(document.activeElement) ?? false);
+      if (lost && opener instanceof SVGElement && opener.isConnected) opener.focus();
+    };
   }, []);
 
-  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Escape") {
-      e.stopPropagation();
-      onClose();
-    }
-  };
+  // Focus only once placed: a `visibility: hidden` element cannot take focus.
+  const placed = pos !== null;
+  useEffect(() => {
+    if (!placed) return;
+    const note = ref.current;
+    (note?.querySelector<HTMLElement>(".act:not([disabled])") ?? note?.querySelector<HTMLElement>("button"))?.focus();
+  }, [placed]);
 
   return (
     <div
@@ -88,7 +100,6 @@ export function PinnedNote({ title, children, anchor, container, index, onClose 
       className="note paper"
       role="dialog"
       aria-label={typeof title === "string" ? title : undefined}
-      onKeyDown={onKeyDown}
       style={{
         left: pos?.left ?? 0,
         top: pos?.top ?? 0,

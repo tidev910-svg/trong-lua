@@ -166,7 +166,11 @@ export function App() {
         }
       }
       setNote(null);
-      setFarmerAt(FARMER_HOME);
+      // Selling at the boat or using the ledger from the field keeps the farmer where they stand.
+      // (Selling the last lot there opens the settlement, which returns to the field.)
+      const fieldish = (v: PlayerView) => isInField(v) || v.phase.kind === "settlement";
+      const staysInField = !newDay && fieldish(before) && fieldish(after);
+      if (!staysInField) setFarmerAt(FARMER_HOME);
       if (newDay) {
         setNight(true);
         await pause(1700, 200);
@@ -315,7 +319,13 @@ export function App() {
               if (option.credit !== null && action === option.credit.action) say(`Ghi nợ đại lý: ${money(option.credit.debtAdded)}.`);
               if (action.type === "harvest") {
                 const lot = out.view.lots.find((l) => !view.lots.some((o) => o.id === l.id));
-                say(lot ? `Gặt xong thửa ${action.plotId + 1}: ${kg(lot.kg)}. Thương lái đang chờ ở bến.` : `Gặt xong thửa ${action.plotId + 1}.`);
+                const contract = view.plots[action.plotId]?.advanceContract ?? null;
+                const delivered = contract ? ` Phần bán non (${kg(contract.kg)}) giao cho người mua trước.` : "";
+                say(
+                  lot
+                    ? `Gặt xong thửa ${action.plotId + 1}: ${kg(lot.kg)}.${delivered} Thương lái đang chờ ở bến.`
+                    : `Gặt xong thửa ${action.plotId + 1}.${delivered} Không còn lúa để bán.`,
+                );
               }
               if (out.view.phase.kind === "settlement" || out.view.phase.kind === "gameOver") setNote(null);
               void play(out.events, view, out.view);
