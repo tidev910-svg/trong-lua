@@ -36,12 +36,12 @@ function pageOf(view: PlayerView): CalendarPage {
 }
 
 /** Same phase and half-day activity (nothing to animate between the two views). */
-function samePhase(a: PlayerView, b: PlayerView): boolean {
+export function samePhase(a: PlayerView, b: PlayerView): boolean {
   return JSON.stringify(a.phase) === JSON.stringify(b.phase);
 }
 
 /** Strip guidance for the drawn phase. */
-function stripText(view: PlayerView, phase: VisualPhase): { lead: string; text: string } {
+export function stripText(view: PlayerView, phase: VisualPhase): { lead: string; text: string } {
   if (phase === "night") return { lead: "Trời tối.", text: "Cả nhà ăn cơm, đi ngủ sớm." };
   if (phase === "briefing") return { lead: "Sáng sớm.", text: "Đọc bản tin trước khi bắt đầu ngày." };
   const half = phase === "afternoon" ? "Buổi chiều" : "Buổi sáng";
