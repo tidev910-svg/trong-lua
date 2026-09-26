@@ -1,7 +1,7 @@
 {
  "description": "Bot risky, seed 1: 510 actions, ends \"yearEnd\" on day 364.",
  "save": {
-  "version": 1,
+  "version": 2,
   "seed": 1,
   "actions": [
    {

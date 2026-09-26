@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import type { GameData } from "../../../data/schemas";
 import {
   careFactor,
-  expectedProgress,
   expectedSchedule,
   findVariety,
   stageOfGrowth,
@@ -82,15 +81,6 @@ describe("stage thresholds (spec §4: fixed reproductive stages, vegetative stre
     for (let i = 0; i < 100; i++) g += 0.9; // 89.99999999999… in IEEE doubles
     expect(g).not.toBe(90);
     expect(stageOfGrowth(g, A, data)).toBe("harvestable");
-  });
-});
-
-describe("expectedProgress (ripeness bar on the public schedule, decision A13)", () => {
-  it("0 on the sowing day, 1 from the expected harvestable day, days left never negative", () => {
-    expect(expectedProgress(2, 101, 2)).toEqual({ ratio: 0, daysLeft: 99 });
-    expect(expectedProgress(2, 101, 35)).toEqual({ ratio: 33 / 99, daysLeft: 66 });
-    expect(expectedProgress(2, 101, 101)).toEqual({ ratio: 1, daysLeft: 0 });
-    expect(expectedProgress(2, 101, 120)).toEqual({ ratio: 1, daysLeft: 0 });
   });
 });
 

@@ -5,7 +5,7 @@ import { summarize, type RunSummary } from "./summary";
 import { dateOfDay, daysToTet, monthKeyOfDay, seasonKeyOfDay, type CalendarDate } from "./systems/calendar";
 import { reRentCost } from "./systems/debt";
 import { expectedYieldKg, loanSharkPrincipal, loanSharkRefusal, storeCreditBalance, storeCreditRefusal } from "./systems/finance";
-import { expectedProgress, expectedSchedule } from "./systems/growth";
+import { expectedSchedule } from "./systems/growth";
 import { lotValue } from "./systems/harvest";
 import { isHarvestGlut, marketPrice, traderPricePerKg, varietyMarketPrice } from "./systems/market";
 import type {
@@ -39,8 +39,6 @@ export interface PlotView {
     sprayLog: CropState["sprayLog"];
     /** Public schedule assuming good care (decision A13). */
     expected: Record<CropStage, number>;
-    /** Progress to the expected harvestable day on that schedule (not the true growth). */
-    progress: { ratio: number; daysLeft: number };
     /** Kg the trader would assume for an advance sale. */
     expectedYieldKg: number;
   } | null;
@@ -131,7 +129,6 @@ function cropView(crop: CropState, day: number, data: GameData): NonNullable<Plo
     fertilizerApps: crop.fertilizerApps,
     sprayLog: crop.sprayLog,
     expected,
-    progress: expectedProgress(crop.sowDay, expected.harvestable, day),
     expectedYieldKg: expectedYieldKg(crop.varietyId, crop.method, crop.sowDay, data),
   };
 }

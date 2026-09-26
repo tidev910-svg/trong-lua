@@ -10,7 +10,7 @@ import type { WaterLevel } from "./systems/water";
  */
 
 /** Bump when GameState changes shape in a way that breaks existing saves. */
-export const STATE_VERSION = 1;
+export const STATE_VERSION = 2;
 
 export type HalfDay = "morning" | "afternoon";
 
@@ -100,6 +100,8 @@ export interface KnownPlotInfo {
   healthBand: string | null;
   /** Visible pest signs by pest id (null = nothing visible). */
   signs: Record<string, SignLevel | null>;
+  /** True progress to ripeness seen at that visit: growth / harvestable threshold, 0–1 (null = no crop). */
+  ripeness: number | null;
 }
 
 export interface PlotState {

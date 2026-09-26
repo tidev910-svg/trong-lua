@@ -1,7 +1,7 @@
 {
  "description": "Bot average, seed 5: 487 actions, ends \"yearEnd\" on day 364.",
  "save": {
-  "version": 1,
+  "version": 2,
   "seed": 5,
   "actions": [
    {

@@ -4,7 +4,7 @@ import { monthKeyOfDay } from "./calendar";
 import { isWaterStressed } from "./water";
 
 /** Guards stage thresholds against float drift from summing rates like 0.9 (same rule in any port). */
-const GROWTH_EPSILON = 1e-9;
+export const GROWTH_EPSILON = 1e-9;
 
 export function findVariety(varietyId: string, data: GameData): VarietyData {
   const variety = data.varieties.find((v) => v.id === varietyId);
@@ -102,14 +102,4 @@ export function expectedSchedule(sowDay: number, varietyId: string, data: GameDa
     }
   }
   return schedule as Record<CropStage, number>;
-}
-
-/**
- * Progress towards ripeness on the public schedule (decision A13): 0 on the sowing day, 1 from the expected
- * harvestable day. The true growth is hidden; the player only learns it by visiting.
- */
-export function expectedProgress(sowDay: number, harvestableDay: number, day: number): { ratio: number; daysLeft: number } {
-  const span = harvestableDay - sowDay;
-  const ratio = span <= 0 ? 1 : Math.min(1, Math.max(0, (day - sowDay) / span));
-  return { ratio, daysLeft: Math.max(0, harvestableDay - day) };
 }

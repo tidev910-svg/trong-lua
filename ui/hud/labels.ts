@@ -21,10 +21,9 @@ export const WEATHER_WORDS: Record<WeatherState, string> = {
 };
 
 /** Time of day as drawn: briefing (dawn), morning, afternoon or night (night only while the UI plays it). */
-/** Ripeness on the public schedule (decision A13): the true state is only seen in the field. */
-export function ripenessText(progress: { ratio: number; daysLeft: number }): string {
-  if (progress.daysLeft === 0) return "Đến kỳ gặt theo lịch";
-  return `Dự kiến chín ${Math.round(progress.ratio * 100)}% · còn ${progress.daysLeft} ngày`;
+/** True ripeness as seen at the last visit (`known.ripeness`, 0–1). */
+export function ripenessText(ripeness: number): string {
+  return ripeness >= 1 ? "Lúa chín 100%: gặt được" : `Lúa chín ${Math.floor(ripeness * 100)}%`;
 }
 
 export type VisualPhase = "briefing" | "morning" | "afternoon" | "night";

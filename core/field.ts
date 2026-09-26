@@ -1,5 +1,5 @@
 import type { GameData } from "../data/schemas";
-import { cropStage } from "./systems/growth";
+import { cropStage, findVariety, GROWTH_EPSILON, stageThresholds } from "./systems/growth";
 import { signLevel } from "./systems/pests";
 import { waterLevel } from "./systems/water";
 import type { GameState, KnownPlotInfo, PlotState } from "./types";
@@ -10,11 +10,20 @@ export function healthBandLabel(health: number, data: GameData): string {
   return (band ?? data.crop.healthBands[data.crop.healthBands.length - 1])?.label ?? "";
 }
 
+/**
+ * Progress to ripeness the player sees in the field: true growth over the harvestable threshold, 0–1.
+ * Exactly 1 once the stage is harvestable (same tolerance as the stage thresholds).
+ */
+export function ripenessOf(growth: number, harvestableAt: number): number {
+  if (growth + GROWTH_EPSILON >= harvestableAt) return 1;
+  return Math.max(0, growth / harvestableAt);
+}
+
 /** What looking at a plot today reveals. */
 export function observePlot(plot: PlotState, day: number, data: GameData): KnownPlotInfo {
   const crop = plot.crop;
   if (crop === null) {
-    return { lastVisitDay: day, status: plot.status, stage: null, waterLevel: null, healthBand: null, signs: {} };
+    return { lastVisitDay: day, status: plot.status, stage: null, waterLevel: null, healthBand: null, signs: {}, ripeness: null };
   }
   return {
     lastVisitDay: day,
@@ -23,6 +32,7 @@ export function observePlot(plot: PlotState, day: number, data: GameData): Known
     waterLevel: waterLevel(crop.water, data),
     healthBand: healthBandLabel(crop.health, data),
     signs: Object.fromEntries(data.pests.map((p) => [p.id, signLevel(crop.pests[p.id] ?? 0, p)])),
+    ripeness: ripenessOf(crop.growth, stageThresholds(findVariety(crop.varietyId, data), data).harvestable),
   };
 }
 

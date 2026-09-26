@@ -58,7 +58,7 @@ Một ruộng 5 công (5.000 m², `plotCount` = 1): mọi thao tác làm trên c
 - `health`: 0–1 (ảnh hưởng năng suất)
 - `pests`: mật độ từng loại sâu bệnh 0–1 (thông tin ẩn)
 - `preventiveUntil`: ngày hết tác dụng phun phòng theo từng loại
-- `known`: thông tin người chơi thấy ở lần thăm gần nhất + `lastVisitDay`
+- `known`: thông tin người chơi thấy ở lần thăm gần nhất + `lastVisitDay`, gồm cả độ chín thật lúc đó (`ripeness` = growth / ngưỡng gặt được, 0–1; quyết định C2)
 
 ### Giai đoạn sinh trưởng
 
@@ -236,4 +236,5 @@ Các điểm spec còn mơ hồ đã được chốt như dưới đây. Nếu m
 - A14: Một vụ (để tính sổ) = các thửa có tháng xuống giống cùng thuộc một vụ. Chi phí gắn thửa tính theo thửa; sinh hoạt phí và lãi tính theo khoảng ngày từ lần xuống giống đầu đến lần bán cuối của vụ (có thể đếm trùng khi hai vụ chồng nhau, màn tính sổ ghi rõ).
 - B17: GDD mục 11 (prototype 1 thửa, 3 nguồn vay) bị thay bằng spec này.
 - B18: Ngưỡng cụ thể trong chính sách bot đặt ở M1.15 và ghi vào nhật ký.
+- C2 (26/09/2026, người dùng chọn): Thanh tiến độ lúa chín hiện **độ chín thật** (sinh trưởng ÷ ngưỡng gặt được), nhưng là số **thấy ở lần thăm gần nhất** (`known.ripeness`), không cập nhật khi chưa ra đồng; vẫn giữ luật phải thăm đồng mới biết. `STATE_VERSION` lên 2 (file lưu cũ không tải được, game mở ván mới).
 - C1 (26/09/2026, người dùng chọn): Gộp 5 thửa thành **một ruộng 5 công**. Mọi số tiền và năng suất tính theo diện tích nhân 5 (làm đất, giống, công cấy, phân, thuốc, chỉnh nước, máy gặt, `baseYieldKg`); **sức lực mỗi thao tác giữ nguyên** như làm một thửa cũ. Xác suất phát sinh sâu bệnh mỗi đêm **giữ nguyên** (0,004 / 0,003) cho cả ruộng, nên ít ổ dịch hơn nhưng mỗi ổ ăn cả ruộng. Hệ quả: tiền đầu game (3 tr) không đủ xuống giống bằng tiền mặt (ít nhất 3,875 tr), vụ đầu phải mua chịu phần giống. Các quyết định nói "từng thửa" (B9, B11, B12, A10, A11, A14) áp dụng cho ruộng như một thửa. Kết quả mô phỏng: `docs/BALANCE_LOG.md` lần 4.

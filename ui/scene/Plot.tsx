@@ -44,24 +44,30 @@ export function plotLabel(plot: PlotView, inField: boolean, landAccess: boolean,
   const stage = drawnStage(plot);
   const what = stage === "empty" ? "ruộng trống" : STAGE[stage].toLowerCase();
   const verb = !landAccess ? "đã trả ruộng" : inField ? "xem và làm việc" : "ra đồng";
-  const ripe = plot.crop !== null && landAccess ? `; ${ripenessText(plot.crop.progress).toLowerCase()}` : "";
+  const ripeness = seenRipeness(plot);
+  const ripe = ripeness !== null && landAccess ? `; ${ripenessText(ripeness).toLowerCase()}` : "";
   return `${plotName(plot.id, plotCount)} (${what}${ripe}): ${verb}`;
 }
 
+/** True ripeness seen at the last visit, while that crop is still in the field (null = none to show). */
+export function seenRipeness(plot: PlotView): number | null {
+  return plot.crop !== null && plot.known !== null ? plot.known.ripeness : null;
+}
+
 /**
- * Paper tag with the ripeness bar, top-left of the field: progress on the public schedule, not the true growth,
- * so it stays sharp even when what was seen in the field is old.
+ * Paper tag with the ripeness bar: the true progress seen at the last visit, faded like the field when that
+ * knowledge is old (the stake then says how old).
  */
-function RipenessTag({ x, y, width, progress }: { x: number; y: number; width: number; progress: { ratio: number; daysLeft: number } }) {
+function RipenessTag({ x, y, width, ripeness, stale }: { x: number; y: number; width: number; ripeness: number; stale: boolean }) {
   const inner = width - 16;
   return (
-    <g transform={`translate(${x} ${y})`} data-ripeness={Math.round(progress.ratio * 100)} aria-hidden="true">
+    <g transform={`translate(${x} ${y})`} data-ripeness={Math.floor(ripeness * 100)} opacity={stale ? 0.6 : 1} aria-hidden="true">
       <rect width={width} height={38} rx={3} fill="#fffdf6" stroke="#6f5130" />
       <text x={8} y={16} fontFamily="Be Vietnam Pro, sans-serif" fontSize={12} fill="#2c2a22">
-        {ripenessText(progress)}
+        {ripenessText(ripeness)}
       </text>
       <rect x={8} y={24} width={inner} height={7} rx={3.5} fill="#e5e0cf" />
-      <rect x={8} y={24} width={Math.round(inner * progress.ratio)} height={7} rx={3.5} fill="#d4a72c" />
+      <rect x={8} y={24} width={Math.round(inner * ripeness)} height={7} rx={3.5} fill="#d4a72c" />
     </g>
   );
 }
@@ -105,6 +111,7 @@ export function Plot({ plot, plotCount, inField, landAccess, onActivate, onHover
   const stake = stakeLabel(plot, inField, landAccess, plotCount);
   const inner = { x: x + 9, y: y + 9, width: width - 18, height: height - 18 };
   const marks = markPositions({ x, y, width, height }, stakeWidth(stake));
+  const ripeness = seenRipeness(plot);
   return (
     <Interactive
       label={plotLabel(plot, inField, landAccess, plotCount)}
@@ -125,7 +132,7 @@ export function Plot({ plot, plotCount, inField, landAccess, onActivate, onHover
             {stake}
           </text>
         </g>
-        {plot.crop !== null && landAccess && <RipenessTag x={marks.tagX} y={y + 16} width={marks.tagWidth} progress={plot.crop.progress} />}
+        {ripeness !== null && landAccess && <RipenessTag x={marks.tagX} y={y + 16} width={marks.tagWidth} ripeness={ripeness} stale={stale} />}
         {hasSigns(plot) && landAccess && (
           <g transform={`translate(${marks.signX} ${y + 35})`}>
             <circle r={15} fill="#b8352c" />

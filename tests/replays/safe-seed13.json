@@ -1,7 +1,7 @@
 {
  "description": "Bot safe, seed 13: 396 actions, ends \"yearEnd\" on day 364.",
  "save": {
-  "version": 1,
+  "version": 2,
   "seed": 13,
   "actions": [
    {

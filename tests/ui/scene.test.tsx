@@ -48,10 +48,10 @@ describe("plots are drawn from what the player knows", () => {
     expect(hasSigns(plotOf(visited(20, 21)))).toBe(false);
     const sick = plotOf(visited(20, 21, { brown_planthopper: 0.5, rice_blast: 0 }));
     expect(hasSigns(sick)).toBe(true);
-    // Sown day 0, expected harvestable day 99, today day 21 → 21 %, 78 days left (public schedule).
-    expect(plotLabel(sick, false, true)).toBe("Ruộng (đẻ nhánh; dự kiến chín 21% · còn 78 ngày): ra đồng");
-    expect(plotLabel(sick, true, true)).toBe("Ruộng (đẻ nhánh; dự kiến chín 21% · còn 78 ngày): xem và làm việc");
-    expect(plotLabel(sick, true, true, 5)).toBe("Thửa 1 (đẻ nhánh; dự kiến chín 21% · còn 78 ngày): xem và làm việc");
+    // Seen on day 20 at true growth 20 of variety A's 90 → 22 %.
+    expect(plotLabel(sick, false, true)).toBe("Ruộng (đẻ nhánh; lúa chín 22%): ra đồng");
+    expect(plotLabel(sick, true, true)).toBe("Ruộng (đẻ nhánh; lúa chín 22%): xem và làm việc");
+    expect(plotLabel(sick, true, true, 5)).toBe("Thửa 1 (đẻ nhánh; lúa chín 22%): xem và làm việc");
   });
 
   it("water shows less as the rice covers the field", () => {
@@ -69,14 +69,16 @@ describe("Scene", () => {
     for (const stage of ["empty", "germination", "tillering", "panicle", "flowering", "ripening", "harvestable"]) expect(html).toContain(`id="p-${stage}"`);
   });
 
-  it("ripeness tag while rice is in the field, from the public schedule; none on empty land or after losing it", () => {
+  it("ripeness tag: the true ripeness seen at the last visit, faded when old; none on empty land or after losing it", () => {
     expect(render(getPlayerView(newSession(1, data).state, data))).not.toContain("data-ripeness");
-    const s = visited(20, 40);
-    const html = render(getPlayerView(s, data)).replaceAll("<!-- -->", "");
-    expect(html).toContain('data-ripeness="40"');
-    expect(html).toContain("Dự kiến chín 40% · còn 59 ngày");
-    expect(render(getPlayerView({ ...s, day: 120 }, data))).toContain("Đến kỳ gặt theo lịch");
-    expect(render(getPlayerView({ ...s, landAccess: false }, data))).not.toContain("data-ripeness");
+    const fresh = render(getPlayerView(visited(20, 21), data)).replaceAll("<!-- -->", "");
+    expect(fresh).toContain('data-ripeness="22" opacity="1"');
+    expect(fresh).toContain("Lúa chín 22%");
+    // 20 days later the crop has grown, but the tag still shows what was seen, faded.
+    const old = visited(20, 40);
+    const grown: GameState = { ...old, plots: old.plots.map((p) => (p.crop ? { ...p, crop: { ...p.crop, growth: 60 } } : p)) };
+    expect(render(getPlayerView(grown, data))).toContain('data-ripeness="22" opacity="0.6"');
+    expect(render(getPlayerView({ ...old, landAccess: false }, data))).not.toContain("data-ripeness");
   });
 
   it("the work sign follows today's hired work", () => {

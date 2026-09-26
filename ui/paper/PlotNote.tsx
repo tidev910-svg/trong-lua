@@ -63,12 +63,12 @@ export function PlotNote({ view, data, plotId, onChoose }: Props) {
   return (
     <>
       <div className="meta">{meta}</div>
-      {plot.crop !== null && (
+      {plot.crop !== null && plot.known?.ripeness != null && (
         <div className="ripe">
           <div className="meta">
-            {ripenessText(plot.crop.progress)} (gặt khoảng {dayLabel(view, plot.crop.expected.harvestable)})
+            {ripenessText(plot.known.ripeness)} (theo lịch, gặt khoảng {dayLabel(view, plot.crop.expected.harvestable)})
           </div>
-          <Bar value={plot.crop.progress.ratio * 100} max={100} className="ripe" label="Tiến độ lúa chín theo lịch dự kiến" />
+          <Bar value={Math.floor(plot.known.ripeness * 100)} max={100} className="ripe" label="Lúa chín" />
         </div>
       )}
       {plot.crop !== null &&

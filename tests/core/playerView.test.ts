@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { applyAction } from "../../core/actions";
 import { createInitialState } from "../../core/init";
+import { ripenessOf } from "../../core/field";
 import { getPlayerView } from "../../core/playerView";
 import type { GameState } from "../../core/types";
 import { crop, data, stateWithCrops } from "../helpers";
@@ -71,6 +72,15 @@ describe("getPlayerView hides what the player cannot know", () => {
   });
 });
 
+describe("ripenessOf (true ripeness seen in the field)", () => {
+  it("growth over the harvestable threshold; exactly 1 from harvestable, with the stage tolerance", () => {
+    expect(ripenessOf(0, 90)).toBe(0);
+    expect(ripenessOf(45, 90)).toBe(0.5);
+    expect(ripenessOf(90 - 1e-12, 90)).toBe(1);
+    expect(ripenessOf(120, 90)).toBe(1);
+  });
+});
+
 describe("getPlayerView shows what the player does know", () => {
   it("field knowledge is from the last visit, not live", () => {
     let s = { ...stateWithCrops({ 0: crop({ sowDay: 0, growth: 20, pests: { brown_planthopper: 0.4, rice_blast: 0 } }) }), day: 20 };
@@ -79,6 +89,7 @@ describe("getPlayerView shows what the player does know", () => {
     s = visited.state;
     const known = getPlayerView(s, data).plots[0]?.known;
     expect(known).toMatchObject({ lastVisitDay: 20, stage: "tillering", waterLevel: "ok", healthBand: "Tốt", signs: { brown_planthopper: "medium", rice_blast: null } });
+    expect(known?.ripeness).toBeCloseTo(20 / 90, 12); // true growth 20 of variety A's harvestable 90, seen that day
     const later = scrambleHidden({ ...s, day: 25 });
     expect(getPlayerView(later, data).plots[0]?.known).toEqual(known);
   });
@@ -86,7 +97,6 @@ describe("getPlayerView shows what the player does know", () => {
   it("public schedule, money, loans, market and credit limits", () => {
     const view = getPlayerView(stateWithCrops({ 1: crop({ sowDay: 2 }) }), data);
     expect(view.plots[1]?.crop?.expected.harvestable).toBe(101);
-    expect(view.plots[1]?.crop?.progress).toEqual({ ratio: 0, daysLeft: 101 }); // day 0: before sowing counts as 0
     expect(view.cash).toBe(3_000_000);
     expect(view.loans.map((l) => l.kind)).toEqual(["family", "rent"]);
     expect(view.market.traderPricePerKg.variety_a).toBeGreaterThan(0);
