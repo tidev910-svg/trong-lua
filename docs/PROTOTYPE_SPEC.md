@@ -169,12 +169,12 @@ Giao diện theo `docs/UI_DIRECTION.md` và mẫu `reference/ui-reference.html`:
 
 Nội dung cần có:
 
-1. **Bản tin buổi sáng** (vở) – hôm qua ("lần cuối ra đồng: N ngày trước"), dự báo hôm nay + 2 ngày kèm độ tin cậy, tin radio, tình trạng đã biết của từng thửa, tiền mặt, khoản nợ gần hạn nhất, bậc vòng xoáy nợ (khi ≥ 1); nút "Bắt đầu ngày" và "Tua đến khi…".
-2. **Cảnh chính** – ruộng (ra đồng), nhà (nghỉ), bảng gỗ (làm thuê, hiện có việc hay không), quyển sổ (tiền và nợ).
+1. **Bản tin buổi sáng** (vở) – hôm qua (thời tiết thật hôm qua, "lần cuối ra đồng: N ngày trước"), dự báo hôm nay + 2 ngày kèm độ tin cậy, tin radio, tình trạng đã biết của từng thửa, tiền mặt, khoản nợ gần hạn nhất, bậc vòng xoáy nợ (khi ≥ 1); nút "Bắt đầu ngày" và "Tua đến khi…".
+2. **Cảnh chính** – ruộng (ra đồng), nhà (nghỉ), bảng gỗ (làm thuê, hiện có việc hay không), quyển sổ (tiền và nợ), xuồng thương lái (bán lúa, khi có lô chờ bán).
 3. **Mẩu giấy thửa ruộng** – giai đoạn, nước, sức khỏe ước lượng, dấu hiệu; hành động phù hợp giai đoạn (xuống giống, bón phân, phun trị, phun phòng, chỉnh nước, gặt), mỗi nút hiện chi phí và sức lực, lý do khi bị khóa, lựa chọn mua chịu khi chỉ thiếu tiền.
 4. **Tua đến khi…** (vở) – hoạt động mặc định, điều kiện dừng, số ngày tối đa.
-5. **Sổ tiền nợ** (vở) – tiền mặt, từng khoản nợ (gốc, lãi, hạn), uy tín, các nguồn vay khả dụng (vay nóng, bán lúa non, xin gia hạn).
-6. **Thu hoạch và bán** (vở) – thuê máy hay gặt tay, giá thương lái hôm nay, bán hay chờ (tối đa 3 ngày).
+5. **Sổ tiền nợ** (vở) – tiền mặt, từng khoản nợ (gốc, lãi, hạn), uy tín, các nguồn vay khả dụng (vay nóng, đảo nợ, bán lúa non, xin gia hạn), thuê lại ruộng khi đã mất ruộng, và "Bán hết, lên thành phố".
+6. **Thu hoạch và bán** – gặt (thuê máy hay gặt tay) ngay trên mẩu giấy thửa; bán trong vở mở từ xuồng thương lái: giá thương lái hôm nay, từng lô, bán hay chờ (tối đa 3 ngày).
 7. **Tính sổ** (vở) – như mục 11, các dòng hiện lần lượt.
 8. **Thẻ tổng kết** (vở) – như mục 11, nút chơi lại cùng seed hoặc seed mới.
 9. **Debug (phím `` ` ``)** – bảng thường, không cần theo phong cách game: toàn bộ state ẩn, thời tiết thật, seed, nhảy N ngày, xuất/nhập file lưu.
@@ -184,3 +184,55 @@ Nội dung cần có:
 - Tự động lưu cuối mỗi ngày vào localStorage: `{ version, seed, actions[], snapshots? }`.
 - Chỉ một bản lưu mỗi lượt chơi. Không có nút tải ngày cũ.
 - Bảng debug cho phép xuất/nhập file lưu (để tái hiện lỗi và làm dữ liệu kiểm thử).
+
+## 14. Quyết định bổ sung (chốt 26/09/2026)
+
+Các điểm spec còn mơ hồ đã được chốt như dưới đây. Nếu mâu thuẫn với các mục trên, mục này thắng. Mã A/B là số câu hỏi trong phiên rà soát spec.
+
+**Thời gian và pha**
+- A2: State giữ hàng đợi thời tiết thật 3 ngày [d, d+1, d+2]. Đêm ngày d áp tác động thời tiết ngày d rồi sinh ngày d+3. Dự báo cho cả 3 ngày tạo lại độc lập mỗi sáng. Bản tin sáng cho biết thời tiết thật hôm qua. Thời tiết ngày 0–2 rút lúc khởi tạo. Dự báo sai thì chọn đều trong `neighbors`.
+- A15: `applyAction` trả `{ ok: true, state } | { ok: false, state, reason }`, và state không đổi khi `ok: false`. File lưu chỉ ghi action `ok`.
+- B1: Ban đầu sức lực = `max`. Buổi chiều có bước chọn hoạt động riêng. Thao tác tài chính và bán lúa không tốn buổi, làm được trong pha bản tin, sáng và chiều. Trong buổi ra đồng, số thao tác chỉ bị giới hạn bởi sức lực.
+- B2: `Phase` không có `sowing` và `harvestSale` (chỉ là màn hình UI). Giữ `settlement` (chờ `acknowledge`) và `gameOver`.
+- B3: Hạn `dueDay` nghĩa là trả trước bước tài chính ban đêm của ngày đó. Tua dừng ở bản tin sáng của ngày đến hạn và ngày Tết. Tiền Tết trừ vào đêm `tetDay`. Không tự trả nợ, trừ mua chịu được tự trừ khi bán lúa.
+- B15: Điều kiện dừng tua chỉ bắt khi trạng thái mới xảy ra so với lúc bắt đầu tua. Làm thuê mà không có việc hoặc không đủ sức thì chuyển sang nghỉ.
+- A13: Điều kiện dừng "lúa chín có thể gặt" và các cảnh báo theo giai đoạn dựa trên lịch dự kiến (ngày xuống giống + `growthRateByMonth`, careFactor = 1), không dựa trên trạng thái thật.
+
+**Cây lúa**
+- A3: Mọi giai đoạn tính theo "ngày sinh trưởng", nên giai đoạn cố định cũng co giãn theo `growthRateByMonth × careFactor`.
+- B6: `harvestable` là status, không phải stage của sâu bệnh. Sâu bệnh chỉ chạy trên thửa `growing`. Thửa `harvested` được xuống giống lại như thửa trống. Không giới hạn cứng 3 vụ.
+- B7: `careFactor` = tích các hệ số (thiếu hoặc ngập nước × sức khỏe thấp). Mỗi giai đoạn khuyến cáo chỉ tính lần bón đầu tiên là bón đúng; các lần sau tính là bón sai giai đoạn.
+- B8: `overdueLoss = min(1, số ngày quá cửa sổ × overdueLossPerDay)`.
+- A16: Mọi hao sức khỏe (bão lúc trổ bông, đổ ngã, lũ, sâu bệnh, thiếu nước) trừ thẳng vào `health`, sàn 0. Health = 0 thì vẫn tới lúc gặt nhưng năng suất 0.
+- A6: Đổ ngã chỉ từ `flowering` trở đi, tối đa một lần mỗi vụ, cho cả mưa lớn và bão. Xác suất = `lodgingChanceBase × variety.lodgingSusceptibility × sowing.lodgingRisk`.
+- B5: Lũ tung xác suất một lần lúc khởi tạo. Ngày lũ rút đều trong day 290–364 (15–30/11 đầu game không tính). Thửa bị lũ thì nước = 100, mức hao sức khỏe rút riêng cho từng thửa.
+
+**Sâu bệnh**
+- A4: Mật độ khi phát sinh hoặc lây sang thửa mới = `initialDensity` (pests.json, 0,02 cho cả 2 loại).
+- B9: Các thửa xếp một hàng 0–4, thửa kề là thửa ±1. Khi lây, mật độ thửa bị lây = max(mật độ hiện tại, `initialDensity`). Phun phòng chỉ giảm tốc độ phát triển. Đang có cảnh báo vùng cho một loại thì không sinh thêm cảnh báo cho loại đó.
+- B10: Thăm đồng cập nhật `known` lúc bắt đầu buổi ra đồng. Chỉnh nước hoặc phun thuốc thì cập nhật `known` của thửa đó.
+- A5: Mức sức khỏe ước lượng theo `crop.healthBands`: Tốt ≥ 0,8 · Khá ≥ 0,6 · Yếu ≥ 0,4 · Kém. Nước mô tả theo `min`/`max`: Thiếu / Vừa / Ngập.
+- Nước: khoảng tối ưu nới thành [30, 80] (đo bằng mô phỏng: [40, 70] làm lúa thiếu/ngập 40–65% số ngày kể cả khi thăm đồng 3 ngày/lần).
+
+**Thu hoạch và bán**
+- B11: Gặt tay tốn `handEnergyPerPlot` cho mỗi thửa, xong trong một thao tác. Mỗi thửa gặt ra một lô. Hết `maxWaitDays` đêm chưa bán thì lô tự bán theo giá thương lái. Lượng lúa đã cam kết bán non trừ ngay lúc gặt.
+- B4: Biến động giá mỗi ngày rút đều trong ±`dailyVolatility`, kẹp trong ±`maxDeviation`.
+
+**Tài chính**
+- A1: Chi bắt buộc được làm tiền mặt âm. Phần âm là khoản "nợ sinh hoạt" quá hạn từ ngày bị âm, đi vào vòng xoáy nợ.
+- B14: Mọi nghĩa vụ trả tiền (tiền thuê, nợ họ hàng, mua chịu, vay nóng, nợ sinh hoạt) biểu diễn là `Loan` có `kind`, trả bằng action `repay`.
+- A7 Vay nóng: mỗi lần vay là một khoản riêng. Đến hạn trả gốc + `interestPer30Days`; trả sớm vẫn tính đủ lãi. Đảo nợ = trả phần lãi để được thêm `termDays`. Quá hạn thì cứ mỗi 30 ngày số dư ×(1 + lãi), cộng phạt `latePenaltyRate` một lần lúc bắt đầu quá hạn. `maxTotal` tính trên gốc còn nợ.
+- A8 Mua chịu: chỉ vật tư (giống, phân, thuốc); làm đất, công cấy, chỉnh nước, thuê máy trả tiền mặt. Mỗi lần bán lúa trừ toàn bộ dư nợ mua chịu; phần thiếu trừ vào tiền mặt, vẫn thiếu thì quá hạn. Chưa từng bán thì tới hạn ở day 364.
+- A9: Chỉ vay nóng bị phạt lãi khi trễ. Mỗi khoản bị `uyTin.latePenalty` một lần lúc bắt đầu quá hạn.
+- B12: Mỗi thửa tối đa một hợp đồng bán lúa non. Giá chốt = giá thị trường × hệ số giống × `priceFactor`. Tiền bù thiếu kg trừ vào tiền mặt (theo A1 nếu âm).
+- B13: Uy tín là số thực, hiển thị làm tròn. Trần uy tín từ làm thuê tính theo vụ của tháng hiện tại (`seasonBySowingMonth`). Có việc làm thuê hay không tung một lần cho cả ngày, báo trên bản tin. Trả xong trọn một khoản đúng hạn +`onTimePayment`; đảo nợ thì không cộng không trừ. Chỉ xin gia hạn tiền thuê trước khi kỳ đó quá hạn.
+- B16: Tiền làm tròn bằng `Math.round`, chỉ ở chỗ tiền đổi chủ. Vòng lặp theo thứ tự cố định: thửa theo id, sâu bệnh theo thứ tự trong data.
+
+**Vòng xoáy nợ và kết thúc**
+- A10: Hạn chót = ngày vào bậc 2 + `finalDeadlineDays`. Bậc 3 chạy mỗi đêm khi còn khoản quá hạn chót: bán lô lúa với giá thương lái × `forcedPriceFactor`, ép bán lúa non các thửa đang trồng ở `maxRatioOfExpected`; tiền thu được trả các khoản quá hạn. Mất ruộng thì mất lúa đang trồng; thuê lại bằng action `reRent`. Bậc 0–3 tính lại mỗi đêm; bậc 4 giữ đến khi thuê lại.
+- Tổng nợ (dùng cho `refuseIfTotalDebtOver` của vay nóng và điều kiện phá sản) chỉ tính khoản đã đến hạn hoặc quá hạn, cộng vay nóng, mua chịu và nợ sinh hoạt (các khoản này tính ngay từ lúc phát sinh). Tiền thuê và nợ họ hàng chưa đến hạn không tính.
+- A11: Phá sản xét "nguồn vay chấp nhận" chỉ gồm nguồn ra tiền mặt: vay nóng, và bán lúa non khi còn thửa đang trồng chưa ký hợp đồng. Tổng tài sản = tiền mặt + lô chưa bán theo giá thương lái.
+- A12: Tài sản ròng = tiền mặt + lô chưa bán (giá thương lái) − mọi khoản nợ còn lại (kể cả lãi đã phát sinh và tiền thuê chưa trả). Lúa ngoài đồng tính 0.
+- A14: Một vụ (để tính sổ) = các thửa có tháng xuống giống cùng thuộc một vụ. Chi phí gắn thửa tính theo thửa; sinh hoạt phí và lãi tính theo khoảng ngày từ lần xuống giống đầu đến lần bán cuối của vụ (có thể đếm trùng khi hai vụ chồng nhau, màn tính sổ ghi rõ).
+- B17: GDD mục 11 (prototype 1 thửa, 3 nguồn vay) bị thay bằng spec này.
+- B18: Ngưỡng cụ thể trong chính sách bot đặt ở M1.15 và ghi vào nhật ký.

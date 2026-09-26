@@ -14,7 +14,7 @@ Nếu prototype đạt, game sẽ được làm lại bằng Godot. Vì vậy **
 ## Tài liệu (đọc theo thứ tự khi bắt đầu phiên làm việc mới)
 
 1. `docs/PROGRESS.md` – đang ở mốc nào, task nào tiếp theo
-2. `docs/PROTOTYPE_SPEC.md` – luật chơi chi tiết của prototype (nguồn sự thật cho gameplay)
+2. `docs/PROTOTYPE_SPEC.md` – luật chơi chi tiết của prototype (nguồn sự thật cho gameplay); mục 14 là các quyết định A/B mà code tham chiếu ("decision A2"…)
 3. `docs/ARCHITECTURE.md` – cấu trúc code, kiểu dữ liệu, luồng xử lý
 4. `docs/DATA_SPEC.md` – dữ liệu cân bằng ban đầu (JSON)
 5. `docs/UI_DIRECTION.md` – hướng giao diện; mẫu tham chiếu ở `reference/ui-reference.html` (chỉ lấy giao diện, không lấy logic)
@@ -39,7 +39,7 @@ Không thêm thư viện ngoài danh sách trên khi chưa hỏi. Zustand đư�
 - Mọi thay đổi trạng thái đi qua `applyAction(state, action, data)` trả về state mới. Không mutate state ở UI.
 - Mọi con số cân bằng nằm trong `data/*.json`, có khuôn Zod trong `data/schemas.ts`. Không viết cứng số cân bằng trong code.
 - Chi phí, sức lực, điều kiện và lý do khóa của mọi hành động lấy từ `getActionOptions` trong core; UI không tự tính luật chơi.
-- UI chỉ đọc trạng thái qua `getPlayerView(state)` – hàm này giấu thông tin người chơi chưa biết (mật độ sâu bệnh, thời tiết thật ngày mai…). Chỉ bảng debug mới được đọc state đầy đủ.
+- UI chỉ đọc trạng thái qua `getPlayerView(state, data)` – hàm này giấu thông tin người chơi chưa biết (mật độ sâu bệnh, thời tiết thật ngày mai…). Chỉ bảng debug mới được đọc state đầy đủ.
 - Lưu game = `{ version, seed, actions[] }` (+ snapshot định kỳ). Tải game = chạy lại hành động.
 - `sim/` dùng chung `core/` và `data/`, không có logic riêng.
 
