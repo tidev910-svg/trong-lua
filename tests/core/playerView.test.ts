@@ -94,6 +94,13 @@ describe("getPlayerView shows what the player does know", () => {
     expect(view.summary).toBeNull();
   });
 
+  it("days to Tết, then null once it has passed", () => {
+    const s = createInitialState(1, data);
+    expect(getPlayerView(s, data).daysToTet).toBe(data.calendar.tetDay);
+    expect(getPlayerView({ ...s, day: data.calendar.tetDay }, data).daysToTet).toBe(0);
+    expect(getPlayerView({ ...s, day: data.calendar.tetDay + 1 }, data).daysToTet).toBeNull();
+  });
+
   it("shows the summary once the run is over", () => {
     const over: GameState = { ...createInitialState(1, data), phase: { kind: "gameOver", reason: "quit" } };
     expect(getPlayerView(over, data).summary).toMatchObject({ endReason: "quit", seed: 1, netWorth: 3_000_000 - 10_000_000 });

@@ -74,6 +74,8 @@ export interface PlayerView {
   };
   /** Last day the player went to the field (null = never). */
   lastFieldVisitDay: number | null;
+  /** Days until Tết (0 on the day), null once it has passed. */
+  daysToTet: number | null;
   plots: PlotView[];
   lots: LotView[];
   loans: Loan[];
@@ -152,6 +154,7 @@ export function getPlayerView(state: GameState, data: GameData): PlayerView {
       traderPricePerKg: Object.fromEntries(data.varieties.map((v) => [v.id, traderPricePerKg(state, v.id, data)])),
     },
     lastFieldVisitDay: lastFieldVisit(state),
+    daysToTet: day <= data.calendar.tetDay ? data.calendar.tetDay - day : null,
     plots: state.plots.map((plot): PlotView => {
       const crop = plot.crop;
       return {

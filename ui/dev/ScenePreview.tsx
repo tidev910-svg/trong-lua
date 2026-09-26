@@ -6,6 +6,14 @@ import { loadData } from "../../data/loadData";
 import { average } from "../../sim/bots/average";
 import { runGame } from "../../sim/runGame";
 import { STAGE } from "../format";
+import { Calendar } from "../hud/Calendar";
+import { HoverTag } from "../hud/HoverTag";
+import { visualPhase } from "../hud/labels";
+import { PhaseStrip } from "../hud/PhaseStrip";
+import { Purse } from "../hud/Purse";
+import { Rain } from "../hud/Rain";
+import { Toast } from "../hud/Toast";
+import { TimeOfDay } from "../scene/TimeOfDay";
 import { ActionButton } from "../paper/ActionButton";
 import { Notebook } from "../paper/Notebook";
 import { PinnedNote, type Box } from "../paper/PinnedNote";
@@ -37,7 +45,12 @@ export function ScenePreview() {
   const gameRef = useRef<HTMLDivElement>(null);
   const [note, setNote] = useState<{ target: OptionTarget; title: string; anchor: Box; index: number } | null>(null);
   const [book, setBook] = useState<{ target: OptionTarget; title: string } | null>(null);
-  const [hover, setHover] = useState<string | null>(null);
+  const [hover, setHover] = useState<{ label: string | null; x: number; y: number }>({ label: null, x: 0, y: 0 });
+  const phase = visualPhase(view, params.has("begun"), params.has("night"));
+  const onHover = (label: string | null, cx?: number, cy?: number) => {
+    const g = gameRef.current?.getBoundingClientRect();
+    setHover((h) => ({ label, x: cx !== undefined && g ? cx - g.left : h.x, y: cy !== undefined && g ? cy - g.top : h.y }));
+  };
 
   const openPlot = (plotId: number) => {
     const game = gameRef.current;
@@ -59,13 +72,18 @@ export function ScenePreview() {
           onSign={() => setBook({ target: { kind: "workSign" }, title: "Bảng gỗ" })}
           onLedger={() => setBook({ target: { kind: "ledger" }, title: "Sổ tiền nợ" })}
           onTrader={() => setBook({ target: { kind: "trader" }, title: "Thương lái" })}
-          onHover={(label) => setHover(label)}
+          onHover={onHover}
+          overlay={<TimeOfDay phase={phase} />}
         />
       </World>
-      <div style={{ position: "absolute", left: 12, top: 12, background: "#fffdf6", padding: "6px 10px", borderRadius: 6, fontSize: 13 }}>
-        Ngày {view.day} · {view.phase.kind}
-        {view.phase.kind === "halfDay" ? ` ${view.phase.slot} ${view.phase.activity ?? ""}` : ""} · {hover ?? "—"}
-      </div>
+      <Rain weather={view.weather.forecast[0]?.predicted} />
+      <Calendar month={view.date.month} dayOfMonth={view.date.dayOfMonth} seasonKey={view.seasonKey} daysToTet={view.daysToTet} flipKey={0} />
+      <Purse cash={view.cash} energy={view.energy} energyMax={view.energyMax} uyTin={view.uyTin} forecastToday={view.weather.forecast[0]} />
+      <PhaseStrip phase={phase} lead="Sáng sớm." text="Đọc bản tin trước khi bắt đầu ngày.">
+        <button className="btn">Mở bản tin</button>
+      </PhaseStrip>
+      <HoverTag {...hover} />
+      <Toast message={params.get("toast")} id={1} />
       {note && plot && (
         <PinnedNote title={note.title} anchor={note.anchor} container={{ width: gameRef.current?.clientWidth ?? 1200, height: gameRef.current?.clientHeight ?? 720 }} index={note.index} onClose={() => setNote(null)}>
           <div className="meta">

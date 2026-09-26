@@ -117,6 +117,264 @@ button {
   }
 }
 
+/* ---------------------------------------------------------------- HUD (reference layout) */
+
+.hud {
+  position: absolute;
+  z-index: 5;
+}
+.tint,
+.night {
+  transition: opacity 1.2s;
+}
+
+/* Rain above the scene, from today's forecast */
+.rain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s;
+  background-image: repeating-linear-gradient(105deg, rgba(220, 235, 255, 0) 0 14px, rgba(220, 235, 255, 0.45) 14px 15px, rgba(220, 235, 255, 0) 15px 34px);
+  background-size: 120px 120px;
+  animation: rain 0.5s linear infinite;
+}
+.rain.on {
+  opacity: 0.55;
+}
+.rain.heavy {
+  opacity: 0.85;
+  animation-duration: 0.3s;
+}
+@keyframes rain {
+  to {
+    background-position: -40px 120px;
+  }
+}
+
+/* Tear-off calendar */
+.calendar {
+  top: 12px;
+  left: 12px;
+  width: 118px;
+  background: var(--hud);
+  border-radius: 4px 4px 6px 6px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  transform-origin: top center;
+}
+.calendar .ring {
+  height: 10px;
+  background: #6b6b6b;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+}
+.calendar .ring::before,
+.calendar .ring::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2b2b2b;
+}
+.calendar .ring::before {
+  left: 28px;
+}
+.calendar .ring::after {
+  right: 28px;
+}
+.calendar .mon {
+  background: var(--margin);
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 3px 0;
+}
+.calendar .num {
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--margin);
+  padding: 6px 0 4px;
+}
+.calendar .sub {
+  font-size: 11px;
+  color: var(--muted);
+  padding: 3px 6px 8px;
+  line-height: 1.3;
+}
+.calendar.flip {
+  animation: flip 0.38s ease-in;
+}
+@keyframes flip {
+  0% {
+    transform: rotateX(0);
+  }
+  50% {
+    transform: rotateX(80deg);
+  }
+  100% {
+    transform: rotateX(0);
+  }
+}
+
+/* Purse */
+.purse {
+  top: 12px;
+  right: 12px;
+  width: 196px;
+  background: var(--hud);
+  border-radius: 6px;
+  box-shadow: var(--shadow);
+  padding: 10px 12px;
+}
+.purse .cash {
+  font-family: var(--font-hand);
+  font-size: 28px;
+  color: var(--ink);
+  line-height: 1;
+}
+.purse .cash.neg {
+  color: var(--danger);
+}
+.purse .lbl {
+  font-size: 11px;
+  color: var(--muted);
+}
+.bar {
+  height: 8px;
+  background: #e5e0cf;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 3px 0 7px;
+}
+.bar i {
+  display: block;
+  height: 100%;
+  background: var(--leaf);
+  transition: width 0.4s;
+}
+.bar.uytin i {
+  background: var(--gold);
+}
+.wx-now {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+/* Phase strip */
+.strip {
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  width: min(640px, calc(100% - 24px));
+  background: rgba(255, 253, 246, 0.96);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.sun-arc {
+  flex: 0 0 auto;
+}
+.sun-arc circle {
+  transition: cx 0.8s, cy 0.8s;
+}
+.prompt {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.35;
+}
+.prompt b {
+  font-weight: 700;
+}
+.strip-btns {
+  display: flex;
+  gap: 8px;
+}
+
+/* Hover tag */
+.tag {
+  position: absolute;
+  z-index: 6;
+  pointer-events: none;
+  background: #2c2a22;
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transform: translate(-50%, -130%);
+  transition: opacity 0.12s;
+  white-space: nowrap;
+}
+
+/* Toast */
+.toast {
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  transform: translate(-50%, -80px);
+  z-index: 7;
+  background: var(--paper);
+  font-family: var(--font-hand);
+  font-size: 19px;
+  color: var(--ink);
+  padding: 8px 16px;
+  box-shadow: var(--shadow);
+  transition: transform 0.35s;
+  max-width: min(520px, calc(100% - 290px));
+  text-align: center;
+}
+.toast.show {
+  transform: translate(-50%, 0);
+}
+
+@media (max-width: 640px) {
+  .calendar {
+    width: 92px;
+  }
+  .calendar .num {
+    font-size: 38px;
+  }
+  .calendar .sub {
+    display: none;
+  }
+  .purse {
+    width: 150px;
+    padding: 8px 10px;
+  }
+  .purse .cash {
+    font-size: 22px;
+  }
+  .strip {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .sun-arc {
+    display: none;
+  }
+  .prompt {
+    font-size: 13px;
+    flex-basis: 100%;
+  }
+  .toast {
+    max-width: calc(100% - 24px);
+    top: auto;
+    bottom: 120px;
+    transform: translate(-50%, 200px);
+  }
+  .toast.show {
+    transform: translate(-50%, 0);
+  }
+}
+
 /* ---------------------------------------------------------------- buttons (HUD, notebook rows) */
 
 .btn {
@@ -158,14 +416,14 @@ button {
 
 /* Notebook (modal) */
 .veil {
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: 9;
   background: rgba(15, 20, 10, 0.45);
   animation: veil-in 0.3s both;
 }
 .book {
-  position: fixed;
+  position: absolute;
   z-index: 10;
   left: 50%;
   top: 50%;
@@ -383,6 +641,12 @@ button {
 @media (prefers-reduced-motion: reduce) {
   .farmer {
     transition: none;
+  }
+  .rain {
+    animation: none;
+  }
+  .calendar.flip {
+    animation: none;
   }
   .book {
     animation: veil-in 0.2s both;
