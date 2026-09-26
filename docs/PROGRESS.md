@@ -42,7 +42,7 @@ Theo `docs/UI_DIRECTION.md`, tham chiếu `reference/ui-reference.html`. Giao di
 - [x] M2.7 Tua đến khi… (lịch lật liên tục, dừng với lý do)
 - [x] M2.8 Sổ tiền nợ + các nguồn vay + thuê lại ruộng + "Bán hết, lên thành phố"
 - [x] M2.9 Thu hoạch và bán (thương lái ở xuồng)
-- [ ] M2.10 Dọn dẹp: xóa `ui/screens/*`, `ui/styles.css` và `tests/ui/screens.test.tsx` cũ; kiểm thử khói cho giao diện mới
+- [x] M2.10 Dọn dẹp: xóa `ui/screens/*`, `ui/styles.css` và `tests/ui/screens.test.tsx` cũ; kiểm thử khói cho giao diện mới
 
 **Nghiệm thu M2:** chơi trọn một vụ từ xuống giống đến bán lúa chỉ bằng giao diện; không có logic luật chơi trong `ui/`; dùng được bằng bàn phím; chạy được trên màn hình 390px.
 
@@ -98,3 +98,4 @@ Quyết định luật chơi A1–A16, B1–B18 nằm ở `PROTOTYPE_SPEC.md` m�
 - M2.7: Vở "Tua đến khi…": nghỉ (mặc định) hoặc làm thuê, 4 điều kiện dừng (bật sẵn), tối đa 3/7/14/30 ngày, dòng liệt kê sự kiện luôn dừng; action dựng từ option `skip` qua `quoteOption`. Khi tua: trời tối, mỗi `skipDayPassed` lật một trang lịch (0,42 giây; 0,06 giây khi reduced motion), rồi mở bản tin với dòng "Dừng tua" từ `skipStopped`. Trang lịch của ngày bất kỳ lấy từ core (`dateOfDay`, `seasonKeyOfDay`, `daysToTet` mới chuyển vào `systems/calendar`).
 - M2.8: `LedgerBook` mở từ ghế và quyển sổ (mọi lúc trừ ban đêm, không tốn buổi): tiền mặt, uy tín, bậc nợ, từng khoản (số dư, hạn / quá hạn + hạn chót / "trả khi bán lúa"), hạn mức mua chịu và vay nóng, rồi mọi nút từ option `ledger`. Lựa chọn có `range` mở ô nhập số + dòng điều khoản từ `quoteOption` (nhận bao nhiêu, nợ bao nhiêu, hạn ngày nào / bán trước bao nhiêu kg). "Bán hết, lên thành phố" hỏi lại trước khi dispatch `quit`. Gấp sổ trở về bản tin nếu mở từ bản tin.
 - M2.9: Gặt máy/gặt tay trên mẩu giấy thửa (khi `known` thấy chín) → thông báo số kg và "thương lái đang chờ ở bến"; xuồng hiện thương lái. `TraderBook` mở từ xuồng: giá thương lái hôm nay theo giống, từng lô (kg, số đêm đã chờ, giá trị nếu bán ngay), nút bán từ option `trader`, giải thích hao hụt và hạn chờ (số lấy từ data). Thông báo bán ghi rõ phần bị trừ nợ đại lý. Thử trên trình duyệt bằng file lưu dựng từ lượt chơi của bot (nạp qua trang `?preview` vì trang game tự lưu khi đóng).
+- M2.10: Xóa `ui/screens/*`, `ui/styles.css`, test màn hình cũ và các hàm định dạng không còn dùng (`eventText` có emoji, `millions`, `percent`…). Giữ trang dev `?preview` / `?preview=scene` làm công cụ xem component. Test khói mới render cả App. Rà `ui/`: chỉ còn hàm lịch thuần của core (trang lịch khi tua), một import kiểu, và TraderBook in 2 số từ data vào câu giải thích — không có luật chơi. Tính sổ và thẻ tổng kết là M3.1–M3.2.
