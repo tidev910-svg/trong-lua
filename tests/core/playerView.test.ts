@@ -86,6 +86,7 @@ describe("getPlayerView shows what the player does know", () => {
   it("public schedule, money, loans, market and credit limits", () => {
     const view = getPlayerView(stateWithCrops({ 1: crop({ sowDay: 2 }) }), data);
     expect(view.plots[1]?.crop?.expected.harvestable).toBe(101);
+    expect(view.plots[1]?.crop?.progress).toEqual({ ratio: 0, daysLeft: 101 }); // day 0: before sowing counts as 0
     expect(view.cash).toBe(3_000_000);
     expect(view.loans.map((l) => l.kind)).toEqual(["family", "rent"]);
     expect(view.market.traderPricePerKg.variety_a).toBeGreaterThan(0);

@@ -51,7 +51,7 @@ Màu trong cảnh (cỏ `#79a64a`, đường `#c9a56b`, kênh `#4e9c9a`, bờ ru
 
 Lớp phủ theo thứ tự: nền → đường, kênh → cây → nhà, sổ, bảng, chòi → ruộng → nhân vật → lớp màu thời gian → lớp đêm (sao, đom đóm, cửa sổ sáng đèn) → mưa (div phủ ngoài SVG).
 
-**Thửa ruộng** gồm: bờ, bùn, lớp nước (độ đậm giảm dần theo giai đoạn), pattern cây lúa theo giai đoạn (`empty`, `germination`, `tillering`, `panicle`, `flowering`, `ripening`, `harvestable`), lớp mờ khi cũ ≥ 2 ngày, cọc tên "Ruộng" ("Thửa N" khi core chạy nhiều thửa; thêm ", thấy N ngày trước" khi cũ), dấu "!" đỏ khi `known` có dấu hiệu. Khi mất ruộng (`landAccess = false`), các thửa có cọc "Đã trả ruộng" và không ra đồng được.
+**Thửa ruộng** gồm: bờ, bùn, lớp nước (độ đậm giảm dần theo giai đoạn), pattern cây lúa theo giai đoạn (`empty`, `germination`, `tillering`, `panicle`, `flowering`, `ripening`, `harvestable`), lớp mờ khi cũ ≥ 2 ngày, cọc tên "Ruộng" ("Thửa N" khi core chạy nhiều thửa; thêm ", thấy N ngày trước" khi cũ), dấu "!" đỏ khi `known` có dấu hiệu, mảnh giấy **"Dự kiến chín N% · còn M ngày"** kèm thanh tiến trình (theo lịch dự kiến công khai A13, không theo sinh trưởng thật; không mờ đi khi `known` cũ; tới ngày dự kiến thì ghi "Đến kỳ gặt theo lịch"). Trên ruộng rộng, cọc tên, thanh chín và dấu "!" gom quanh giữa ruộng để màn điện thoại thấy ngay. Khi mất ruộng (`landAccess = false`), các thửa có cọc "Đã trả ruộng" và không ra đồng được.
 
 ## HUD
 
@@ -127,7 +127,7 @@ ui/
 Các điểm file mẫu và spec lệch nhau hoặc bỏ trống, đã chốt như sau. Nếu mâu thuẫn với các mục trên, mục này thắng.
 
 - **Mưa và thời tiết trên HUD:** lớp mưa vẽ theo **dự báo hôm nay** (rain → mưa, heavy_rain/storm → mưa nặng), ví hiện dự báo hôm nay kèm độ tin cậy. Bản tin hiện thêm thời tiết thật **hôm qua** (quyết định A2) và bậc vòng xoáy nợ khi ≥ 1.
-- **Mẩu giấy thửa ruộng** chỉ đọc `known` và `getActionOptions`, không đọc state thật:
+- **Mẩu giấy thửa ruộng** chỉ đọc `known` và `getActionOptions`, không đọc state thật (thanh "Dự kiến chín" kèm ngày gặt dự kiến đặt dưới dòng giai đoạn):
   - Thửa trống: một nút "Xuống giống…" mở bước con ngay trên mẩu giấy (chọn giống, sạ hoặc cấy, xem chi phí, sức lực và ngày gặt dự kiến), rồi mới xuống giống.
   - Phun trị: chỉ hiện nút cho loại sâu bệnh `known` đang thấy dấu hiệu. Phun phòng gộp thành một mục (mở ra chọn loại).
   - Gặt máy / gặt tay hiện khi `known` thấy lúa có thể gặt.

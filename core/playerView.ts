@@ -5,7 +5,7 @@ import { summarize, type RunSummary } from "./summary";
 import { dateOfDay, daysToTet, monthKeyOfDay, seasonKeyOfDay, type CalendarDate } from "./systems/calendar";
 import { reRentCost } from "./systems/debt";
 import { expectedYieldKg, loanSharkPrincipal, loanSharkRefusal, storeCreditBalance, storeCreditRefusal } from "./systems/finance";
-import { expectedSchedule } from "./systems/growth";
+import { expectedProgress, expectedSchedule } from "./systems/growth";
 import { lotValue } from "./systems/harvest";
 import { isHarvestGlut, marketPrice, traderPricePerKg, varietyMarketPrice } from "./systems/market";
 import type {
@@ -39,6 +39,8 @@ export interface PlotView {
     sprayLog: CropState["sprayLog"];
     /** Public schedule assuming good care (decision A13). */
     expected: Record<CropStage, number>;
+    /** Progress to the expected harvestable day on that schedule (not the true growth). */
+    progress: { ratio: number; daysLeft: number };
     /** Kg the trader would assume for an advance sale. */
     expectedYieldKg: number;
   } | null;
@@ -118,6 +120,22 @@ const PUBLIC_EVENTS = new Set<GameEvent["kind"]>([
   "skipDayPassed",
 ]);
 
+/** What the player knows of a crop: only what they chose and the public schedule, never its true state. */
+function cropView(crop: CropState, day: number, data: GameData): NonNullable<PlotView["crop"]> {
+  const expected = expectedSchedule(crop.sowDay, crop.varietyId, data);
+  return {
+    varietyId: crop.varietyId,
+    method: crop.method,
+    sowDay: crop.sowDay,
+    seasonKey: crop.seasonKey,
+    fertilizerApps: crop.fertilizerApps,
+    sprayLog: crop.sprayLog,
+    expected,
+    progress: expectedProgress(crop.sowDay, expected.harvestable, day),
+    expectedYieldKg: expectedYieldKg(crop.varietyId, crop.method, crop.sowDay, data),
+  };
+}
+
 /** Events the player is allowed to see (radio, what they did, what happened to their money). */
 export function isPublicEvent(event: GameEvent): boolean {
   return PUBLIC_EVENTS.has(event.kind);
@@ -160,19 +178,7 @@ export function getPlayerView(state: GameState, data: GameData): PlayerView {
       return {
         id: plot.id,
         status: plot.status === "empty" ? "empty" : plot.status === "harvested" ? "harvested" : "planted",
-        crop:
-          crop === null
-            ? null
-            : {
-                varietyId: crop.varietyId,
-                method: crop.method,
-                sowDay: crop.sowDay,
-                seasonKey: crop.seasonKey,
-                fertilizerApps: crop.fertilizerApps,
-                sprayLog: crop.sprayLog,
-                expected: expectedSchedule(crop.sowDay, crop.varietyId, data),
-                expectedYieldKg: expectedYieldKg(crop.varietyId, crop.method, crop.sowDay, data),
-              },
+        crop: crop === null ? null : cropView(crop, day, data),
         known: plot.known,
         staleDays: plot.known === null ? null : day - plot.known.lastVisitDay,
         advanceContract: state.advanceContracts.find((c) => c.plotId === plot.id) ?? null,

@@ -256,7 +256,8 @@ button {
   background: var(--leaf);
   transition: width 0.4s;
 }
-.bar.uytin i {
+.bar.uytin i,
+.bar.ripe i {
   background: var(--gold);
 }
 .wx-now {

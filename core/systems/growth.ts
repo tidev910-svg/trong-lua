@@ -103,3 +103,13 @@ export function expectedSchedule(sowDay: number, varietyId: string, data: GameDa
   }
   return schedule as Record<CropStage, number>;
 }
+
+/**
+ * Progress towards ripeness on the public schedule (decision A13): 0 on the sowing day, 1 from the expected
+ * harvestable day. The true growth is hidden; the player only learns it by visiting.
+ */
+export function expectedProgress(sowDay: number, harvestableDay: number, day: number): { ratio: number; daysLeft: number } {
+  const span = harvestableDay - sowDay;
+  const ratio = span <= 0 ? 1 : Math.min(1, Math.max(0, (day - sowDay) / span));
+  return { ratio, daysLeft: Math.max(0, harvestableDay - day) };
+}

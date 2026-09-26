@@ -4,7 +4,8 @@ import { getActionOptions, type ActionOption } from "../../core/actionOptions";
 import type { PlayerView, PlotView } from "../../core/playerView";
 import type { Action } from "../../core/types";
 import { dayLabel, kg, STAGE } from "../format";
-import { WATER_WORDS } from "../hud/labels";
+import { Bar } from "../hud/Bar";
+import { ripenessText, WATER_WORDS } from "../hud/labels";
 import { ActionButton } from "./ActionButton";
 
 /** Short variety name: the part before " – " in data ("Giống A – cực ngắn ngày" → "Giống A"). */
@@ -62,6 +63,14 @@ export function PlotNote({ view, data, plotId, onChoose }: Props) {
   return (
     <>
       <div className="meta">{meta}</div>
+      {plot.crop !== null && (
+        <div className="ripe">
+          <div className="meta">
+            {ripenessText(plot.crop.progress)} (gặt khoảng {dayLabel(view, plot.crop.expected.harvestable)})
+          </div>
+          <Bar value={plot.crop.progress.ratio * 100} max={100} className="ripe" label="Tiến độ lúa chín theo lịch dự kiến" />
+        </div>
+      )}
       {plot.crop !== null &&
         (signs.length > 0 ? (
           signs.map((s) => (

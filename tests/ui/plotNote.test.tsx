@@ -38,6 +38,14 @@ describe("PlotNote", () => {
     expect(html).not.toContain("Phun phòng đạo ôn");
   });
 
+  it("a crop: ripeness bar on the public schedule, with the expected harvest day", () => {
+    const s = inField({ ...stateWithCrops({ 0: crop({ sowDay: 0, growth: 20 }) }), day: 20 });
+    const html = render(s, 0);
+    expect(html).toContain("Dự kiến chín 20% · còn 79 ngày (gặt khoảng");
+    expect(html).toMatch(/role="progressbar" aria-label="Tiến độ lúa chín theo lịch dự kiến"[^>]*aria-valuenow="20"/);
+    expect(render(inField(createInitialState(1, data)), 0)).not.toContain("progressbar");
+  });
+
   it("no signs: says so", () => {
     const s = inField({ ...stateWithCrops({ 0: crop({ sowDay: 0, growth: 20 }) }), day: 20 });
     expect(render(s, 0)).toContain("Không thấy dấu hiệu lạ.");

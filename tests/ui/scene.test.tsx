@@ -4,7 +4,7 @@ import { getPlayerView, type PlayerView, type PlotView } from "../../core/player
 import { dispatch, newSession } from "../../core/save";
 import type { GameState } from "../../core/types";
 import { isActivationKey } from "../../ui/scene/Interactive";
-import { drawnStage, hasSigns, isStale, plotLabel, stakeLabel, waterOpacity } from "../../ui/scene/Plot";
+import { drawnStage, hasSigns, isStale, markPositions, plotLabel, stakeLabel, waterOpacity } from "../../ui/scene/Plot";
 import { initialScrollLeft, isInField, Scene } from "../../ui/scene/Scene";
 import { crop, data, stateWithCrops } from "../helpers";
 
@@ -48,9 +48,10 @@ describe("plots are drawn from what the player knows", () => {
     expect(hasSigns(plotOf(visited(20, 21)))).toBe(false);
     const sick = plotOf(visited(20, 21, { brown_planthopper: 0.5, rice_blast: 0 }));
     expect(hasSigns(sick)).toBe(true);
-    expect(plotLabel(sick, false, true)).toBe("Ruộng (đẻ nhánh): ra đồng");
-    expect(plotLabel(sick, true, true)).toBe("Ruộng (đẻ nhánh): xem và làm việc");
-    expect(plotLabel(sick, true, true, 5)).toBe("Thửa 1 (đẻ nhánh): xem và làm việc");
+    // Sown day 0, expected harvestable day 99, today day 21 → 21 %, 78 days left (public schedule).
+    expect(plotLabel(sick, false, true)).toBe("Ruộng (đẻ nhánh; dự kiến chín 21% · còn 78 ngày): ra đồng");
+    expect(plotLabel(sick, true, true)).toBe("Ruộng (đẻ nhánh; dự kiến chín 21% · còn 78 ngày): xem và làm việc");
+    expect(plotLabel(sick, true, true, 5)).toBe("Thửa 1 (đẻ nhánh; dự kiến chín 21% · còn 78 ngày): xem và làm việc");
   });
 
   it("water shows less as the rice covers the field", () => {
@@ -66,6 +67,16 @@ describe("Scene", () => {
     expect(html.match(/aria-label="Ruộng \(/g)).toHaveLength(1); // one field of 5 công
     expect(html.match(/role="button" tabindex="0"/g)?.length).toBe(4);
     for (const stage of ["empty", "germination", "tillering", "panicle", "flowering", "ripening", "harvestable"]) expect(html).toContain(`id="p-${stage}"`);
+  });
+
+  it("ripeness tag while rice is in the field, from the public schedule; none on empty land or after losing it", () => {
+    expect(render(getPlayerView(newSession(1, data).state, data))).not.toContain("data-ripeness");
+    const s = visited(20, 40);
+    const html = render(getPlayerView(s, data)).replaceAll("<!-- -->", "");
+    expect(html).toContain('data-ripeness="40"');
+    expect(html).toContain("Dự kiến chín 40% · còn 59 ngày");
+    expect(render(getPlayerView({ ...s, day: 120 }, data))).toContain("Đến kỳ gặt theo lịch");
+    expect(render(getPlayerView({ ...s, landAccess: false }, data))).not.toContain("data-ripeness");
   });
 
   it("the work sign follows today's hired work", () => {
@@ -100,5 +111,13 @@ describe("interaction helpers", () => {
     // 800px tall phone: scene 1333px wide, viewport 390 → centre x=700 → 1333·700/1200 − 195
     expect(initialScrollLeft(1333, 390)).toBe(Math.round((1333 * 700) / 1200 - 195));
     expect(initialScrollLeft(1333, 1300)).toBe(33);
+  });
+});
+
+describe("marks on the field", () => {
+  it("gather around the middle of the wide field (what a phone shows first); corners on small plots", () => {
+    const field = markPositions({ x: 370, y: 170, width: 750, height: 290 }, 60);
+    expect(field).toEqual({ stakeX: 721, tagX: 630, tagWidth: 230, signX: 606 });
+    expect(markPositions({ x: 370, y: 170, width: 240, height: 170 }, 60)).toEqual({ stakeX: 388, tagX: 386, tagWidth: 180, signX: 584 });
   });
 });

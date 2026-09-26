@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { getActionOptions, type OptionTarget } from "../../core/actionOptions";
+import { plotName } from "../../core/names";
 import { getPlayerView } from "../../core/playerView";
 import { dispatch, newSession, type Session } from "../../core/save";
 import { loadData } from "../../data/loadData";
@@ -58,7 +59,7 @@ export function ScenePreview() {
     if (!game || !el) return;
     const g = game.getBoundingClientRect();
     const r = el.getBoundingClientRect();
-    setNote({ target: { kind: "plot", plotId }, title: `Thửa ${plotId + 1}`, anchor: { left: r.left - g.left, top: r.top - g.top, right: r.right - g.left, bottom: r.bottom - g.top }, index: plotId });
+    setNote({ target: { kind: "plot", plotId }, title: plotName(plotId, view.plots.length), anchor: { left: r.left - g.left, top: r.top - g.top, right: r.right - g.left, bottom: r.bottom - g.top }, index: plotId });
   };
   const plot = note?.target.kind === "plot" ? view.plots[note.target.plotId] : undefined;
 
