@@ -43,7 +43,7 @@ export function Briefing({ view, data, onStartDay, onSkip, canSkip }: Props) {
       <h4>Ruộng</h4>
       <p>{lastVisitLine(view)}</p>
       {view.plots.map((p) => {
-        const line = plotLine(p);
+        const line = plotLine(p, view.plots.length);
         return (
           <p key={p.id}>
             {line.text}

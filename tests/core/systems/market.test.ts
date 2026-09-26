@@ -80,9 +80,9 @@ describe("harvest (spec §7)", () => {
     expect(s.energy).toBe(100);
     expect(s.plots[0]).toMatchObject({ status: "harvested", crop: null });
     expect(s.harvestLots).toEqual([
-      { id: "lot-3", plotId: 0, varietyId: "variety_a", seasonKey: "DX-1", kg: 800 * 0.7, harvestDay: 100, nightsWaited: 0 },
+      { id: "lot-3", plotId: 0, varietyId: "variety_a", seasonKey: "DX-1", kg: 4000 * 0.7, harvestDay: 100, nightsWaited: 0 },
     ]);
-    expect(s.ledger.at(-1)).toEqual({ day: 100, amount: -300_000, category: "harvest_machine", plotId: 0, seasonKey: "DX-1" });
+    expect(s.ledger.at(-1)).toEqual({ day: 100, amount: -1_500_000, category: "harvest_machine", plotId: 0, seasonKey: "DX-1" });
   });
 
   it("hand: costs energy, no money", () => {
@@ -92,16 +92,16 @@ describe("harvest (spec §7)", () => {
   });
 
   it("an advance contract takes its kg first", () => {
-    const s0 = { ...base(), advanceContracts: [{ id: "adv-9", plotId: 0, day: 50, kg: 200, pricePerKg: 5000 }] };
+    const s0 = { ...base(), advanceContracts: [{ id: "adv-9", plotId: 0, day: 50, kg: 1000, pricePerKg: 5000 }] };
     const s = harvestPlot(s0, 0, "machine", data);
-    expect(s.harvestLots[0]?.kg).toBeCloseTo(560 - 200, 9);
+    expect(s.harvestLots[0]?.kg).toBeCloseTo(2800 - 1000, 9);
     expect(s.advanceContracts).toEqual([]);
   });
 
   it("missing kg are paid at variety market price × shortfallPenalty", () => {
-    const s0 = { ...base({ health: 0.2 }), advanceContracts: [{ id: "adv-9", plotId: 0, day: 50, kg: 300, pricePerKg: 5000 }] };
-    const s = harvestPlot(s0, 0, "hand", data); // 800 × 0.2 × 0.7 = 112 kg < 300
-    const shortfall = 300 - 112;
+    const s0 = { ...base({ health: 0.2 }), advanceContracts: [{ id: "adv-9", plotId: 0, day: 50, kg: 1500, pricePerKg: 5000 }] };
+    const s = harvestPlot(s0, 0, "hand", data); // 4000 × 0.2 × 0.7 = 560 kg < 1500
+    const shortfall = 1500 - 560;
     const penalty = Math.round(shortfall * varietyMarketPrice(s0, "variety_a", data) * data.finance.advanceSale.shortfallPenalty);
     expect(s.cash).toBe(3_000_000 - penalty);
     expect(s.harvestLots).toEqual([]);

@@ -1,3 +1,4 @@
+import { plotName } from "../../core/names";
 import type { GameData } from "../../data/schemas";
 import type { PlayerView, PlotView } from "../../core/playerView";
 import type { GameEvent, Loan } from "../../core/types";
@@ -22,7 +23,7 @@ export function newsLine(e: GameEvent, view: Pick<PlayerView, "date" | "day">): 
     case "creditorVisit":
       return `Chủ nợ (${LOAN_KIND[e.loanKind].toLowerCase()}) đến nhà. Hạn chót ngày ${dayLabel(view, e.finalDeadlineDay)}.`;
     case "foreclosure":
-      return `Bị siết nợ: bán ép ${e.lotsSold} lô lúa, bán non ép ${e.plotsSoldAdvance} thửa, được ${money(e.amount)}.`;
+      return `Bị siết nợ: bán ép ${e.lotsSold} lô lúa${e.plotsSoldAdvance > 0 ? ", ép bán non lúa đang trồng" : ""}, được ${money(e.amount)}.`;
     case "landLost":
       return "Chủ đất lấy lại ruộng. Chỉ còn làm thuê hoặc nghỉ.";
     case "landReRented":
@@ -59,16 +60,16 @@ export function lastVisitLine(view: Pick<PlayerView, "day" | "lastFieldVisitDay"
   return since === 0 ? "Lần cuối ra đồng: hôm nay." : since === 1 ? "Lần cuối ra đồng: hôm qua." : `Lần cuối ra đồng: ${since} ngày trước.`;
 }
 
-/** What the player knows of a plot, from the last visit. */
-export function plotLine(plot: PlotView): { text: string; signs: boolean } {
-  const name = `Thửa ${plot.id + 1}`;
+/** What the player knows of a plot, from the last visit. The field alone needs no name ("Ruộng trống"). */
+export function plotLine(plot: PlotView, plotCount = 1): { text: string; signs: boolean } {
+  const line = (what: string) => (plotCount === 1 ? what[0]!.toUpperCase() + what.slice(1) : `${plotName(plot.id, plotCount)}: ${what}`);
   const k = plot.known;
-  if (plot.status === "empty" || (k === null && plot.status !== "planted")) return { text: `${name}: ruộng trống`, signs: false };
-  if (plot.status === "harvested") return { text: `${name}: đã gặt`, signs: false };
-  if (k === null || k.stage === null) return { text: `${name}: đã xuống giống, chưa thăm`, signs: false };
+  if (plot.status === "empty" || (k === null && plot.status !== "planted")) return { text: line("ruộng trống"), signs: false };
+  if (plot.status === "harvested") return { text: line("đã gặt"), signs: false };
+  if (k === null || k.stage === null) return { text: line("đã xuống giống, chưa thăm"), signs: false };
   const water = k.waterLevel ? `, nước ${WATER_WORDS[k.waterLevel]}` : "";
   const signs = Object.values(k.signs).some((s) => s !== null);
-  return { text: `${name}: ${STAGE[k.stage].toLowerCase()}${water}`, signs };
+  return { text: line(`${STAGE[k.stage].toLowerCase()}${water}`), signs };
 }
 
 /** The loan with the nearest due day (late ones first). */

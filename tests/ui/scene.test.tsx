@@ -38,17 +38,19 @@ describe("plots are drawn from what the player knows", () => {
     const old = plotOf(visited(20, 25));
     expect(isStale(old, false)).toBe(true);
     expect(isStale(old, true)).toBe(false);
-    expect(stakeLabel(old, false, true)).toBe("Thửa 1, thấy 5 ngày trước");
-    expect(stakeLabel(old, true, true)).toBe("Thửa 1");
-    expect(stakeLabel(old, false, false)).toBe("Thửa 1: đã trả ruộng");
+    expect(stakeLabel(old, false, true)).toBe("Ruộng, thấy 5 ngày trước");
+    expect(stakeLabel(old, true, true)).toBe("Ruộng");
+    expect(stakeLabel(old, false, false)).toBe("Ruộng: đã trả ruộng");
+    expect(stakeLabel(old, false, true, 5)).toBe("Thửa 1, thấy 5 ngày trước");
   });
 
   it("red mark only when signs were seen; label says what a click does", () => {
     expect(hasSigns(plotOf(visited(20, 21)))).toBe(false);
     const sick = plotOf(visited(20, 21, { brown_planthopper: 0.5, rice_blast: 0 }));
     expect(hasSigns(sick)).toBe(true);
-    expect(plotLabel(sick, false, true)).toBe("Thửa 1 (đẻ nhánh): ra đồng");
-    expect(plotLabel(sick, true, true)).toBe("Thửa 1 (đẻ nhánh): xem và làm việc");
+    expect(plotLabel(sick, false, true)).toBe("Ruộng (đẻ nhánh): ra đồng");
+    expect(plotLabel(sick, true, true)).toBe("Ruộng (đẻ nhánh): xem và làm việc");
+    expect(plotLabel(sick, true, true, 5)).toBe("Thửa 1 (đẻ nhánh): xem và làm việc");
   });
 
   it("water shows less as the rice covers the field", () => {
@@ -61,8 +63,8 @@ describe("Scene", () => {
   it("renders every object as a keyboard button with its label, and the rice patterns", () => {
     const html = render(getPlayerView(newSession(1, data).state, data));
     for (const label of ["Nhà: nghỉ ngơi", "Sổ: tiền và nợ", "Bảng gỗ: đi làm thuê"]) expect(html).toContain(`aria-label="${label}"`);
-    expect(html.match(/aria-label="Thửa \d/g)).toHaveLength(5);
-    expect(html.match(/role="button" tabindex="0"/g)?.length).toBe(8);
+    expect(html.match(/aria-label="Ruộng \(/g)).toHaveLength(1); // one field of 5 công
+    expect(html.match(/role="button" tabindex="0"/g)?.length).toBe(4);
     for (const stage of ["empty", "germination", "tillering", "panicle", "flowering", "ripening", "harvestable"]) expect(html).toContain(`id="p-${stage}"`);
   });
 

@@ -26,7 +26,7 @@ const base: Settlement = {
 
 describe("settlement page", () => {
   it("revenue per plot, costs as negatives (zero lines left out), then debt and cash facts", () => {
-    expect(settlementLines(base).map((l) => [l.label, l.amount ?? l.text])).toEqual([
+    expect(settlementLines(base, 5).map((l) => [l.label, l.amount ?? l.text])).toEqual([
       ["Bán lúa thửa 1", 4_800_000],
       ["Bán lúa thửa 2", 3_000_000],
       ["Bán lúa non thửa 2", 1_000_000],
@@ -39,6 +39,11 @@ describe("settlement page", () => {
       ["Còn nợ", "9.000.000 đ"],
       ["Tiền mặt cuối vụ", "2.000.000 đ"],
     ]);
+  });
+
+  it("the single field needs no plot number", () => {
+    const one: Settlement = { ...base, plots: [{ plotId: 0, riceSales: 3_000_000, advanceSales: 1_000_000, shortfall: 200_000 }] };
+    expect(settlementLines(one).slice(0, 3).map((l) => l.label)).toEqual(["Bán lúa", "Bán lúa non", "Bù thiếu lúa non"]);
   });
 
   it("result line: lời / lỗ; appears last after the extra pause", () => {

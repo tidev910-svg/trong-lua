@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getActionOptions, type ActionOption, type OptionTarget } from "../core/actionOptions";
+import { plotName, plotSuffix } from "../core/names";
 import type { PlayerView } from "../core/playerView";
 import { dateOfDay, daysToTet, seasonKeyOfDay } from "../core/systems/calendar";
 import type { GameData } from "../data/schemas";
@@ -58,7 +59,7 @@ export function stripText(view: PlayerView, phase: VisualPhase): { lead: string;
   if (phase === "night") return { lead: "Trời tối.", text: "Cả nhà ăn cơm, đi ngủ sớm." };
   if (phase === "briefing") return { lead: "Sáng sớm.", text: "Đọc bản tin trước khi bắt đầu ngày." };
   const half = phase === "afternoon" ? "Buổi chiều" : "Buổi sáng";
-  if (isInField(view)) return { lead: `${half}, ngoài đồng.`, text: "Bấm vào từng thửa để xem kỹ và làm việc." };
+  if (isInField(view)) return { lead: `${half}, ngoài đồng.`, text: view.plots.length === 1 ? "Bấm vào ruộng để xem kỹ và làm việc." : "Bấm vào từng thửa để xem kỹ và làm việc." };
   if (!view.landAccess) return { lead: `${half}.`, text: "Đã mất ruộng: chỉ còn làm thuê hoặc nghỉ. Thuê lại ruộng ở quyển sổ." };
   return { lead: `${half}.`, text: "Chọn việc: bấm vào ruộng để ra đồng, bảng gỗ để đi làm thuê, hoặc về nhà nghỉ." };
 }
@@ -154,9 +155,9 @@ export function App() {
             break;
           case "wentToField": {
             const target = plotId ?? 0;
-            setFarmerAt(plotStandPoint(target));
+            setFarmerAt(plotStandPoint(target, after.plots.length));
             const seen = after.plots.filter(hasSigns).length;
-            if (seen > 0) say(`Có ${seen} thửa thấy dấu hiệu lạ.`);
+            if (seen > 0) say(after.plots.length === 1 ? "Ruộng có dấu hiệu lạ." : `Có ${seen} thửa thấy dấu hiệu lạ.`);
             await pause(650, 0);
             openNote(target);
             setPage(null);
@@ -227,7 +228,7 @@ export function App() {
     (plotId: number) => {
       if (busy) return;
       if (isInField(view)) {
-        setFarmerAt(plotStandPoint(plotId));
+        setFarmerAt(plotStandPoint(plotId, view.plots.length));
         openNote(plotId);
         return;
       }
@@ -308,7 +309,7 @@ export function App() {
       )}
 
       {note !== null && anchor && isInField(view) && (
-        <PinnedNote key={note} title={`Thửa ${note + 1}`} anchor={anchor.box} container={anchor.size} index={note} onClose={() => setNote(null)}>
+        <PinnedNote key={note} title={plotName(note, view.plots.length)} anchor={anchor.box} container={anchor.size} index={note} onClose={() => setNote(null)}>
           <PlotNote
             view={view}
             data={data}
@@ -323,8 +324,8 @@ export function App() {
                 const delivered = contract ? ` Phần bán non (${kg(contract.kg)}) giao cho người mua trước.` : "";
                 say(
                   lot
-                    ? `Gặt xong thửa ${action.plotId + 1}: ${kg(lot.kg)}.${delivered} Thương lái đang chờ ở bến.`
-                    : `Gặt xong thửa ${action.plotId + 1}.${delivered} Không còn lúa để bán.`,
+                    ? `Gặt xong${plotSuffix(action.plotId, view.plots.length)}: ${kg(lot.kg)}.${delivered} Thương lái đang chờ ở bến.`
+                    : `Gặt xong${plotSuffix(action.plotId, view.plots.length)}.${delivered} Không còn lúa để bán.`,
                 );
               }
               if (out.view.phase.kind === "settlement" || out.view.phase.kind === "gameOver") setNote(null);

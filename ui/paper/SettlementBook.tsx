@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { plotSuffix } from "../../core/names";
 import type { Settlement } from "../../core/settlement";
 import { money, seasonLabel } from "../format";
 import { prefersReducedMotion } from "../motion";
@@ -16,15 +17,16 @@ export interface SettlementLine {
 }
 
 /**
- * The lines of the settlement page, in reading order: what came in per plot, what went out, then the debt and
+ * The lines of the settlement page, in reading order: what came in (per plot when there are several), what went out, then the debt and
  * cash facts. Everything comes from core/settlement.ts; this only words it.
  */
-export function settlementLines(s: Settlement): SettlementLine[] {
+export function settlementLines(s: Settlement, plotCount = 1): SettlementLine[] {
   const lines: SettlementLine[] = [];
   for (const p of s.plots) {
-    if (p.riceSales !== 0) lines.push({ label: `Bán lúa thửa ${p.plotId + 1}`, amount: p.riceSales });
-    if (p.advanceSales !== 0) lines.push({ label: `Bán lúa non thửa ${p.plotId + 1}`, amount: p.advanceSales });
-    if (p.shortfall !== 0) lines.push({ label: `Bù thiếu lúa non thửa ${p.plotId + 1}`, amount: -p.shortfall });
+    const of = plotSuffix(p.plotId, plotCount);
+    if (p.riceSales !== 0) lines.push({ label: `Bán lúa${of}`, amount: p.riceSales });
+    if (p.advanceSales !== 0) lines.push({ label: `Bán lúa non${of}`, amount: p.advanceSales });
+    if (p.shortfall !== 0) lines.push({ label: `Bù thiếu lúa non${of}`, amount: -p.shortfall });
   }
   const out: [string, number][] = [
     ["Giống, phân, thuốc", s.supplies],

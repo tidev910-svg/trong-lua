@@ -179,7 +179,8 @@ export function rollOverLoan(state: GameState, loanId: string, data: GameData): 
   if (!loan) throw new Error(`unknown loan "${loanId}"`);
   const pay = rollOverCost(loan);
   const interest = sharkInterest(loan.principal, data);
-  let next = addLedger({ ...state, cash: state.cash - pay }, { amount: -pay, category: "loan_repayment", loanId });
+  // Nothing to pay when this term's interest was already repaid: no ledger row (a -0 would not survive JSON).
+  let next = pay > 0 ? addLedger({ ...state, cash: state.cash - pay }, { amount: -pay, category: "loan_repayment", loanId }) : state;
   next = addLedger(next, { amount: -interest, cashless: true, category: "interest", loanId });
   return updateLoan(next, loanId, (l) => ({
     ...l,
@@ -225,7 +226,7 @@ export function advanceSaleRefusal(state: GameState, plotId: number, ratio: numb
   const plot = state.plots.find((p) => p.id === plotId);
   // Growing or ripe but not yet harvested: the player cannot tell the two apart without visiting (PROTOTYPE_SPEC §14).
   if (!plot || (plot.status !== "growing" && plot.status !== "harvestable") || plot.crop === null) return "Chỉ bán non được lúa đang trồng.";
-  if (state.advanceContracts.some((c) => c.plotId === plotId)) return "Thửa này đã bán non rồi.";
+  if (state.advanceContracts.some((c) => c.plotId === plotId)) return "Lúa vụ này đã bán non rồi.";
   if (!(ratio > 0 && ratio <= data.finance.advanceSale.maxRatioOfExpected + 1e-9)) return "Tỉ lệ bán non không hợp lệ.";
   return null;
 }

@@ -4,12 +4,14 @@ Tất cả là **giá trị tạm** để bắt đầu; sẽ hiệu chỉnh bằ
 
 Tổng các xác suất trong một phân phối phải bằng 1 (khuôn Zod kiểm tra với sai số 1e-6).
 
+Từ quyết định C1 (PROTOTYPE_SPEC §14) cả trò chơi có một ruộng 5 công (`plotCount` = 1): các khóa `…PerPlot`, `costPerApp`, `adjustCost`, `laborCost`, `baseYieldKg` là số cho **cả ruộng** (bằng 5 lần số của một công cũ); sức lực giữ như một công.
+
 ## economy.json
 
 ```json
 {
-  "plotCount": 5,
-  "plotAreaM2": 1000,
+  "plotCount": 1,
+  "plotAreaM2": 5000,
   "startCash": 3000000,
   "familyLoan": { "amount": 5000000, "dueDay": 364, "latePenaltyUyTin": 20 },
   "rentPerYear": 10000000,
@@ -63,8 +65,8 @@ Dùng lịch dương không có năm nhuận để suy ra tháng từ `day`.
     "name": "Giống A – cực ngắn ngày",
     "note": "Giá trị tạm; thay bằng giống thật sau khi kiểm chứng",
     "baseDurationDays": 90,
-    "seedCostPerPlot": 250000,
-    "baseYieldKg": { "DX": 800, "HT": 680, "TD": 620 },
+    "seedCostPerPlot": 1250000,
+    "baseYieldKg": { "DX": 4000, "HT": 3400, "TD": 3100 },
     "priceMultiplier": 0.92,
     "pestSusceptibility": { "brown_planthopper": 1.0, "rice_blast": 0.8 },
     "lodgingSusceptibility": 0.9
@@ -74,8 +76,8 @@ Dùng lịch dương không có năm nhuận để suy ra tháng từ `day`.
     "name": "Giống B – ngắn ngày chất lượng cao",
     "note": "Giá trị tạm; thay bằng giống thật sau khi kiểm chứng",
     "baseDurationDays": 102,
-    "seedCostPerPlot": 350000,
-    "baseYieldKg": { "DX": 780, "HT": 640, "TD": 580 },
+    "seedCostPerPlot": 1750000,
+    "baseYieldKg": { "DX": 3900, "HT": 3200, "TD": 2900 },
     "priceMultiplier": 1.15,
     "pestSusceptibility": { "brown_planthopper": 1.1, "rice_blast": 1.3 },
     "lodgingSusceptibility": 1.2
@@ -104,26 +106,26 @@ Dùng lịch dương không có năm nhuận để suy ra tháng từ `day`.
   ],
   "water": {
     "start": 55, "min": 30, "max": 80,
-    "adjustTarget": 55, "adjustCost": 50000, "adjustEnergy": 10,
+    "adjustTarget": 55, "adjustCost": 250000, "adjustEnergy": 10,
     "deltaByWeather": { "sunny": -5, "cloudy": -2, "rain": 4, "heavy_rain": 9, "storm": 15 },
     "stressHealthPerDay": 0.01,
     "stressGrowthFactor": 0.7
   },
-  "landPrep": { "costPerPlot": 400000, "energy": 15 },
+  "landPrep": { "costPerPlot": 2000000, "energy": 15 },
   "sowing": {
     "broadcast":  { "seedMultiplier": 1.5, "laborCost": 0,      "energy": 15, "yieldFactor": 1.0,  "lodgingRisk": 1.0 },
-    "transplant": { "seedMultiplier": 1.0, "laborCost": 400000, "energy": 10, "yieldFactor": 1.05, "lodgingRisk": 0.5 }
+    "transplant": { "seedMultiplier": 1.0, "laborCost": 2000000, "energy": 10, "yieldFactor": 1.05, "lodgingRisk": 0.5 }
   },
   "fertilizer": {
-    "costPerApp": 350000,
+    "costPerApp": 1750000,
     "energy": 15,
     "recommendedStages": ["tillering", "panicle"],
     "nutrientFactorByCorrectApps": { "0": 0.7, "1": 0.85, "2": 1.0 },
     "offStageEfficiency": 0.3
   },
-  "spray": { "costPerApp": 300000, "energy": 20 },
+  "spray": { "costPerApp": 1500000, "energy": 20 },
   "harvest": {
-    "machineCostPerPlot": 300000,
+    "machineCostPerPlot": 1500000,
     "handEnergyPerPlot": 45,
     "freshRiceLossPerDay": 0.02,
     "maxWaitDays": 3

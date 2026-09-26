@@ -1,6 +1,6 @@
 import { PUMP_SHED } from "./layout";
 
-/** Pump shed around (900–1010, 380–490). Decoration for now (later: water control). */
+/** Pump shed around (945–1055, 468–578), below the field, left of the palm. Decoration for now (later: water control). */
 export function PumpShed() {
   return (
     <g transform={`translate(${PUMP_SHED.x} ${PUMP_SHED.y})`}>

@@ -47,7 +47,7 @@ Sự kiện **luôn dừng** tua: bão, lũ, chủ nợ đến nhà, tới hạn
 
 ## 4. Ruộng và cây lúa
 
-5 thửa, mỗi thửa 1 công (1.000 m²). Mỗi thửa có trạng thái:
+Một ruộng 5 công (5.000 m², `plotCount` = 1): mọi thao tác làm trên cả ruộng (quyết định C1, mục 14). Trong code và data ruộng vẫn là một "thửa" (`plots[0]`); core chạy được với nhiều thửa, khi đó các luật giữa thửa (lây lan, thửa kề) mới có tác dụng. Ruộng có trạng thái:
 
 - `status`: `empty | growing | harvestable | harvested`
 - `variety`, `sowingMethod` (`broadcast` = sạ, `transplant` = cấy), `sowDay`
@@ -91,7 +91,7 @@ Hai loại: `brown_planthopper` (rầy nâu), `rice_blast` (đạo ôn). Với m
 
 1. Nếu mật độ = 0: có xác suất phát sinh `spawnChance × hệ số cảnh báo vùng`.
 2. Nếu mật độ > 0: `density += density × growthRate × weatherFactor × varietySusceptibility × stageFactor × preventiveFactor`, giới hạn 1.
-3. Lây sang thửa kề nếu mật độ > `spreadThreshold` (xác suất `spreadChance`).
+3. Lây sang thửa kề nếu mật độ > `spreadThreshold` (xác suất `spreadChance`). Chỉ có tác dụng khi `plotCount` > 1; với một ruộng thì không có bước này.
 4. Gây hại: nếu mật độ > `damageThreshold`, `health -= damagePerDay × density`.
 
 **Dấu hiệu:** chỉ hiện khi người chơi ra đồng VÀ mật độ ≥ `visibleThreshold`. Dấu hiệu là chữ mô tả theo mức (nhẹ, vừa, nặng), không hiện con số.
@@ -236,3 +236,4 @@ Các điểm spec còn mơ hồ đã được chốt như dưới đây. Nếu m
 - A14: Một vụ (để tính sổ) = các thửa có tháng xuống giống cùng thuộc một vụ. Chi phí gắn thửa tính theo thửa; sinh hoạt phí và lãi tính theo khoảng ngày từ lần xuống giống đầu đến lần bán cuối của vụ (có thể đếm trùng khi hai vụ chồng nhau, màn tính sổ ghi rõ).
 - B17: GDD mục 11 (prototype 1 thửa, 3 nguồn vay) bị thay bằng spec này.
 - B18: Ngưỡng cụ thể trong chính sách bot đặt ở M1.15 và ghi vào nhật ký.
+- C1 (26/09/2026, người dùng chọn): Gộp 5 thửa thành **một ruộng 5 công**. Mọi số tiền và năng suất tính theo diện tích nhân 5 (làm đất, giống, công cấy, phân, thuốc, chỉnh nước, máy gặt, `baseYieldKg`); **sức lực mỗi thao tác giữ nguyên** như làm một thửa cũ. Xác suất phát sinh sâu bệnh mỗi đêm **giữ nguyên** (0,004 / 0,003) cho cả ruộng, nên ít ổ dịch hơn nhưng mỗi ổ ăn cả ruộng. Hệ quả: tiền đầu game (3 tr) không đủ xuống giống bằng tiền mặt (ít nhất 3,875 tr), vụ đầu phải mua chịu phần giống. Các quyết định nói "từng thửa" (B9, B11, B12, A10, A11, A14) áp dụng cho ruộng như một thửa. Kết quả mô phỏng: `docs/BALANCE_LOG.md` lần 4.

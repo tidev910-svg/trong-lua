@@ -141,6 +141,16 @@ describe("loan shark (decision A7)", () => {
     expect(rolled.uyTin).toBe(50);
   });
 
+  it("roll over with this term's interest already repaid: no zero repayment row (a -0 does not survive JSON)", () => {
+    const s = takeLoanShark(start(), 1_000_000, data);
+    const id = shark(s)[0]?.id ?? "";
+    const paidInterest = repayLoan(s, id, 100_000, data);
+    const rolled = rollOverLoan(paidInterest, id, data);
+    expect(rolled.cash).toBe(paidInterest.cash);
+    expect(rolled.ledger.slice(paidInterest.ledger.length).map((e) => e.category)).toEqual(["interest"]);
+    expect(JSON.parse(JSON.stringify(rolled))).toEqual(rolled);
+  });
+
   it("late: +latePenaltyRate once, uy tín penalty once, then ×(1 + interest) every 30 days", () => {
     let s = takeLoanShark(start(), 1_000_000, data); // due day 30, owe 1.100.000
     s = checkLoans({ ...s, day: 29 }, data);
@@ -193,14 +203,14 @@ describe("advance sale (spec §8, decision B12)", () => {
   const growing = () => ({ ...stateWithCrops({ 1: crop({ sowDay: 5, method: "transplant" }) }), day: 40 });
 
   it("expected kg = baseYield × yieldFactor × expectedYieldFactor", () => {
-    expect(expectedYieldKg("variety_a", "transplant", 5, data)).toBeCloseTo(800 * 1.05 * 0.9, 9);
-    expect(expectedYieldKg("variety_b", "broadcast", 100, data)).toBeCloseTo(640 * 1.0 * 0.9, 9);
+    expect(expectedYieldKg("variety_a", "transplant", 5, data)).toBeCloseTo(4000 * 1.05 * 0.9, 9);
+    expect(expectedYieldKg("variety_b", "broadcast", 100, data)).toBeCloseTo(3200 * 1.0 * 0.9, 9);
   });
 
   it("cash = expected kg × ratio × variety market price × priceFactor; the kg are owed at harvest", () => {
     const s0 = growing();
     const s = sellAdvance(s0, 1, 0.5, data);
-    const kg = 800 * 1.05 * 0.9 * 0.5;
+    const kg = 4000 * 1.05 * 0.9 * 0.5;
     const price = varietyMarketPrice(s0, "variety_a", data) * 0.7;
     expect(s.cash).toBe(3_000_000 + Math.round(kg * price));
     expect(s.advanceContracts).toHaveLength(1);

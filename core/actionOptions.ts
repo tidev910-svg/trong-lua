@@ -1,6 +1,7 @@
 import type { GameData, SowingMethod } from "../data/schemas";
 import { actionRefusal } from "./actions";
 import type { PlayerView } from "./playerView";
+import { plotSuffix } from "./names";
 import { MAX_SKIP_DAYS } from "./skip";
 import { expectedSchedule } from "./systems/growth";
 import { lotValue } from "./systems/harvest";
@@ -342,7 +343,7 @@ function ledgerOptions(state: GameState, data: GameData): ActionOption[] {
     out.push(
       option(state, data, {
         id: `advance:${plot.id}`,
-        label: `Bán lúa non thửa ${plot.id + 1}`,
+        label: `Bán lúa non${plotSuffix(plot.id, state.plots.length)}`,
         action: { type: "sellAdvance", plotId: plot.id, ratio: maxPercent / 100 },
         range: { field: "percent", min: 1, max: maxPercent },
       }),
@@ -372,7 +373,7 @@ function traderOptions(state: GameState, data: GameData): ActionOption[] {
   return state.harvestLots.map((lot) =>
     option(state, data, {
       id: `sell:${lot.id}`,
-      label: `Bán lúa thửa ${lot.plotId + 1}`,
+      label: `Bán lúa${plotSuffix(lot.plotId, state.plots.length)}`,
       action: { type: "sellLot", lotId: lot.id },
       gain: { cash: lotValue(state, lot, data), energy: 0 },
     }),

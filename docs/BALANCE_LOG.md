@@ -126,3 +126,34 @@ Kết quả khớp đúng từng số với thí nghiệm ở lần 1 (xác nh�
 | Hành động bị từ chối / lượt | 0,0 | 0,0 | 0,0 |
 
 **Nhận xét:** thay đổi rất nhỏ (±1 điểm), nhận định của lần 2 giữ nguyên: `safe` đạt mục tiêu, `average` cao hơn khoảng mục tiêu 3 điểm, `risky` chưa đạt "phương sai lớn". Bộ mô phỏng chạy chậm hơn khoảng 1,7 lần vì `getPlayerView` giờ tính sẵn toàn bộ lựa chọn (1.000 lượt `average` ≈ 4 phút trên máy hiện tại). Ba replay mẫu có chuỗi hành động không đổi; chỉ số dòng log tăng do có event trình bày.
+
+## Lần 4 – 26/09/2026 (quyết định C1: gộp 5 thửa thành một ruộng 5 công)
+
+**Đổi số trong `data/` (người dùng chọn, PROTOTYPE_SPEC §14 C1):** `plotCount` 5 → 1, `plotAreaM2` 1.000 → 5.000; mọi số tiền và năng suất tính theo diện tích nhân 5 (làm đất 2 tr, giống 1,25 / 1,75 tr, công cấy 2 tr, phân 1,75 tr, thuốc 1,5 tr, chỉnh nước 250.000 đ, máy gặt 1,5 tr, `baseYieldKg` ×5). Sức lực mỗi thao tác giữ nguyên. Xác suất phát sinh sâu bệnh giữ nguyên cho cả ruộng.
+
+**Chọn xác suất sâu bệnh (thử trước trên seed 1–300):**
+
+| Phương án | safe | average | risky |
+|---|---|---|---|
+| 5 thửa (trước C1) | 85% | 73% | 30% |
+| **(a) 1 ruộng, giữ 0,004 / 0,003 – đã chọn** | 87% | 84% | 54% |
+| (c) 1 ruộng, nhân đôi 0,008 / 0,006 | 75% | 64% | 23% |
+| (b) 1 ruộng, quy đổi 5 công 0,0198 / 0,0149 | 47% | 23% | 1% |
+
+**Kết quả `npm run sim -- --bot all --runs 1000` (seed 1–1000), so với lần 3:**
+
+| | safe | average | risky |
+|---|---|---|---|
+| **Sống sót hết năm** | **88%** (85%) | **84%** (73%) | **56%** (27%) |
+| Tài sản ròng p10 / p50 / p90 | −23,7 / 32,4 / 44,8 tr | −20,4 / 23,9 / 45,4 tr | −28,2 / 4,8 / 37,0 tr |
+| Độ lệch chuẩn | 21,5 tr | 22,4 tr | 24,7 tr |
+| Phá sản / mất ruộng cuối năm | 124 / 0 | 161 / 0 | 435 / 0 |
+| Vụ tính sổ (TB) | 1,84 | 2,66 | 2,20 |
+| Bậc nợ cao nhất = 0 | 79% | 61% | 7% |
+
+**Nhận xét:**
+- Dễ hơn rõ rệt: ít lần xét phát sinh sâu bệnh hơn (1 thửa thay vì 5) và không còn lây lan giữa thửa. `safe` vẫn trong mục tiêu 80–90%; `average` cao hơn khoảng mục tiêu 60–70% 14 điểm.
+- Phân tán lớn hơn (p10 thấp hơn, p90 cao hơn, độ lệch chuẩn tăng ~5 tr): một ruộng là "được ăn cả, ngã về không". `risky` giờ có phương sai lớn nhất và trung vị dương, gần với ý đồ "liều có thể đáng" hơn lần 3.
+- Vụ đầu bắt buộc mua chịu giống (tiền đầu game 3 tr < 3,875 tr).
+- Replay mẫu tạo lại: safe seed 13 (sống, 2 vụ, 26,2 tr), average seed 5 (sống, 3 vụ, 3,2 tr), risky seed 1 (sống, 3 vụ, 17,6 tr).
+- Nếu playtest thấy quá dễ: thử phương án (c) (nhân đôi xác suất phát sinh), sim cho 75 / 64 / 23%.

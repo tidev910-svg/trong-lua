@@ -57,7 +57,7 @@ function energyRefusal(state: GameState, energy: number): string | null {
 }
 
 function growingPlotRefusal(plot: PlotState | undefined): string | null {
-  return plot && plot.status === "growing" && plot.crop !== null ? null : "Thửa này không có lúa đang trồng.";
+  return plot && plot.status === "growing" && plot.crop !== null ? null : "Ruộng không có lúa đang trồng.";
 }
 
 function phaseRefusal(state: GameState, action: Action): string | null {
@@ -86,7 +86,7 @@ export function actionRefusal(state: GameState, action: Action, data: GameData):
 
     case "prepareAndSow": {
       const plot = plotById(state, action.plotId);
-      if (!plot || (plot.status !== "empty" && plot.status !== "harvested")) return "Thửa này chưa trống.";
+      if (!plot || (plot.status !== "empty" && plot.status !== "harvested")) return "Ruộng chưa trống.";
       if (!state.landAccess) return "Đã mất ruộng.";
       if (!data.varieties.some((v) => v.id === action.variety)) return "Không có giống này.";
       const cost = sowingCost(action.variety, action.method, data);
@@ -123,7 +123,7 @@ export function actionRefusal(state: GameState, action: Action, data: GameData):
 
     case "harvest": {
       const plot = plotById(state, action.plotId);
-      if (!plot || plot.status !== "harvestable") return "Lúa thửa này chưa gặt được.";
+      if (!plot || plot.status !== "harvestable") return "Lúa chưa gặt được.";
       if (action.method === "hand") return energyRefusal(state, cropData.harvest.handEnergyPerPlot);
       return paymentRefusal(state, cropData.harvest.machineCostPerPlot, "cash", data);
     }

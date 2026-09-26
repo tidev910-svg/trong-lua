@@ -91,11 +91,13 @@ describe("day phases (spec §2, decision B1)", () => {
 });
 
 describe("field actions", () => {
-  const inField = (s: GameState = createInitialState(7, data)) => act(s, field);
+  // Sowing the whole field costs more than the starting cash: these tests start richer.
+  const rich = (s: GameState) => ({ ...s, cash: 10_000_000 });
+  const inField = (s: GameState = rich(createInitialState(7, data))) => act(s, field);
 
   it("sowing with cash: land prep + seed + labor, energy, plot growing and observed", () => {
     const s = act(inField(), sow(0));
-    expect(s.cash).toBe(3_000_000 - 775_000);
+    expect(s.cash).toBe(10_000_000 - 3_875_000);
     expect(s.energy).toBe(95 - 30);
     expect(s.plots[0]).toMatchObject({ status: "growing", known: { stage: "germination", lastVisitDay: 0 } });
     expect(s.plots[0]?.crop?.seasonKey).toBe("DX-1");
@@ -103,23 +105,23 @@ describe("field actions", () => {
 
   it("sowing on store credit: only the seed goes on credit, at the markup", () => {
     const s = act(inField(), sow(0, "store_credit"));
-    expect(s.cash).toBe(3_000_000 - 400_000);
-    expect(s.loans.find((l) => l.kind === "store_credit")?.balance).toBe(Math.round(375_000 * 1.15));
+    expect(s.cash).toBe(10_000_000 - 2_000_000);
+    expect(s.loans.find((l) => l.kind === "store_credit")?.balance).toBe(Math.round(1_875_000 * 1.15));
   });
 
   it("cannot sow a planted plot, without enough energy, or without cash", () => {
     const s = act(inField(), sow(0));
     expect(refused(s, sow(0))).toMatch(/chưa trống/);
-    expect(refused({ ...s, energy: 29 }, sow(1))).toMatch(/sức lực/);
-    expect(refused({ ...s, cash: 100 }, sow(1))).toMatch(/tiền mặt/);
+    expect(refused({ ...inField(), energy: 29 }, sow(0))).toMatch(/sức lực/);
+    expect(refused({ ...inField(), cash: 100 }, sow(0))).toMatch(/tiền mặt/);
   });
 
   it("fertilize, spray and adjust water cost money and energy", () => {
-    let s = inField(stateWithCrops({ 0: crop({ growth: 10, water: 0 }) }));
+    let s = inField(rich(stateWithCrops({ 0: crop({ growth: 10, water: 0 }) })));
     s = act(s, { type: "fertilize", plotId: 0, payWith: "cash" });
     s = act(s, { type: "spray", plotId: 0, pest: "rice_blast", mode: "preventive", payWith: "cash" });
     s = act(s, { type: "adjustWater", plotId: 0 });
-    expect(s.cash).toBe(3_000_000 - 350_000 - 300_000 - 50_000);
+    expect(s.cash).toBe(10_000_000 - 1_750_000 - 1_500_000 - 250_000);
     expect(s.energy).toBe(95 - 15 - 20 - 10);
     expect(s.plots[0]?.crop?.fertilizerApps[0]?.correct).toBe(true);
     expect(s.plots[0]?.crop?.preventiveUntil.rice_blast).toBe(6);
@@ -132,7 +134,7 @@ describe("field actions", () => {
 describe("harvest → sale → settlement (spec §7, §11)", () => {
   /** A DX-1 crop sown with cash on day 2, harvestable on day 101, and the state on day 101 in the field. */
   function readyToHarvest(): GameState {
-    let s = act(createInitialState(8, data), field);
+    let s = act({ ...createInitialState(8, data), cash: 10_000_000 }, field);
     s = act(s, sow(0));
     const plots = s.plots.map((p) =>
       p.id === 0 && p.crop ? { ...p, status: "harvestable" as const, crop: { ...p.crop, growth: 90, harvestableDay: 101 } } : p,
@@ -151,11 +153,11 @@ describe("harvest → sale → settlement (spec §7, §11)", () => {
 
     const settlement = computeSettlement(s, "DX-1");
     expect(settlement.plots).toHaveLength(1);
-    expect(settlement.supplies).toBe(375_000);
-    expect(settlement.farmWork).toBe(400_000 + 300_000);
+    expect(settlement.supplies).toBe(1_875_000);
+    expect(settlement.farmWork).toBe(2_000_000 + 1_500_000);
     expect(settlement.revenue).toBe(settlement.plots[0]?.riceSales);
     expect(settlement.livingCost).toBe(0); // ledger rows in this test are all on day 0 and 101
-    expect(settlement.profit).toBe(settlement.revenue - 375_000 - 700_000);
+    expect(settlement.profit).toBe(settlement.revenue - 1_875_000 - 3_500_000);
 
     s = act(s, { type: "acknowledge" });
     expect(s.phase).toEqual({ kind: "halfDay", slot: "morning", activity: "field" });
@@ -251,7 +253,6 @@ describe("determinism (same seed + same actions ⇒ same state)", () => {
     let s = createInitialState(seed, data);
     s = act(s, field);
     s = act(s, sow(0, "store_credit"));
-    s = act(s, sow(1));
     s = act(s, { type: "endHalfDay" });
     s = act(s, rest);
     for (let i = 0; i < 1000 && s.phase.kind !== "gameOver"; i++) {

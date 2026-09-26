@@ -44,14 +44,14 @@ Màu trong cảnh (cỏ `#79a64a`, đường `#c9a56b`, kênh `#4e9c9a`, bờ ru
 | Bảng gỗ "Cần người làm / Hôm nay nghỉ" | Tâm (700, 42) trên đường | Đi làm thuê |
 | Nhà lá | x 58–282, y 170–348 | Nghỉ ngơi |
 | Ghế + quyển sổ | Quanh (255, 375) | Mở sổ tiền nợ |
-| 5 thửa ruộng 240×170 | (370,170) (625,170) (880,170) (370,365) (625,365) | Ra đồng / xem thửa |
-| Chòi máy bơm | Quanh (900–1010, 380–490) | Trang trí (sau này: chỉnh nước) |
+| Ruộng 5 công 750×290 (quyết định C1) | (370,170) | Ra đồng / xem ruộng |
+| Chòi máy bơm | Quanh (945–1055, 468–578), dưới ruộng, bên trái cây dừa | Trang trí (sau này: chỉnh nước) |
 | Kênh + xuồng thương lái | Dải cong y ≈ 580–700, xuồng quanh (980, 625) | Xuồng: "Thương lái: bán lúa", chỉ bấm được khi có lô lúa chờ bán; mở vở Thu hoạch và bán |
 | Nhân vật đội nón lá | Nhà (215, 392) | Di chuyển theo hoạt động |
 
 Lớp phủ theo thứ tự: nền → đường, kênh → cây → nhà, sổ, bảng, chòi → ruộng → nhân vật → lớp màu thời gian → lớp đêm (sao, đom đóm, cửa sổ sáng đèn) → mưa (div phủ ngoài SVG).
 
-**Thửa ruộng** gồm: bờ, bùn, lớp nước (độ đậm giảm dần theo giai đoạn), pattern cây lúa theo giai đoạn (`empty`, `germination`, `tillering`, `panicle`, `flowering`, `ripening`, `harvestable`), lớp mờ khi cũ ≥ 2 ngày, cọc tên "Thửa N" (thêm ", thấy N ngày trước" khi cũ), dấu "!" đỏ khi `known` có dấu hiệu. Khi mất ruộng (`landAccess = false`), các thửa có cọc "Đã trả ruộng" và không ra đồng được.
+**Thửa ruộng** gồm: bờ, bùn, lớp nước (độ đậm giảm dần theo giai đoạn), pattern cây lúa theo giai đoạn (`empty`, `germination`, `tillering`, `panicle`, `flowering`, `ripening`, `harvestable`), lớp mờ khi cũ ≥ 2 ngày, cọc tên "Ruộng" ("Thửa N" khi core chạy nhiều thửa; thêm ", thấy N ngày trước" khi cũ), dấu "!" đỏ khi `known` có dấu hiệu. Khi mất ruộng (`landAccess = false`), các thửa có cọc "Đã trả ruộng" và không ra đồng được.
 
 ## HUD
 

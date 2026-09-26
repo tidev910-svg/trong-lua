@@ -46,8 +46,10 @@ describe("briefing wording", () => {
     s = { ...s, day: 23, phase: { kind: "briefing" } };
     const v = getPlayerView(s, data);
     expect(lastVisitLine(v)).toBe("Lần cuối ra đồng: 3 ngày trước.");
-    expect(plotLine(v.plots[0]!)).toEqual({ text: "Thửa 1: đẻ nhánh, nước vừa đủ", signs: true });
-    expect(plotLine(v.plots[1]!)).toEqual({ text: "Thửa 2: ruộng trống", signs: false });
+    // The game has one field: no name. With several plots (the core supports it) each line is named.
+    expect(plotLine(v.plots[0]!)).toEqual({ text: "Đẻ nhánh, nước vừa đủ", signs: true });
+    expect(plotLine(v.plots[0]!, 5)).toEqual({ text: "Thửa 1: đẻ nhánh, nước vừa đủ", signs: true });
+    expect(plotLine(v.plots[1]!, 5)).toEqual({ text: "Thửa 2: ruộng trống", signs: false });
   });
 
   it("money: cash and the nearest due loan", () => {

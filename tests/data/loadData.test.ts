@@ -51,7 +51,7 @@ function expectIssue(raw: RawGameData, file: string, path: string, messagePart: 
 describe("loadData", () => {
   it("loads the bundled data with values from DATA_SPEC", () => {
     const data = loadData();
-    expect(data.economy.plotCount).toBe(5);
+    expect(data.economy.plotCount).toBe(1); // one field of 5 công (PROTOTYPE_SPEC §14)
     expect(data.economy.startCash).toBe(3_000_000);
     expect(data.calendar.tetDay).toBe(80);
     expect(data.varieties.map((v) => v.id)).toEqual(["variety_a", "variety_b"]);

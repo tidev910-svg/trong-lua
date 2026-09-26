@@ -1,6 +1,6 @@
 {
-  "plotCount": 5,
-  "plotAreaM2": 1000,
+  "plotCount": 1,
+  "plotAreaM2": 5000,
   "startCash": 3000000,
   "familyLoan": { "amount": 5000000, "dueDay": 364, "latePenaltyUyTin": 20 },
   "rentPerYear": 10000000,

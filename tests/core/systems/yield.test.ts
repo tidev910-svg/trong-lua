@@ -17,20 +17,20 @@ const AT = { germination: 1, tillering: 10, panicle: 35, flowering: 57, ripening
 describe("sowing", () => {
   it("broadcast variety A: land prep + 1.5× seed, no labor", () => {
     expect(sowingCost("variety_a", "broadcast", data)).toEqual({
-      seed: 375_000,
-      landPrep: 400_000,
+      seed: 1_875_000,
+      landPrep: 2_000_000,
       labor: 0,
-      total: 775_000,
+      total: 3_875_000,
       energy: 30,
     });
   });
 
   it("transplant variety B: land prep + 1× seed + labor", () => {
     expect(sowingCost("variety_b", "transplant", data)).toEqual({
-      seed: 350_000,
-      landPrep: 400_000,
-      labor: 400_000,
-      total: 1_150_000,
+      seed: 1_750_000,
+      landPrep: 2_000_000,
+      labor: 2_000_000,
+      total: 5_750_000,
       energy: 25,
     });
   });
@@ -117,14 +117,14 @@ describe("harvest yield", () => {
         { day: 40, stage: "panicle", correct: true },
       ],
     });
-    expect(harvestYieldKg(c, 100, data)).toBeCloseTo(800 * 0.9 * 1.0 * 1.05, 9);
+    expect(harvestYieldKg(c, 100, data)).toBeCloseTo(4000 * 0.9 * 1.0 * 1.05, 9);
   });
 
   it("the season comes from the sowing month, not the harvest month", () => {
-    expect(harvestYieldKg(ripe({ sowDay: 2 }), 100, data)).toBeCloseTo(800 * 0.7, 9); // Nov → DX
-    expect(harvestYieldKg(ripe({ sowDay: 80 }), 100, data)).toBeCloseTo(680 * 0.7, 9); // Feb → HT
-    expect(harvestYieldKg(ripe({ sowDay: 228 }), 100, data)).toBeCloseTo(620 * 0.7, 9); // Jul → TD
-    expect(harvestYieldKg(ripe({ sowDay: 228, varietyId: "variety_b" }), 100, data)).toBeCloseTo(580 * 0.7, 9);
+    expect(harvestYieldKg(ripe({ sowDay: 2 }), 100, data)).toBeCloseTo(4000 * 0.7, 9); // Nov → DX
+    expect(harvestYieldKg(ripe({ sowDay: 80 }), 100, data)).toBeCloseTo(3400 * 0.7, 9); // Feb → HT
+    expect(harvestYieldKg(ripe({ sowDay: 228 }), 100, data)).toBeCloseTo(3100 * 0.7, 9); // Jul → TD
+    expect(harvestYieldKg(ripe({ sowDay: 228, varietyId: "variety_b" }), 100, data)).toBeCloseTo(2900 * 0.7, 9);
   });
 
   it("the harvest window has no loss; after it 3% per day, capped at 100%", () => {
@@ -135,7 +135,7 @@ describe("harvest yield", () => {
     expect(overdueLoss(c, 107, data)).toBeCloseTo(0.03, 12);
     expect(overdueLoss(c, 116, data)).toBeCloseTo(0.3, 12);
     expect(overdueLoss(c, 200, data)).toBe(1);
-    expect(harvestYieldKg(c, 107, data)).toBeCloseTo(800 * 0.7 * 0.97, 9);
+    expect(harvestYieldKg(c, 107, data)).toBeCloseTo(4000 * 0.7 * 0.97, 9);
     expect(harvestYieldKg(c, 200, data)).toBe(0);
   });
 

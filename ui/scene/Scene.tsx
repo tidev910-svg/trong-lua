@@ -54,7 +54,7 @@ export function Scene({ view, farmerAt = FARMER_HOME, overlay, onPlot, onHouse, 
       <PumpShed />
       <g className="plots">
         {view.plots.map((plot) => (
-          <Plot key={plot.id} plot={plot} inField={inField} landAccess={view.landAccess} onActivate={() => onPlot(plot.id)} onHover={onHover} />
+          <Plot key={plot.id} plot={plot} plotCount={view.plots.length} inField={inField} landAccess={view.landAccess} onActivate={() => onPlot(plot.id)} onHover={onHover} />
         ))}
       </g>
       <Farmer at={farmerAt} />

@@ -47,7 +47,8 @@ export function TraderBook({ view, data, onChoose, onClose }: Props) {
           <div key={lot.id} className="loan">
             <div className="ledger-line">
               <span>
-                Thửa {lot.plotId + 1}, {shortVarietyName(lot.varietyId, data)}: {kg(lot.kg)}
+                {view.plots.length > 1 && `Thửa ${lot.plotId + 1}, `}
+                {shortVarietyName(lot.varietyId, data)}: {kg(lot.kg)}
               </span>
               <span>{money(lot.valueNow)}</span>
             </div>

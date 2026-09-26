@@ -1,5 +1,6 @@
 import type { PlotView } from "../../core/playerView";
 import type { CropStage } from "../../core/types";
+import { plotName } from "../../core/names";
 import { STAGE } from "../format";
 import { Interactive, type HoverHandler } from "./Interactive";
 import { plotRect } from "./layout";
@@ -27,8 +28,8 @@ export function isStale(plot: PlotView, inField: boolean): boolean {
   return !inField && plot.staleDays !== null && plot.staleDays >= STALE_DAYS;
 }
 
-export function stakeLabel(plot: PlotView, inField: boolean, landAccess: boolean): string {
-  const name = `Thửa ${plot.id + 1}`;
+export function stakeLabel(plot: PlotView, inField: boolean, landAccess: boolean, plotCount = 1): string {
+  const name = plotName(plot.id, plotCount);
   if (!landAccess) return `${name}: đã trả ruộng`;
   return isStale(plot, inField) ? `${name}, thấy ${plot.staleDays} ngày trước` : name;
 }
@@ -38,11 +39,11 @@ export function hasSigns(plot: PlotView): boolean {
 }
 
 /** Hover / screen-reader label: what clicking does, plus what is known. */
-export function plotLabel(plot: PlotView, inField: boolean, landAccess: boolean): string {
+export function plotLabel(plot: PlotView, inField: boolean, landAccess: boolean, plotCount = 1): string {
   const stage = drawnStage(plot);
   const what = stage === "empty" ? "ruộng trống" : STAGE[stage].toLowerCase();
   const verb = !landAccess ? "đã trả ruộng" : inField ? "xem và làm việc" : "ra đồng";
-  return `Thửa ${plot.id + 1} (${what}): ${verb}`;
+  return `${plotName(plot.id, plotCount)} (${what}): ${verb}`;
 }
 
 /** Stake sign width from its text (SVG text cannot be measured when rendering on the server). */
@@ -52,6 +53,7 @@ function stakeWidth(label: string): number {
 
 interface Props {
   plot: PlotView;
+  plotCount: number;
   inField: boolean;
   landAccess: boolean;
   onActivate: () => void;
@@ -59,19 +61,19 @@ interface Props {
 }
 
 /**
- * One rice plot, 240×170, drawn from what the player knows (UI_DIRECTION "Thửa ruộng"):
+ * The rice field (or one plot when the core runs with several), drawn from what the player knows (UI_DIRECTION "Thửa ruộng"):
  * bund, mud, water, rice pattern by stage, faded when the knowledge is old, stake with the name,
  * red "!" when signs were seen.
  */
-export function Plot({ plot, inField, landAccess, onActivate, onHover }: Props) {
-  const { x, y, width, height } = plotRect(plot.id);
+export function Plot({ plot, plotCount, inField, landAccess, onActivate, onHover }: Props) {
+  const { x, y, width, height } = plotRect(plot.id, plotCount);
   const stage = drawnStage(plot);
   const stale = isStale(plot, inField);
-  const stake = stakeLabel(plot, inField, landAccess);
+  const stake = stakeLabel(plot, inField, landAccess, plotCount);
   const inner = { x: x + 9, y: y + 9, width: width - 18, height: height - 18 };
   return (
     <Interactive
-      label={plotLabel(plot, inField, landAccess)}
+      label={plotLabel(plot, inField, landAccess, plotCount)}
       onActivate={onActivate}
       onHover={onHover}
       highlight={<rect x={x - 10} y={y - 10} width={width + 20} height={height + 20} rx={12} fill="#fff4c2" opacity={0.5} />}

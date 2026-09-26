@@ -43,7 +43,7 @@ describe("ActionButton", () => {
   });
 
   it("locked for lack of cash: faded, red reason, dashed store-credit button with its price", () => {
-    const opt = sowOptions(500_000)[0]!;
+    const opt = sowOptions(2_500_000)[0]!; // land prep in cash, not the seed
     expect(opt.enabled).toBe(false);
     const html = renderToString(<ActionButton option={opt} onChoose={noop} />);
     expect(html).toMatch(/class="act" disabled=""/);

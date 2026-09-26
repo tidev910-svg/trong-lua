@@ -10,15 +10,16 @@ describe("TraderBook", () => {
   it("today's price per variety, each lot with its value and a sell button, how waiting works", () => {
     const s: GameState = {
       ...createInitialState(1, data),
-      harvestLots: [{ id: "lot-3", plotId: 3, varietyId: "variety_a", seasonKey: "DX-1", kg: 467, harvestDay: 0, nightsWaited: 1 }],
+      harvestLots: [{ id: "lot-3", plotId: 0, varietyId: "variety_a", seasonKey: "DX-1", kg: 467, harvestDay: 0, nightsWaited: 1 }],
     };
     const view = getPlayerView(s, data);
     const html = renderToString(<TraderBook view={view} data={data} onChoose={() => {}} onClose={() => {}} />).replaceAll("<!-- -->", "");
     expect(html).toContain("Giống A:");
     expect(html).toContain("Giống B:");
-    expect(html).toContain("Thửa 4, Giống A: 467 kg");
+    expect(html).toContain("Giống A: 467 kg");
+    expect(html).not.toContain("Thửa");
     expect(html).toContain("Đã chờ 1 đêm");
-    expect(html).toContain("Bán lúa thửa 4");
+    expect(html).toContain("Bán lúa<");
     expect(html).toContain(waitingText(data));
     expect(waitingText(data)).toBe("Lúa tươi để mỗi đêm hao 2%; để quá 3 đêm thì phải bán cho thương lái với giá hôm đó.");
   });
