@@ -5,7 +5,7 @@ import { dateOfDay, daysToTet, seasonKeyOfDay } from "../core/systems/calendar";
 import type { GameData } from "../data/schemas";
 import type { Action, GameEvent } from "../core/types";
 import { DebugPanel } from "./debug/DebugPanel";
-import { money } from "./format";
+import { kg, money } from "./format";
 import { Calendar } from "./hud/Calendar";
 import { HoverTag } from "./hud/HoverTag";
 import { visualPhase, type VisualPhase } from "./hud/labels";
@@ -17,6 +17,7 @@ import { pause } from "./motion";
 import { Briefing } from "./paper/Briefing";
 import { SkipDialog } from "./paper/SkipDialog";
 import { LedgerBook, ledgerDoneText } from "./paper/LedgerBook";
+import { saleText, TraderBook } from "./paper/TraderBook";
 import { PinnedNote, type Box } from "./paper/PinnedNote";
 import { PlotNote } from "./paper/PlotNote";
 import { FARMER_AT_SIGN, FARMER_HOME, plotStandPoint, type Point } from "./scene/layout";
@@ -250,7 +251,7 @@ export function App() {
           onHouse={() => runTarget({ kind: "house" })}
           onSign={() => runTarget({ kind: "workSign" })}
           onLedger={() => !busy && !night && setBook("ledger")}
-          onTrader={() => !busy && setBook("trader")}
+          onTrader={() => !busy && !night && setBook("trader")}
           onHover={onHover}
         />
       </World>
@@ -292,9 +293,15 @@ export function App() {
             data={data}
             plotId={note}
             onChoose={(action, option) => {
-              void run(action).then((ok) => {
-                if (ok && option.credit !== null && action === option.credit.action) say(`Ghi nợ đại lý: ${money(option.credit.debtAdded)}.`);
-              });
+              const out = game.perform(action);
+              if (!out.ok) return say(out.reason);
+              if (option.credit !== null && action === option.credit.action) say(`Ghi nợ đại lý: ${money(option.credit.debtAdded)}.`);
+              if (action.type === "harvest") {
+                const lot = out.view.lots.find((l) => !view.lots.some((o) => o.id === l.id));
+                say(lot ? `Gặt xong thửa ${action.plotId + 1}: ${kg(lot.kg)}. Thương lái đang chờ ở bến.` : `Gặt xong thửa ${action.plotId + 1}.`);
+              }
+              if (out.view.phase.kind === "settlement" || out.view.phase.kind === "gameOver") setNote(null);
+              void play(out.events, view, out.view);
             }}
           />
         </PinnedNote>
@@ -322,6 +329,22 @@ export function App() {
             if (!out.ok) return say(out.reason);
             const done = ledgerDoneText(action, cashBefore, out.view.cash);
             if (done) say(done);
+            void play(out.events, view, out.view);
+          }}
+          onClose={() => setBook(view.phase.kind === "briefing" && !dayBegun ? "briefing" : null)}
+        />
+      )}
+
+      {book === "trader" && (view.phase.kind === "briefing" || view.phase.kind === "halfDay") && (
+        <TraderBook
+          view={view}
+          data={data}
+          onChoose={(action) => {
+            const cashBefore = view.cash;
+            const out = game.perform(action);
+            if (!out.ok) return say(out.reason);
+            say(saleText(out.events, out.view.cash - cashBefore));
+            if (out.view.lots.length === 0) setBook(null);
             void play(out.events, view, out.view);
           }}
           onClose={() => setBook(view.phase.kind === "briefing" && !dayBegun ? "briefing" : null)}
