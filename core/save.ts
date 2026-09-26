@@ -2,7 +2,8 @@ import type { GameData } from "../data/schemas";
 import type { PlaytestMeta } from "./playtest";
 import { applyAction } from "./actions";
 import { createInitialState } from "./init";
-import { STATE_VERSION, type Action, type ActionResult, type GameState } from "./types";
+import { isPublicEvent } from "./playerView";
+import { STATE_VERSION, type Action, type ActionResult, type GameEvent, type GameState } from "./types";
 
 /** Days between snapshots kept in a save (spec §13 "snapshot định kỳ"). */
 export const SNAPSHOT_EVERY_DAYS = 30;
@@ -30,11 +31,13 @@ export function newSession(seed: number, data: GameData): Session {
 
 /**
  * Applies an action and records it if accepted. A snapshot is added when the day crosses a
- * SNAPSHOT_EVERY_DAYS boundary.
+ * SNAPSHOT_EVERY_DAYS boundary. `events` are the public events this action produced, in order
+ * (what the UI animates; decision M2.0-C).
  */
-export function dispatch(session: Session, action: Action, data: GameData): { session: Session; result: ActionResult } {
+export function dispatch(session: Session, action: Action, data: GameData): { session: Session; result: ActionResult; events: GameEvent[] } {
   const result = applyAction(session.state, action, data);
-  if (!result.ok) return { session, result };
+  if (!result.ok) return { session, result, events: [] };
+  const events = result.state.log.slice(session.state.log.length).filter(isPublicEvent);
   const actions = [...session.save.actions, action];
   let snapshots = session.save.snapshots;
   const lastSnapshotDay = snapshots?.at(-1)?.day ?? 0;
@@ -42,7 +45,7 @@ export function dispatch(session: Session, action: Action, data: GameData): { se
     snapshots = [...(snapshots ?? []), { day: result.state.day, actionCount: actions.length, state: result.state }];
   }
   const save: SaveFile = snapshots ? { ...session.save, actions, snapshots } : { ...session.save, actions };
-  return { session: { state: result.state, save }, result };
+  return { session: { state: result.state, save }, result, events };
 }
 
 export class SaveError extends Error {

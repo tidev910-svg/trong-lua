@@ -85,6 +85,7 @@ export function stopReason(before: GameState, now: GameState, stopOn: readonly S
  * "Tua đến khi…" (spec §3, ARCHITECTURE): each day plays the default activity in both half-days
  * (hired work falls back to rest when there is none or energy is short), runs the night, then checks stops.
  * Stops after maxDays, or when the day does not start at the briefing (settlement, game over).
+ * Logs skipDayPassed after each day (the UI flips the calendar on it).
  */
 export function runSkip(
   state: GameState,
@@ -92,17 +93,23 @@ export function runSkip(
   stopOn: readonly StopCondition[],
   maxDays: number,
   data: GameData,
-): { state: GameState; stoppedBy: StopReason; days: number } {
+): { state: GameState; stoppedBy: StopReason; days: number; earned: number } {
   let s = state;
+  let earned = 0;
   for (let dayCount = 1; dayCount <= maxDays; dayCount++) {
     const before = s;
+    let earnedToday = 0;
     for (let half = 0; half < 2; half++) {
       const activity = defaultActivity === "hired_work" && activityRefusal(s, "hired_work", data) === null ? "hired_work" : "rest";
+      const logLength = s.log.length;
       s = startActivity(s, activity, data);
+      for (const e of s.log.slice(logLength)) if (e.kind === "hiredWorkDone") earnedToday += e.wage;
     }
-    if (s.phase.kind !== "briefing") return { state: s, stoppedBy: "phaseChange", days: dayCount };
+    earned += earnedToday;
+    s = { ...s, log: [...s.log, { day: s.day, kind: "skipDayPassed", earned: earnedToday }] };
+    if (s.phase.kind !== "briefing") return { state: s, stoppedBy: "phaseChange", days: dayCount, earned };
     const reason = stopReason(before, s, stopOn, data);
-    if (reason !== null) return { state: s, stoppedBy: reason, days: dayCount };
+    if (reason !== null) return { state: s, stoppedBy: reason, days: dayCount, earned };
   }
-  return { state: s, stoppedBy: "maxDays", days: maxDays };
+  return { state: s, stoppedBy: "maxDays", days: maxDays, earned };
 }

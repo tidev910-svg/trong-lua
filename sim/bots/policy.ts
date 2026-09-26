@@ -1,10 +1,11 @@
 import type { GameData, SeasonId } from "../../data/schemas";
+import { getActionOptions, quoteOption, type ActionOption, type OptionTarget } from "../../core/actionOptions";
 import type { PlayerView, PlotView } from "../../core/playerView";
 import type { SignLevel } from "../../core/systems/pests";
 import { seasonOfSowingDay } from "../../core/systems/calendar";
 import { expectedSchedule } from "../../core/systems/growth";
 import { sowingCost } from "../../core/systems/yield";
-import { ALL_STOP_CONDITIONS, type Action, type PayWith } from "../../core/types";
+import { ALL_STOP_CONDITIONS, type Action } from "../../core/types";
 
 /**
  * A bot policy (DATA_SPEC "Bot"). Concrete thresholds the table leaves open are chosen here (decision B18)
@@ -101,34 +102,42 @@ function wantsField(view: PlayerView, policy: Policy, data: GameData): boolean {
   return false;
 }
 
-function payWithFor(amount: number, view: PlayerView, policy: Policy): PayWith | null {
-  if (policy.useStoreCredit && view.credit.storeCreditOpen && view.credit.storeCreditBalance + amount * 1.2 <= view.credit.storeCreditLimit) {
-    return "store_credit";
-  }
-  return view.cash >= amount ? "cash" : null;
+function option(view: PlayerView, target: OptionTarget, id: string): ActionOption | undefined {
+  return getActionOptions(view, target).find((o) => o.id === id);
+}
+
+/**
+ * How to buy supplies, from the option: on store credit when the policy uses it and the dealer accepts,
+ * else cash if affordable (keeping `keep` aside). null = cannot buy now.
+ */
+function purchase(opt: ActionOption | undefined, view: PlayerView, policy: Policy, keep = 0): Action | null {
+  if (opt === undefined || opt.energy > view.energy) return null;
+  if (policy.useStoreCredit && opt.credit !== null && view.cash - keep >= opt.credit.cashCost) return opt.credit.action;
+  return opt.enabled && view.cash - keep >= opt.cost ? opt.action : null;
 }
 
 /** One field action, or endHalfDay when nothing more is useful or affordable. */
 function fieldAction(view: PlayerView, policy: Policy, data: GameData): Action {
-  const { crop: c } = data;
-  const energy = view.energy;
   const planted = view.plots.filter((p) => p.status === "planted" && p.crop !== null);
+  const plotTarget = (plotId: number): OptionTarget => ({ kind: "plot", plotId });
 
   // 1. Harvest
   for (const plot of planted) {
     if (knownStage(plot) !== "harvestable") continue;
-    if (policy.harvest === "hand" && energy >= c.harvest.handEnergyPerPlot) return { type: "harvest", plotId: plot.id, method: "hand" };
-    if (view.cash >= c.harvest.machineCostPerPlot) return { type: "harvest", plotId: plot.id, method: "machine" };
-    if (energy >= c.harvest.handEnergyPerPlot) return { type: "harvest", plotId: plot.id, method: "hand" };
+    const machine = option(view, plotTarget(plot.id), "harvest:machine");
+    const hand = option(view, plotTarget(plot.id), "harvest:hand");
+    if (policy.harvest === "hand" && hand?.enabled) return hand.action;
+    if (machine?.enabled) return machine.action;
+    if (hand?.enabled) return hand.action;
   }
 
   // 2. Cure pests
   for (const plot of planted) {
     for (const pest of data.pests) {
       const sign = plot.known?.signs[pest.id] ?? null;
-      if (sign === null || SIGN_ORDER[sign] < SIGN_ORDER[policy.cureFrom] || energy < c.spray.energy) continue;
-      const payWith = payWithFor(c.spray.costPerApp, view, policy);
-      if (payWith) return { type: "spray", plotId: plot.id, pest: pest.id, mode: "cure", payWith };
+      if (sign === null || SIGN_ORDER[sign] < SIGN_ORDER[policy.cureFrom]) continue;
+      const buy = purchase(option(view, plotTarget(plot.id), `spray:cure:${pest.id}`), view, policy);
+      if (buy) return buy;
     }
   }
 
@@ -137,47 +146,46 @@ function fieldAction(view: PlayerView, policy: Policy, data: GameData): Action {
     for (const alert of view.radio.pestAlerts) {
       for (const plot of planted) {
         const stage = knownStage(plot);
-        if (stage === "harvestable" || stage === "ripening" || energy < c.spray.energy) continue;
+        if (stage === "harvestable" || stage === "ripening") continue;
         if (plot.crop?.sprayLog.some((s) => s.pestId === alert.pestId && s.day >= alert.startDay)) continue;
-        const payWith = payWithFor(c.spray.costPerApp, view, policy);
-        if (payWith) return { type: "spray", plotId: plot.id, pest: alert.pestId, mode: "preventive", payWith };
+        const buy = purchase(option(view, plotTarget(plot.id), `spray:preventive:${alert.pestId}`), view, policy);
+        if (buy) return buy;
       }
     }
   }
 
   // 4. Fertilize in the recommended stages
   for (const plot of planted) {
-    if (!needsFertilizer(plot, knownStage(plot), data) || energy < c.fertilizer.energy) continue;
-    const payWith = payWithFor(c.fertilizer.costPerApp, view, policy);
-    if (payWith) return { type: "fertilize", plotId: plot.id, payWith };
+    if (!needsFertilizer(plot, knownStage(plot), data)) continue;
+    const buy = purchase(option(view, plotTarget(plot.id), "fertilize"), view, policy);
+    if (buy) return buy;
   }
 
   // 5. Water
   for (const plot of planted) {
     const level = plot.known?.waterLevel ?? "ok";
     const fix = policy.water === "any" ? level !== "ok" : level === "low";
-    if (fix && knownStage(plot) !== "harvestable" && energy >= c.water.adjustEnergy && view.cash - reserve(data) >= c.water.adjustCost) {
-      return { type: "adjustWater", plotId: plot.id };
-    }
+    if (!fix || knownStage(plot) === "harvestable") continue;
+    const water = option(view, plotTarget(plot.id), "adjustWater");
+    if (water?.enabled && view.cash - reserve(data) >= water.cost) return water.action;
   }
 
   // 6. Sow
   for (const plot of view.plots) {
     if (!plotNeedsSowing(plot, view, policy, data)) continue;
-    const season = seasonOfSowingDay(view.day, data.calendar);
-    const variety = policy.varietyFor(season);
-    const cost = sowingCost(variety, "broadcast", data);
-    if (energy < cost.energy) break;
-    const credit = policy.useStoreCredit && view.credit.storeCreditOpen && view.credit.storeCreditBalance + cost.seed * 1.2 <= view.credit.storeCreditLimit;
-    const cashNeeded = cost.landPrep + cost.labor + (credit ? 0 : cost.seed);
-    if (view.cash - reserve(data) < cashNeeded) break;
-    return { type: "prepareAndSow", plotId: plot.id, variety, method: "broadcast", payWith: credit ? "store_credit" : "cash" };
+    const variety = policy.varietyFor(seasonOfSowingDay(view.day, data.calendar));
+    const buy = purchase(option(view, plotTarget(plot.id), `sow:${variety}:broadcast`), view, policy, reserve(data));
+    if (buy === null) break;
+    return buy;
   }
 
   return { type: "endHalfDay" };
 }
 
-/** Money the bot expects to need soon: sowing on plots waiting for it, plus the reserve. */
+/**
+ * Money the bot expects to need soon: sowing on plots waiting for it, plus the reserve. Sowing options only
+ * exist while in the field, so this estimate uses the public price list (sowingCost).
+ */
 function upcomingNeed(view: PlayerView, policy: Policy, data: GameData): number {
   let need = reserve(data);
   for (const plot of view.plots) {
@@ -191,51 +199,58 @@ function upcomingNeed(view: PlayerView, policy: Policy, data: GameData): number 
 
 /** Money matters that do not use a half-day. Returns null when there is nothing to do. */
 function moneyAction(view: PlayerView, policy: Policy, data: GameData): Action | null {
+  const enabled = (target: OptionTarget, id: string): ActionOption | undefined => {
+    const o = option(view, target, id);
+    return o?.enabled ? o : undefined;
+  };
+  const ledger: OptionTarget = { kind: "ledger" };
+
   // Sell lots (wait for a better price only while the price is below the month's base price)
   for (const lot of view.lots) {
     const cheap = view.market.pricePerKg < view.market.basePricePerKg;
-    if (!cheap || lot.nightsWaited >= policy.waitSaleDays) return { type: "sellLot", lotId: lot.id };
+    const sell = enabled({ kind: "trader" }, `sell:${lot.id}`);
+    if (sell && (!cheap || lot.nightsWaited >= policy.waitSaleDays)) return sell.action;
   }
 
-  if (!view.landAccess && view.cash >= view.credit.reRentCost && view.credit.reRentCost > 0) return { type: "reRent" };
+  const reRent = enabled(ledger, "reRent");
+  if (reRent) return reRent.action;
 
   // Pay what is due today or late (most urgent first), keeping the reserve
   const due = [...view.loans].filter((l) => l.dueDay <= view.day).sort((a, b) => a.dueDay - b.dueDay);
   for (const loan of due) {
     const available = view.cash - reserve(data);
     if (available <= 0) break;
-    if (loan.kind === "loan_shark" && loan.lateSinceDay === null && available < loan.balance) {
-      const interest = loan.balance - loan.principal;
-      if (interest > 0 && available >= interest) return { type: "rollOverLoan", loanId: loan.id };
-    }
-    return { type: "repay", loanId: loan.id, amount: Math.min(loan.balance, available) };
+    const rollOver = enabled(ledger, `rollOver:${loan.id}`);
+    if (rollOver && available < loan.balance && rollOver.cost > 0 && available >= rollOver.cost) return rollOver.action;
+    const repay = enabled(ledger, `repay:${loan.id}`);
+    if (repay) return quoteOption(view, repay, available, data).action;
   }
   // Family loan at the very end of the year
   const family = view.loans.find((l) => l.kind === "family");
-  if (family && view.day >= family.dueDay - 3 && view.cash - reserve(data) > 0) {
-    return { type: "repay", loanId: family.id, amount: Math.min(family.balance, view.cash - reserve(data)) };
+  const repayFamily = family ? enabled(ledger, `repay:${family.id}`) : undefined;
+  if (family && repayFamily && view.day >= family.dueDay - 3 && view.cash - reserve(data) > 0) {
+    return quoteOption(view, repayFamily, view.cash - reserve(data), data).action;
   }
 
   // Rent due and not enough money: ask for more time
   const rent = view.loans.find((l) => l.kind === "rent" && l.lateSinceDay === null && l.dueDay <= view.day);
-  if (rent && view.cash - reserve(data) < rent.balance && view.credit.rentExtensionsUsed < data.finance.rentExtension.maxPerYear) {
-    return { type: "requestRentExtension" };
-  }
+  const extension = enabled(ledger, "rentExtension");
+  if (rent && extension && view.cash - reserve(data) < rent.balance) return extension.action;
 
   // Borrow
   const buffer = policy.loanShark === "freely" ? FREE_BORROWER_BUFFER : 0;
   const shortBy = upcomingNeed(view, policy, data) + buffer - view.cash;
-  if (policy.loanShark !== "never" && shortBy > 0 && view.credit.loanSharkOpen) {
-    const room = view.credit.loanSharkMax - view.credit.loanSharkPrincipal;
+  const shark = enabled(ledger, "loanShark");
+  if (policy.loanShark !== "never" && shortBy > 0 && shark?.range) {
     const step = 500_000;
-    const amount = Math.min(room, Math.ceil(shortBy / step) * step);
-    if (amount > 0) return { type: "takeLoanShark", amount };
+    return quoteOption(view, shark, Math.min(shark.range.max, Math.ceil(shortBy / step) * step), data).action;
   }
 
   // Advance sale
   if (policy.advanceSaleRatio > 0) {
     for (const plot of view.plots) {
-      if (plot.status === "planted" && plot.advanceContract === null) return { type: "sellAdvance", plotId: plot.id, ratio: policy.advanceSaleRatio };
+      const advance = plot.advanceContract === null ? enabled(ledger, `advance:${plot.id}`) : undefined;
+      if (advance) return quoteOption(view, advance, Math.round(policy.advanceSaleRatio * 100), data).action;
     }
   }
   return null;

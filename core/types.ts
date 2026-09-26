@@ -195,7 +195,16 @@ export type GameEvent =
   | { day: number; kind: "landLost" }
   | { day: number; kind: "landReRented"; amount: number }
   | { day: number; kind: "bankrupt" }
-  | { day: number; kind: "skipStopped"; reason: StopReason; days: number }
+  /** Wage from hired work during the skip, in `earned`. */
+  | { day: number; kind: "skipStopped"; reason: StopReason; days: number; earned: number }
+  // Presentation events (M2.0): the UI plays animations from these; they never drive rules.
+  | { day: number; kind: "wentToField"; slot: HalfDay }
+  | { day: number; kind: "hiredWorkDone"; slot: HalfDay; wage: number; uyTinGain: number }
+  | { day: number; kind: "restDone"; slot: HalfDay; energy: number }
+  /** A new day began (after the night); `day` is the new day. */
+  | { day: number; kind: "dayStarted" }
+  /** One day of a skip ended at the morning of `day`; `earned` = wage from hired work that day. */
+  | { day: number; kind: "skipDayPassed"; earned: number };
 
 export interface RunStats {
   peakCash: number;

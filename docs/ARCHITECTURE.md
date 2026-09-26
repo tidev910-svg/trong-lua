@@ -41,7 +41,7 @@
 │   ├── settlement.ts       dữ liệu màn tính sổ
 │   ├── summary.ts          dữ liệu thẻ tổng kết, tài sản ròng
 │   ├── playerView.ts       getPlayerView(state, data): state đã giấu thông tin ẩn
-│   ├── actionOptions.ts    getActionOptions(view, target, data): chi phí, sức lực, bật/tắt, lý do, mua chịu (M2.0)
+│   ├── actionOptions.ts    getActionOptions(view, target) + quoteOption: chi phí, sức lực, bật/tắt, lý do, mua chịu
 │   ├── save.ts             Session, dispatch, serialize/replay/load
 │   ├── golden.ts           kết quả mong đợi cho replay golden
 │   └── playtest.ts         thống kê playtest trong file lưu (không ảnh hưởng replay)
@@ -117,7 +117,12 @@ type ActionResult = { ok: true; state: GameState } | { ok: false; state: GameSta
 
 ### getActionOptions
 
-`getActionOptions(view, target, data)`, với `target` là một thửa, nhà, bảng gỗ, sổ hoặc thương lái. Mỗi option: action sẽ dispatch, nhãn tiếng Việt, chi phí tiền, sức lực, `enabled`, lý do khi bị khóa, và phương án mua chịu (khi chỉ thiếu tiền cho phần vật tư và đủ điều kiện uy tín, hạn mức) kèm giá đã cộng phụ phí. UI và bot dùng cùng hàm này.
+- `getPlayerView` tính sẵn mọi lựa chọn từ state (`computeActionOptions`, dùng `actionRefusal`) và để trong `view.actionOptions`. `getActionOptions(view, target)` chỉ đọc lại. `target`: thửa (`{ kind: "plot", plotId }`), `house`, `workSign`, `ledger`, `trader`, `day` (kết thúc buổi, tua, gấp sổ tính sổ).
+- Mỗi option: `id` ổn định, nhãn tiếng Việt, `action`, `cost` (tiền mặt), `energy`, `gain` (tiền công, sức hồi, tiền bán), `enabled`, `reason`, `credit` (bản mua chịu nếu hợp lệ: phần trả tiền mặt + nợ đã cộng phụ phí), `range` (số tiền / phần trăm / số ngày tự chọn), `expectedHarvestDay` (xuống giống).
+- Thửa khi chưa ra đồng chỉ có "Ra đồng"; khi đang ngoài đồng liệt kê thao tác theo `known` (vừa cập nhật). Phun trị chỉ có cho loại đang thấy dấu hiệu.
+- Option có `range`: `quoteOption(view, option, value, data)` trả action đã điền số và điều khoản (nhận bao nhiêu, nợ bao nhiêu, hạn ngày nào, số kg bán non). Mọi giá trị trong khoảng đều hợp lệ khi option bật.
+- Bất biến (có kiểm thử): option bật ⇔ `applyAction` chấp nhận; option bị khóa có lý do; option không đổi khi chỉ thông tin ẩn thay đổi.
+- `dispatch` (save.ts) trả thêm `events`: các event công khai do action vừa sinh ra, để UI phát animation.
 
 ## Luồng xử lý
 

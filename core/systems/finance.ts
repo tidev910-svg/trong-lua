@@ -223,19 +223,30 @@ export function expectedYieldKg(varietyId: string, method: "broadcast" | "transp
 
 export function advanceSaleRefusal(state: GameState, plotId: number, ratio: number, data: GameData): string | null {
   const plot = state.plots.find((p) => p.id === plotId);
-  if (!plot || plot.status !== "growing" || plot.crop === null) return "Chỉ bán non được lúa đang trồng.";
+  // Growing or ripe but not yet harvested: the player cannot tell the two apart without visiting (PROTOTYPE_SPEC §14).
+  if (!plot || (plot.status !== "growing" && plot.status !== "harvestable") || plot.crop === null) return "Chỉ bán non được lúa đang trồng.";
   if (state.advanceContracts.some((c) => c.plotId === plotId)) return "Thửa này đã bán non rồi.";
   if (!(ratio > 0 && ratio <= data.finance.advanceSale.maxRatioOfExpected + 1e-9)) return "Tỉ lệ bán non không hợp lệ.";
   return null;
+}
+
+/** Advance-sale terms: kg owed = expected kg × ratio, paid at variety market price × priceFactor. */
+export function advanceSaleQuote(expectedKg: number, varietyPricePerKg: number, ratio: number, priceFactor: number): { kg: number; pricePerKg: number; amount: number } {
+  const kg = expectedKg * ratio;
+  const pricePerKg = varietyPricePerKg * priceFactor;
+  return { kg, pricePerKg, amount: Math.round(kg * pricePerKg) };
 }
 
 /** Cash now = expected kg × ratio × variety market price × priceFactor; the kg are owed at harvest. */
 export function sellAdvance(state: GameState, plotId: number, ratio: number, data: GameData, priceFactor = data.finance.advanceSale.priceFactor): GameState {
   const crop = state.plots.find((p) => p.id === plotId)?.crop;
   if (!crop) throw new Error(`plot ${plotId} has no crop`);
-  const kg = expectedYieldKg(crop.varietyId, crop.method, crop.sowDay, data) * ratio;
-  const pricePerKg = varietyMarketPrice(state, crop.varietyId, data) * priceFactor;
-  const amount = Math.round(kg * pricePerKg);
+  const { kg, pricePerKg, amount } = advanceSaleQuote(
+    expectedYieldKg(crop.varietyId, crop.method, crop.sowDay, data),
+    varietyMarketPrice(state, crop.varietyId, data),
+    ratio,
+    priceFactor,
+  );
   const next = {
     ...state,
     nextId: state.nextId + 1,

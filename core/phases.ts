@@ -2,7 +2,7 @@ import type { GameData } from "../data/schemas";
 import { visitField } from "./field";
 import { runNight } from "./night";
 import { doHiredWork, hiredWorkRefusal } from "./systems/finance";
-import type { Activity, GameState, HalfDay } from "./types";
+import type { Activity, GameEvent, GameState, HalfDay } from "./types";
 
 /** Slot of the half-day waiting for an activity, or null when no activity can be chosen now. */
 export function slotAwaitingActivity(state: GameState): HalfDay | null {
@@ -37,11 +37,21 @@ export function activityRefusal(state: GameState, activity: Activity, data: Game
 export function startActivity(state: GameState, activity: Activity, data: GameData): GameState {
   const slot = slotAwaitingActivity(state) ?? "morning";
   const inHalfDay: GameState = { ...state, phase: { kind: "halfDay", slot, activity: null } };
+  const day = state.day;
   if (activity === "field") {
     const visited = visitField({ ...inHalfDay, energy: inHalfDay.energy - data.economy.energy.fieldVisit }, data);
-    return { ...visited, phase: { kind: "halfDay", slot, activity: "field" } };
+    return logEvent({ ...visited, phase: { kind: "halfDay", slot, activity: "field" } }, { day, kind: "wentToField", slot });
   }
-  if (activity === "hired_work") return endHalfDay(doHiredWork(inHalfDay, data), data);
-  const rested = { ...inHalfDay, energy: Math.min(data.economy.energy.max, inHalfDay.energy + data.economy.energy.restHalfDay) };
+  if (activity === "hired_work") {
+    const worked = doHiredWork(inHalfDay, data);
+    const event: GameEvent = { day, kind: "hiredWorkDone", slot, wage: worked.cash - inHalfDay.cash, uyTinGain: worked.uyTin - inHalfDay.uyTin };
+    return endHalfDay(logEvent(worked, event), data);
+  }
+  const energy = Math.min(data.economy.energy.max, inHalfDay.energy + data.economy.energy.restHalfDay);
+  const rested = logEvent({ ...inHalfDay, energy }, { day, kind: "restDone", slot, energy: energy - inHalfDay.energy });
   return endHalfDay(rested, data);
+}
+
+function logEvent(state: GameState, event: GameEvent): GameState {
+  return { ...state, log: [...state.log, event] };
 }

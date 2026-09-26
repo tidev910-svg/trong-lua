@@ -129,7 +129,7 @@ Hai loại: `brown_planthopper` (rầy nâu), `rice_blast` (đạo ôn). Với m
 | `family` | Cho sẵn ở day 0, không lãi, hạn cuối năm; trễ hạn trừ uy tín nặng |
 | `store_credit` (mua chịu) | Mua vật tư (giống, phân, thuốc) trả sau với giá cao hơn; hạn = lần bán lúa kế tiếp (tự trừ khi bán); cần uy tín ≥ ngưỡng; có hạn mức |
 | `loan_shark` (vay nóng) | Vay ngay tới hạn mức; lãi theo chu kỳ 30 ngày, cộng dồn; hạn 30 ngày, có thể đảo nợ (trả lãi, gia hạn) |
-| `advance_sale` (bán lúa non) | Khi lúa đang `growing`: nhận tiền ngay = sản lượng kỳ vọng × giá hiện tại × hệ số, tối đa một tỉ lệ sản lượng kỳ vọng; cam kết giao số kg đó khi gặt |
+| `advance_sale` (bán lúa non) | Khi lúa còn ngoài đồng chưa gặt (xem B12): nhận tiền ngay = sản lượng kỳ vọng × giá hiện tại × hệ số, tối đa một tỉ lệ sản lượng kỳ vọng; cam kết giao số kg đó khi gặt |
 | `rent_extension` (xin gia hạn) | Hoãn một kỳ tiền thuê N ngày; trừ uy tín; ghi nhận tăng giá thuê năm sau (chỉ hiển thị) |
 
 **Uy tín:** 0–100, bắt đầu từ `startUyTin`. Trả đúng hạn +, trễ hạn −, làm thuê + (có giới hạn mỗi vụ), xin gia hạn −. Ảnh hưởng: điều kiện mua chịu, giá thương lái, việc vay nóng có được chấp nhận.
@@ -224,7 +224,7 @@ Các điểm spec còn mơ hồ đã được chốt như dưới đây. Nếu m
 - A7 Vay nóng: mỗi lần vay là một khoản riêng. Đến hạn trả gốc + `interestPer30Days`; trả sớm vẫn tính đủ lãi. Đảo nợ = trả phần lãi để được thêm `termDays`. Quá hạn thì cứ mỗi 30 ngày số dư ×(1 + lãi), cộng phạt `latePenaltyRate` một lần lúc bắt đầu quá hạn. `maxTotal` tính trên gốc còn nợ.
 - A8 Mua chịu: chỉ vật tư (giống, phân, thuốc); làm đất, công cấy, chỉnh nước, thuê máy trả tiền mặt. Mỗi lần bán lúa trừ toàn bộ dư nợ mua chịu; phần thiếu trừ vào tiền mặt, vẫn thiếu thì quá hạn. Chưa từng bán thì tới hạn ở day 364.
 - A9: Chỉ vay nóng bị phạt lãi khi trễ. Mỗi khoản bị `uyTin.latePenalty` một lần lúc bắt đầu quá hạn.
-- B12: Mỗi thửa tối đa một hợp đồng bán lúa non. Giá chốt = giá thị trường × hệ số giống × `priceFactor`. Tiền bù thiếu kg trừ vào tiền mặt (theo A1 nếu âm).
+- B12: Bán lúa non được khi lúa còn ngoài đồng chưa gặt (`growing` hoặc `harvestable`), vì người chơi không phân biệt được hai trạng thái này nếu chưa thăm (chốt 26/09/2026, M2.0). Áp dụng cho cả ép bán non khi siết nợ và cho điều kiện phá sản A11. Mỗi thửa tối đa một hợp đồng bán lúa non. Giá chốt = giá thị trường × hệ số giống × `priceFactor`. Tiền bù thiếu kg trừ vào tiền mặt (theo A1 nếu âm).
 - B13: Uy tín là số thực, hiển thị làm tròn. Trần uy tín từ làm thuê tính theo vụ của tháng hiện tại (`seasonBySowingMonth`). Có việc làm thuê hay không tung một lần cho cả ngày, báo trên bản tin. Trả xong trọn một khoản đúng hạn +`onTimePayment`; đảo nợ thì không cộng không trừ. Chỉ xin gia hạn tiền thuê trước khi kỳ đó quá hạn.
 - B16: Tiền làm tròn bằng `Math.round`, chỉ ở chỗ tiền đổi chủ. Vòng lặp theo thứ tự cố định: thửa theo id, sâu bệnh theo thứ tự trong data.
 

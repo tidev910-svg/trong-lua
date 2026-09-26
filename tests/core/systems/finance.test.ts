@@ -215,6 +215,14 @@ describe("advance sale (spec §8, decision B12)", () => {
     expect(advanceSaleRefusal(s, 0, 0.5, data)).toMatch(/đang trồng/);
     expect(advanceSaleRefusal(sellAdvance(s, 1, 0.3, data), 1, 0.3, data)).toMatch(/đã bán non/);
   });
+
+  it("allowed until harvest: a ripe crop still in the field can be sold in advance (PROTOTYPE_SPEC §14)", () => {
+    const s = growing();
+    const ripe: GameState = { ...s, plots: s.plots.map((p) => (p.id === 1 ? { ...p, status: "harvestable" } : p)) };
+    expect(advanceSaleRefusal(ripe, 1, 0.5, data)).toBeNull();
+    const harvested: GameState = { ...s, plots: s.plots.map((p) => (p.id === 1 ? { ...p, status: "harvested", crop: null } : p)) };
+    expect(advanceSaleRefusal(harvested, 1, 0.5, data)).toMatch(/đang trồng/);
+  });
 });
 
 describe("rent extension", () => {

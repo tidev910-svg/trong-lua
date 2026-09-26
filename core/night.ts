@@ -55,6 +55,7 @@ export function runNight(state: GameState, data: GameData): GameState {
         energy: Math.min(data.economy.energy.max, s.energy + data.economy.energy.nightRestore),
         phase: { kind: "briefing" },
       };
+      s = { ...s, log: [...s.log, { day: s.day, kind: "dayStarted" }] };
       s = updateMarket(s, data, rng);
       s = enterSettlementIfDue(s, { kind: "briefing" });
     }

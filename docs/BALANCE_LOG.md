@@ -107,3 +107,22 @@ Kết quả khớp đúng từng số với thí nghiệm ở lần 1 (xác nh�
 - `safe` đạt mục tiêu; `average` cao hơn khoảng mục tiêu 2 điểm, chấp nhận được cho vòng playtest đầu.
 - `risky`: trung vị thấp hơn `average` nhiều (−14 tr so với +9,4 tr) và độ lệch chuẩn không lớn hơn (11,5 tr so với 17,7 tr): liều chưa "đáng", tức là chưa đạt "phương sai lớn". Nguyên nhân khả dĩ: vay nóng 10%/30 ngày (và lãi chồng lãi khi trễ) cộng bán non 50% ở giá 0,7 ăn gần hết lời của vụ thứ ba. Chưa đề xuất số: nên chờ playtest xem người chơi thật có dùng vay nóng/bán non không.
 - Replay mẫu trong `tests/replays/` đã tạo lại theo luật mới: safe seed 13 (sống, 2 vụ), average seed 5 (phá sản day 202), risky seed 1 (sống, 3 vụ).
+
+## Lần 3 – 26/09/2026 (M2.0: bot dùng `getActionOptions`, bán non đến khi gặt)
+
+**Không đổi số nào trong `data/`.** Hai thay đổi có thể ảnh hưởng kết quả:
+- Bot lấy chi phí, lý do khóa và phương án mua chịu từ `getActionOptions`, thay cho việc tự tính (trước đây bot ước hạn mức mua chịu với phụ phí viết cứng 20%, thật ra là 15%).
+- Luật: bán lúa non được đến khi gặt (cả khi lúa đã chín mà chưa gặt), áp dụng cả cho siết nợ và điều kiện phá sản (PROTOTYPE_SPEC §14, B12).
+
+**Kết quả `npm run sim -- --bot all --runs 1000` (seed 1–1000), so với lần 2:**
+
+| | safe | average | risky |
+|---|---|---|---|
+| **Sống sót hết năm** | **85%** (84%) | **73%** (72%) | **27%** (27%) |
+| Tài sản ròng p10 / p50 / p90 | −11,3 / 25,7 / 34,8 tr | −19,6 / 9,5 / 29,8 tr | −19,1 / −14,0 / 9,3 tr |
+| Độ lệch chuẩn | 16,8 tr | 17,6 tr | 11,5 tr |
+| Phá sản / mất ruộng cuối năm | 151 / 0 (154 / 7) | 268 / 0 (276 / 0) | 727 / 0 (727 / 0) |
+| Vụ tính sổ (TB) | 1,84 | 2,50 | 1,46 |
+| Hành động bị từ chối / lượt | 0,0 | 0,0 | 0,0 |
+
+**Nhận xét:** thay đổi rất nhỏ (±1 điểm), nhận định của lần 2 giữ nguyên: `safe` đạt mục tiêu, `average` cao hơn khoảng mục tiêu 3 điểm, `risky` chưa đạt "phương sai lớn". Bộ mô phỏng chạy chậm hơn khoảng 1,7 lần vì `getPlayerView` giờ tính sẵn toàn bộ lựa chọn (1.000 lượt `average` ≈ 4 phút trên máy hiện tại). Ba replay mẫu có chuỗi hành động không đổi; chỉ số dòng log tăng do có event trình bày.

@@ -1,4 +1,5 @@
 import type { GameData, SowingMethod, WeatherState } from "../data/schemas";
+import { computeActionOptions, type ActionOption } from "./actionOptions";
 import { computeSettlement, type Settlement } from "./settlement";
 import { summarize, type RunSummary } from "./summary";
 import { dateOfDay, monthKeyOfDay, seasonKeyOfDay, type CalendarDate } from "./systems/calendar";
@@ -6,7 +7,7 @@ import { reRentCost } from "./systems/debt";
 import { expectedYieldKg, loanSharkPrincipal, loanSharkRefusal, storeCreditBalance, storeCreditRefusal } from "./systems/finance";
 import { expectedSchedule } from "./systems/growth";
 import { lotValue } from "./systems/harvest";
-import { isHarvestGlut, marketPrice, traderPricePerKg } from "./systems/market";
+import { isHarvestGlut, marketPrice, traderPricePerKg, varietyMarketPrice } from "./systems/market";
 import type {
   AdvanceContract,
   CropStage,
@@ -42,6 +43,8 @@ export interface PlotView {
     expectedYieldKg: number;
   } | null;
   known: KnownPlotInfo | null;
+  /** Days since the player last saw this plot (null = never). */
+  staleDays: number | null;
   advanceContract: AdvanceContract | null;
 }
 
@@ -61,7 +64,16 @@ export interface PlayerView {
   weather: { yesterday: WeatherState | null; forecast: Forecast[] };
   radio: { pestAlerts: RegionalAlert[]; floodWarning: { predictedDay: number } | null };
   hiredWorkAvailable: boolean;
-  market: { basePricePerKg: number; pricePerKg: number; glut: boolean; traderPricePerKg: Record<string, number> };
+  market: {
+    basePricePerKg: number;
+    pricePerKg: number;
+    glut: boolean;
+    /** Market price by variety (advance-sale quotes). */
+    varietyPricePerKg: Record<string, number>;
+    traderPricePerKg: Record<string, number>;
+  };
+  /** Last day the player went to the field (null = never). */
+  lastFieldVisitDay: number | null;
   plots: PlotView[];
   lots: LotView[];
   loans: Loan[];
@@ -81,6 +93,8 @@ export interface PlayerView {
   recentEvents: GameEvent[];
   settlement: Settlement | null;
   summary: RunSummary | null;
+  /** What the player can do now, by target key (read with getActionOptions). */
+  actionOptions: Record<string, ActionOption[]>;
 }
 
 const PUBLIC_EVENTS = new Set<GameEvent["kind"]>([
@@ -95,7 +109,17 @@ const PUBLIC_EVENTS = new Set<GameEvent["kind"]>([
   "landReRented",
   "bankrupt",
   "skipStopped",
+  "wentToField",
+  "hiredWorkDone",
+  "restDone",
+  "dayStarted",
+  "skipDayPassed",
 ]);
+
+/** Events the player is allowed to see (radio, what they did, what happened to their money). */
+export function isPublicEvent(event: GameEvent): boolean {
+  return PUBLIC_EVENTS.has(event.kind);
+}
 
 /**
  * Everything the player may know (ARCHITECTURE "Thông tin ẩn"): no true weather ahead, no pest densities,
@@ -124,8 +148,10 @@ export function getPlayerView(state: GameState, data: GameData): PlayerView {
       basePricePerKg: data.market.basePriceByMonth[monthKeyOfDay(day, data.calendar)],
       pricePerKg: marketPrice(state, data),
       glut: isHarvestGlut(day, data),
+      varietyPricePerKg: Object.fromEntries(data.varieties.map((v) => [v.id, varietyMarketPrice(state, v.id, data)])),
       traderPricePerKg: Object.fromEntries(data.varieties.map((v) => [v.id, traderPricePerKg(state, v.id, data)])),
     },
+    lastFieldVisitDay: lastFieldVisit(state),
     plots: state.plots.map((plot): PlotView => {
       const crop = plot.crop;
       return {
@@ -145,6 +171,7 @@ export function getPlayerView(state: GameState, data: GameData): PlayerView {
                 expectedYieldKg: expectedYieldKg(crop.varietyId, crop.method, crop.sowDay, data),
               },
         known: plot.known,
+        staleDays: plot.known === null ? null : day - plot.known.lastVisitDay,
         advanceContract: state.advanceContracts.find((c) => c.plotId === plot.id) ?? null,
       };
     }),
@@ -162,8 +189,14 @@ export function getPlayerView(state: GameState, data: GameData): PlayerView {
       reRentCost: reRentCost(state, data),
       rentExtensionsUsed: state.rentExtensionsUsed,
     },
-    recentEvents: state.log.filter((e) => PUBLIC_EVENTS.has(e.kind) && e.day >= day - 1),
+    recentEvents: state.log.filter((e) => isPublicEvent(e) && e.day >= day - 1),
     settlement: state.phase.kind === "settlement" ? computeSettlement(state, state.phase.seasonKey) : null,
     summary: state.phase.kind === "gameOver" ? summarize(state, data) : null,
+    actionOptions: computeActionOptions(state, data),
   };
+}
+
+function lastFieldVisit(state: GameState): number | null {
+  const days = state.plots.flatMap((p) => (p.known === null ? [] : [p.known.lastVisitDay]));
+  return days.length === 0 ? null : Math.max(...days);
 }

@@ -256,8 +256,8 @@ function perform(state: GameState, action: Action, data: GameData): GameState {
       return reRent(state, data);
 
     case "skipUntil": {
-      const { state: s, stoppedBy, days } = runSkip(state, action.defaultActivity, action.stopOn, action.maxDays, data);
-      return { ...s, log: [...s.log, { day: s.day, kind: "skipStopped", reason: stoppedBy, days }] };
+      const { state: s, stoppedBy, days, earned } = runSkip(state, action.defaultActivity, action.stopOn, action.maxDays, data);
+      return { ...s, log: [...s.log, { day: s.day, kind: "skipStopped", reason: stoppedBy, days, earned }] };
     }
 
     case "acknowledge": {
