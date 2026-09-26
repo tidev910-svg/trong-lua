@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getActionOptions, type ActionOption, type OptionTarget } from "../core/actionOptions";
 import type { PlayerView } from "../core/playerView";
+import { dateOfDay, daysToTet, seasonKeyOfDay } from "../core/systems/calendar";
+import type { GameData } from "../data/schemas";
 import type { Action, GameEvent } from "../core/types";
 import { DebugPanel } from "./debug/DebugPanel";
 import { money } from "./format";
@@ -13,6 +15,7 @@ import { Rain } from "./hud/Rain";
 import { Toast } from "./hud/Toast";
 import { pause } from "./motion";
 import { Briefing } from "./paper/Briefing";
+import { SkipDialog } from "./paper/SkipDialog";
 import { PinnedNote, type Box } from "./paper/PinnedNote";
 import { PlotNote } from "./paper/PlotNote";
 import { FARMER_AT_SIGN, FARMER_HOME, plotStandPoint, type Point } from "./scene/layout";
@@ -33,6 +36,12 @@ interface CalendarPage {
 
 function pageOf(view: PlayerView): CalendarPage {
   return { month: view.date.month, dayOfMonth: view.date.dayOfMonth, seasonKey: view.seasonKey, daysToTet: view.daysToTet };
+}
+
+/** Calendar page of any day, for the pages torn off during a skip (core calendar helpers). */
+export function pageOfDay(day: number, data: GameData): CalendarPage {
+  const d = dateOfDay(day, data.calendar);
+  return { month: d.month, dayOfMonth: d.dayOfMonth, seasonKey: seasonKeyOfDay(day, data.calendar), daysToTet: daysToTet(day, data.calendar) };
 }
 
 /** Same phase and half-day activity (nothing to animate between the two views). */
@@ -101,6 +110,27 @@ export function App() {
       if (events.length === 0 && samePhase(before, after)) return;
       setBusy(true);
       setPage(pageOf(before));
+      setNote(null);
+
+      // Skip: dark evening, one calendar page per skipped day, then the briefing with the stop reason.
+      if (events.some((e) => e.kind === "skipDayPassed")) {
+        setFarmerAt(FARMER_HOME);
+        setNight(true);
+        await pause(300, 0);
+        for (const e of events) {
+          if (e.kind !== "skipDayPassed") continue;
+          setPage(pageOfDay(e.day, data));
+          flip();
+          await pause(420, 60);
+        }
+        setNight(false);
+        setDayBegun(false);
+        setPage(null);
+        await pause(450, 0);
+        if (after.phase.kind === "briefing") setBook("briefing");
+        setBusy(false);
+        return;
+      }
       let newDay = false;
       const lines: string[] = [];
       for (const e of events) {
@@ -150,7 +180,7 @@ export function App() {
       }
       setBusy(false);
     },
-    [flip, say, openNote],
+    [flip, say, openNote, data],
   );
 
   /** Dispatches an option's action (or a given action) and plays what happened. */
@@ -267,6 +297,18 @@ export function App() {
             }}
           />
         </PinnedNote>
+      )}
+
+      {book === "skip" && view.phase.kind === "briefing" && (
+        <SkipDialog
+          view={view}
+          data={data}
+          onBack={() => setBook("briefing")}
+          onStart={(action) => {
+            setBook(null);
+            void run(action);
+          }}
+        />
       )}
 
       {debug && <DebugPanel game={game} />}

@@ -2,7 +2,7 @@ import type { GameData, SowingMethod, WeatherState } from "../data/schemas";
 import { computeActionOptions, type ActionOption } from "./actionOptions";
 import { computeSettlement, type Settlement } from "./settlement";
 import { summarize, type RunSummary } from "./summary";
-import { dateOfDay, monthKeyOfDay, seasonKeyOfDay, type CalendarDate } from "./systems/calendar";
+import { dateOfDay, daysToTet, monthKeyOfDay, seasonKeyOfDay, type CalendarDate } from "./systems/calendar";
 import { reRentCost } from "./systems/debt";
 import { expectedYieldKg, loanSharkPrincipal, loanSharkRefusal, storeCreditBalance, storeCreditRefusal } from "./systems/finance";
 import { expectedSchedule } from "./systems/growth";
@@ -154,7 +154,7 @@ export function getPlayerView(state: GameState, data: GameData): PlayerView {
       traderPricePerKg: Object.fromEntries(data.varieties.map((v) => [v.id, traderPricePerKg(state, v.id, data)])),
     },
     lastFieldVisitDay: lastFieldVisit(state),
-    daysToTet: day <= data.calendar.tetDay ? data.calendar.tetDay - day : null,
+    daysToTet: daysToTet(day, data.calendar),
     plots: state.plots.map((plot): PlotView => {
       const crop = plot.crop;
       return {

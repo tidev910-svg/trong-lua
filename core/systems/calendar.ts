@@ -62,6 +62,11 @@ export function isTetDay(day: number, calendar: CalendarData): boolean {
   return day === calendar.tetDay;
 }
 
+/** Days until Tết (0 on the day), null once it has passed. */
+export function daysToTet(day: number, calendar: CalendarData): number | null {
+  return day <= calendar.tetDay ? calendar.tetDay - day : null;
+}
+
 export function lastDay(calendar: CalendarData): number {
   return calendar.daysInYear - 1;
 }
