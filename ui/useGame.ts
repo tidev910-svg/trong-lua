@@ -3,7 +3,7 @@ import { loadData } from "../data/loadData";
 import { getPlayerView, type PlayerView } from "../core/playerView";
 import { playtestStats } from "../core/playtest";
 import { dispatch, load, newSession, parseSave, serializeSave, type Session } from "../core/save";
-import type { Action } from "../core/types";
+import type { Action, GameEvent } from "../core/types";
 
 export const SAVE_KEY = "trong-lua/save";
 
@@ -47,6 +47,8 @@ function writeSave(session: Session): void {
   }
 }
 
+export type ActOutcome = { ok: true; events: GameEvent[]; view: PlayerView } | { ok: false; reason: string };
+
 export interface Game {
   data: typeof data;
   session: Session;
@@ -54,6 +56,8 @@ export interface Game {
   /** Last refusal reason, shown until the next accepted action. */
   message: string | null;
   act: (action: Action) => boolean;
+  /** Like act, but returns the refusal reason or the public events the action produced (for animations). */
+  perform: (action: Action) => ActOutcome;
   newGame: (seed?: number) => void;
   importSave: (text: string) => string | null;
 }
@@ -74,21 +78,23 @@ export function useGame(): Game {
   const [message, setMessage] = useState<string | null>(null);
   const view = useMemo(() => getPlayerView(session.state, data), [session]);
 
-  const act = useCallback(
-    (action: Action) => {
+  const perform = useCallback(
+    (action: Action): ActOutcome => {
       const out = dispatch(session, action, data);
       if (!out.result.ok) {
         setMessage(out.result.reason);
-        return false;
+        return { ok: false, reason: out.result.reason };
       }
       setMessage(null);
       const next = out.session;
+      // Autosave at the end of each day and when the run ends (spec §13).
       if (next.state.day !== session.state.day || next.state.phase.kind === "gameOver") writeSave(next);
       setSession(next);
-      return true;
+      return { ok: true, events: out.events, view: getPlayerView(next.state, data) };
     },
     [session],
   );
+  const act = useCallback((action: Action) => perform(action).ok, [perform]);
 
   // Keep where the player stopped even if they close the tab mid-day (playtest "thời điểm quit").
   useEffect(() => {
@@ -116,5 +122,5 @@ export function useGame(): Game {
     }
   }, []);
 
-  return { data, session, view, message, act, newGame, importSave };
+  return { data, session, view, message, act, perform, newGame, importSave };
 }

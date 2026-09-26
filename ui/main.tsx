@@ -9,13 +9,12 @@ function render(element: ReactElement) {
   root.render(<StrictMode>{element}</StrictMode>);
 }
 
-// `?preview` shows the new paper components in isolation (M2.1) until the new App replaces the old one (M2.4).
-// Each branch loads its own stylesheet, so the old and new looks never mix.
+// `?preview` / `?preview=scene` are dev pages showing components in isolation (M2.1, M2.2).
 const preview = new URLSearchParams(window.location.search).get("preview");
 if (preview === "scene") {
   void import("./dev/ScenePreview").then(({ ScenePreview }) => render(<ScenePreview />));
 } else if (preview !== null) {
   void import("./dev/PaperPreview").then(({ PaperPreview }) => render(<PaperPreview />));
 } else {
-  void Promise.all([import("./App"), import("./styles.css")]).then(([{ App }]) => render(<App />));
+  void Promise.all([import("./App"), import("./theme.css")]).then(([{ App }]) => render(<App />));
 }

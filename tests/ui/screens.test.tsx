@@ -24,7 +24,7 @@ function renderToString(element: ReactElement): string {
 
 function gameFor(state: GameState): Game {
   const session: Session = { state, save: { version: state.version, seed: state.seed, actions: [] } };
-  return { data, session, view: getPlayerView(state, data), message: null, act: () => true, newGame: () => {}, importSave: () => null };
+  return { data, session, view: getPlayerView(state, data), message: null, act: () => true, perform: () => ({ ok: false, reason: "test" }), newGame: () => {}, importSave: () => null };
 }
 
 describe("screens render without crashing (smoke test, server-side)", () => {
