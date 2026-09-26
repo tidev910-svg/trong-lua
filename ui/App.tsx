@@ -13,7 +13,10 @@ import { Rain } from "./hud/Rain";
 import { Toast } from "./hud/Toast";
 import { pause } from "./motion";
 import { Briefing } from "./paper/Briefing";
-import { FARMER_AT_SIGN, FARMER_HOME, type Point } from "./scene/layout";
+import { PinnedNote, type Box } from "./paper/PinnedNote";
+import { PlotNote } from "./paper/PlotNote";
+import { FARMER_AT_SIGN, FARMER_HOME, plotStandPoint, type Point } from "./scene/layout";
+import { hasSigns } from "./scene/Plot";
 import { isInField, Scene, World } from "./scene/Scene";
 import { TimeOfDay } from "./scene/TimeOfDay";
 import { useGame } from "./useGame";
@@ -30,6 +33,11 @@ interface CalendarPage {
 
 function pageOf(view: PlayerView): CalendarPage {
   return { month: view.date.month, dayOfMonth: view.date.dayOfMonth, seasonKey: view.seasonKey, daysToTet: view.daysToTet };
+}
+
+/** Same phase and half-day activity (nothing to animate between the two views). */
+function samePhase(a: PlayerView, b: PlayerView): boolean {
+  return JSON.stringify(a.phase) === JSON.stringify(b.phase);
 }
 
 /** Strip guidance for the drawn phase. */
@@ -61,6 +69,19 @@ export function App() {
   const [hover, setHover] = useState<{ label: string | null; x: number; y: number }>({ label: null, x: 0, y: 0 });
   const [busy, setBusy] = useState(false);
   const [debug, setDebug] = useState(false);
+  const [note, setNote] = useState<number | null>(null);
+  const [anchor, setAnchor] = useState<{ box: Box; size: { width: number; height: number } } | null>(null);
+
+  /** Pins the note beside plot `plotId` (in game-box coordinates). */
+  const openNote = useCallback((plotId: number) => {
+    const game = gameRef.current;
+    const el = game?.querySelector(`[data-plot="${plotId}"]`);
+    if (!game || !el) return;
+    const g = game.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    setAnchor({ box: { left: r.left - g.left, top: r.top - g.top, right: r.right - g.left, bottom: r.bottom - g.top }, size: { width: g.width, height: g.height } });
+    setNote(plotId);
+  }, []);
 
   const say = useCallback((message: string) => setToast((t) => ({ message, id: t.id + 1 })), []);
   const flip = useCallback(() => setFlipKey((k) => k + 1), []);
@@ -75,7 +96,9 @@ export function App() {
 
   /** Plays the animations for what an action did. The game state is already updated. */
   const play = useCallback(
-    async (events: GameEvent[], before: PlayerView, after: PlayerView) => {
+    async (events: GameEvent[], before: PlayerView, after: PlayerView, plotId: number | null = null) => {
+      // Field work (fertilize, spray…) changes nothing to animate: the note just shows the new state.
+      if (events.length === 0 && samePhase(before, after)) return;
       setBusy(true);
       setPage(pageOf(before));
       let newDay = false;
@@ -95,8 +118,20 @@ export function App() {
           case "dayStarted":
             newDay = true;
             break;
+          case "wentToField": {
+            const target = plotId ?? 0;
+            setFarmerAt(plotStandPoint(target));
+            const seen = after.plots.filter(hasSigns).length;
+            if (seen > 0) say(`Có ${seen} thửa thấy dấu hiệu lạ.`);
+            await pause(650, 0);
+            openNote(target);
+            setPage(null);
+            setBusy(false);
+            return;
+          }
         }
       }
+      setNote(null);
       setFarmerAt(FARMER_HOME);
       if (newDay) {
         setNight(true);
@@ -115,19 +150,20 @@ export function App() {
       }
       setBusy(false);
     },
-    [flip, say],
+    [flip, say, openNote],
   );
 
   /** Dispatches an option's action (or a given action) and plays what happened. */
   const run = useCallback(
-    async (action: Action) => {
+    async (action: Action, plotId: number | null = null) => {
       const before = view;
       const out = game.perform(action);
       if (!out.ok) {
         say(out.reason);
         return false;
       }
-      await play(out.events, before, out.view);
+      if (out.view.phase.kind === "settlement" || out.view.phase.kind === "gameOver") setNote(null);
+      await play(out.events, before, out.view, plotId);
       return true;
     },
     [game, view, play, say],
@@ -144,9 +180,22 @@ export function App() {
         return;
       }
       setDayBegun(true);
-      void run(option.action);
+      void run(option.action, target.kind === "plot" ? target.plotId : null);
     },
     [busy, view, run, say],
+  );
+
+  const onPlot = useCallback(
+    (plotId: number) => {
+      if (busy) return;
+      if (isInField(view)) {
+        setFarmerAt(plotStandPoint(plotId));
+        openNote(plotId);
+        return;
+      }
+      runTarget({ kind: "plot", plotId });
+    },
+    [busy, view, openNote, runTarget],
   );
 
   const onHover = useCallback((label: string | null, cx?: number, cy?: number) => {
@@ -166,7 +215,7 @@ export function App() {
           view={view}
           farmerAt={farmerAt}
           overlay={<TimeOfDay phase={phase} />}
-          onPlot={(plotId) => runTarget({ kind: "plot", plotId })}
+          onPlot={onPlot}
           onHouse={() => runTarget({ kind: "house" })}
           onSign={() => runTarget({ kind: "workSign" })}
           onLedger={() => !busy && setBook("ledger")}
@@ -203,6 +252,21 @@ export function App() {
           }}
           onSkip={() => setBook("skip")}
         />
+      )}
+
+      {note !== null && anchor && isInField(view) && (
+        <PinnedNote key={note} title={`Thửa ${note + 1}`} anchor={anchor.box} container={anchor.size} index={note} onClose={() => setNote(null)}>
+          <PlotNote
+            view={view}
+            data={data}
+            plotId={note}
+            onChoose={(action, option) => {
+              void run(action).then((ok) => {
+                if (ok && option.credit !== null && action === option.credit.action) say(`Ghi nợ đại lý: ${money(option.credit.debtAdded)}.`);
+              });
+            }}
+          />
+        </PinnedNote>
       )}
 
       {debug && <DebugPanel game={game} />}
