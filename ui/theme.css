@@ -499,6 +499,42 @@ button {
 .typed {
   white-space: pre-wrap;
 }
+.loan .hint {
+  line-height: 24px;
+}
+.loan .acts {
+  margin: 2px 0 8px;
+}
+.ranged {
+  border: 1.5px solid var(--ink);
+  border-radius: 6px;
+  background: #fff;
+  padding: 6px 9px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.ranged .act-head {
+  font-weight: 600;
+}
+.ranged .amount input {
+  width: 9em;
+  font: inherit;
+  border: 1.5px solid var(--ink);
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+.ranged .quote {
+  color: var(--ink-soft);
+  margin: 4px 0;
+}
+.ranged .row {
+  margin-top: 4px;
+}
+.ranged .btn {
+  font-size: 13px;
+  padding: 5px 10px;
+}
 .check {
   display: flex;
   gap: 10px;

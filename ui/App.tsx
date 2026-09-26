@@ -16,6 +16,7 @@ import { Toast } from "./hud/Toast";
 import { pause } from "./motion";
 import { Briefing } from "./paper/Briefing";
 import { SkipDialog } from "./paper/SkipDialog";
+import { LedgerBook, ledgerDoneText } from "./paper/LedgerBook";
 import { PinnedNote, type Box } from "./paper/PinnedNote";
 import { PlotNote } from "./paper/PlotNote";
 import { FARMER_AT_SIGN, FARMER_HOME, plotStandPoint, type Point } from "./scene/layout";
@@ -248,7 +249,7 @@ export function App() {
           onPlot={onPlot}
           onHouse={() => runTarget({ kind: "house" })}
           onSign={() => runTarget({ kind: "workSign" })}
-          onLedger={() => !busy && setBook("ledger")}
+          onLedger={() => !busy && !night && setBook("ledger")}
           onTrader={() => !busy && setBook("trader")}
           onHover={onHover}
         />
@@ -308,6 +309,22 @@ export function App() {
             setBook(null);
             void run(action);
           }}
+        />
+      )}
+
+      {book === "ledger" && (view.phase.kind === "briefing" || view.phase.kind === "halfDay") && (
+        <LedgerBook
+          view={view}
+          data={data}
+          onChoose={(action) => {
+            const cashBefore = view.cash;
+            const out = game.perform(action);
+            if (!out.ok) return say(out.reason);
+            const done = ledgerDoneText(action, cashBefore, out.view.cash);
+            if (done) say(done);
+            void play(out.events, view, out.view);
+          }}
+          onClose={() => setBook(view.phase.kind === "briefing" && !dayBegun ? "briefing" : null)}
         />
       )}
 

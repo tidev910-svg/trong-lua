@@ -40,7 +40,7 @@ Theo `docs/UI_DIRECTION.md`, tham chiếu `reference/ui-reference.html`. Giao di
 - [x] M2.5 Ra đồng: nhân vật di chuyển, cập nhật `known`, `Plot` vẽ theo known + cũ, `PlotNote` với hành động từ `getActionOptions` (kể cả xuống giống và mua chịu)
 - [x] M2.6 Làm thuê, nghỉ, chuyển buổi, đêm, sang ngày
 - [x] M2.7 Tua đến khi… (lịch lật liên tục, dừng với lý do)
-- [ ] M2.8 Sổ tiền nợ + các nguồn vay + thuê lại ruộng + "Bán hết, lên thành phố"
+- [x] M2.8 Sổ tiền nợ + các nguồn vay + thuê lại ruộng + "Bán hết, lên thành phố"
 - [ ] M2.9 Thu hoạch và bán (thương lái ở xuồng)
 - [ ] M2.10 Dọn dẹp: xóa `ui/screens/*`, `ui/styles.css` và `tests/ui/screens.test.tsx` cũ; kiểm thử khói cho giao diện mới
 
@@ -96,3 +96,4 @@ Quyết định luật chơi A1–A16, B1–B18 nằm ở `PROTOTYPE_SPEC.md` m�
 - M2.5: Bấm thửa khi chưa ra đồng = option "Ra đồng"; event `wentToField` → nhân vật đi tới thửa, thông báo số thửa có dấu hiệu, mẩu giấy mở sau 0,65 giây. Ngoài đồng bấm thửa khác = đi tới và mở giấy ngay. `PlotNote` chỉ đọc `known` + options: "Xuống giống…" mở bước con 4 lựa chọn kèm ngày gặt dự kiến, câu dấu hiệu lấy từ `pests.signs` trong data, "Phun phòng…" gộp, mua chịu hiện khi bản tiền mặt bị khóa (thông báo "Ghi nợ đại lý"). Giấy vẫn mở sau mỗi thao tác; đóng khi về nhà, tính sổ hoặc hết lượt.
 - M2.6: Nhà/bảng gỗ gọi option tương ứng; bị khóa thì thông báo lý do từ core (không có việc, không đủ sức, đang ở ngoài đồng). Làm thuê: nhân vật ra bảng gỗ, thông báo tiền công; nghỉ: thông báo sức hồi; sang chiều gộp vào cùng thông báo; hết chiều: trời tối 1,7 giây, lịch lật, bản tin mở. Lịch giữ trang cũ suốt lúc trời tối. Đã thử trên trình duyệt cả khi bật reduced motion (chữ radio hiện ngay, nhân vật không đi, sang ngày < 0,7 giây).
 - M2.7: Vở "Tua đến khi…": nghỉ (mặc định) hoặc làm thuê, 4 điều kiện dừng (bật sẵn), tối đa 3/7/14/30 ngày, dòng liệt kê sự kiện luôn dừng; action dựng từ option `skip` qua `quoteOption`. Khi tua: trời tối, mỗi `skipDayPassed` lật một trang lịch (0,42 giây; 0,06 giây khi reduced motion), rồi mở bản tin với dòng "Dừng tua" từ `skipStopped`. Trang lịch của ngày bất kỳ lấy từ core (`dateOfDay`, `seasonKeyOfDay`, `daysToTet` mới chuyển vào `systems/calendar`).
+- M2.8: `LedgerBook` mở từ ghế và quyển sổ (mọi lúc trừ ban đêm, không tốn buổi): tiền mặt, uy tín, bậc nợ, từng khoản (số dư, hạn / quá hạn + hạn chót / "trả khi bán lúa"), hạn mức mua chịu và vay nóng, rồi mọi nút từ option `ledger`. Lựa chọn có `range` mở ô nhập số + dòng điều khoản từ `quoteOption` (nhận bao nhiêu, nợ bao nhiêu, hạn ngày nào / bán trước bao nhiêu kg). "Bán hết, lên thành phố" hỏi lại trước khi dispatch `quit`. Gấp sổ trở về bản tin nếu mở từ bản tin.
