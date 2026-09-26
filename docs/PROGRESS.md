@@ -49,7 +49,7 @@ Theo `docs/UI_DIRECTION.md`, tham chiếu `reference/ui-reference.html`. Giao di
 ## M3 – Hoàn thiện vòng chơi (tuần 5)
 
 - [x] M3.1 Tính sổ (dòng hiện lần lượt, dòng kết quả hiện sau cùng) — phần dữ liệu `core/settlement.ts` đã xong, còn giao diện vở
-- [ ] M3.2 Thẻ tổng kết + "Bán hết, lên thành phố" + chơi lại cùng/khác seed — phần dữ liệu `core/summary.ts` đã xong, còn giao diện vở
+- [x] M3.2 Thẻ tổng kết + "Bán hết, lên thành phố" + chơi lại cùng/khác seed — phần dữ liệu `core/summary.ts` đã xong, còn giao diện vở
 - [x] M3.3 Bảng debug (state ẩn, nhảy ngày, xuất/nhập file lưu)
 - [x] M3.4 Tạo 3 file lưu mẫu vào `tests/replays/` + kiểm thử golden (phải tạo lại sau M2.0)
 - [ ] M3.5 Build tĩnh để đăng itch.io (`vite build`, đường dẫn tương đối) — `base: "./"` đã có; còn `README.md` và build lại với giao diện mới
@@ -100,3 +100,4 @@ Quyết định luật chơi A1–A16, B1–B18 nằm ở `PROTOTYPE_SPEC.md` m�
 - M2.9: Gặt máy/gặt tay trên mẩu giấy thửa (khi `known` thấy chín) → thông báo số kg và "thương lái đang chờ ở bến"; xuồng hiện thương lái. `TraderBook` mở từ xuồng: giá thương lái hôm nay theo giống, từng lô (kg, số đêm đã chờ, giá trị nếu bán ngay), nút bán từ option `trader`, giải thích hao hụt và hạn chờ (số lấy từ data). Thông báo bán ghi rõ phần bị trừ nợ đại lý. Thử trên trình duyệt bằng file lưu dựng từ lượt chơi của bot (nạp qua trang `?preview` vì trang game tự lưu khi đóng).
 - M2.10: Xóa `ui/screens/*`, `ui/styles.css`, test màn hình cũ và các hàm định dạng không còn dùng (`eventText` có emoji, `millions`, `percent`…). Giữ trang dev `?preview` / `?preview=scene` làm công cụ xem component. Test khói mới render cả App. Rà `ui/`: chỉ còn hàm lịch thuần của core (trang lịch khi tua), một import kiểu, và TraderBook in 2 số từ data vào câu giải thích — không có luật chơi. Tính sổ và thẻ tổng kết là M3.1–M3.2.
 - M3.1: `SettlementBook` tự mở khi pha là `settlement` (sau khi bán lô cuối vụ, kể cả giữa buổi hay sau đêm): thu từng thửa (bán lúa, bán non, bù thiếu), các khoản chi (bỏ dòng bằng 0), nợ đã trả, còn nợ, tiền mặt cuối vụ; mỗi dòng hiện sau 0,38 giây, dòng "Vụ này: lời/lỗ" xanh/đỏ hiện sau cùng với 1,4 giây trễ thêm (hiện ngay khi reduced motion). "Gấp sổ" = `acknowledge`, quay về đúng pha cũ. Ghi chú khi vụ chồng ngày với vụ khác (A14). Số liệu chỉ lấy từ `view.settlement`.
+- M3.2: `SummaryBook` tự mở khi hết lượt (hết năm, phá sản, bỏ cuộc): lý do kết thúc, số vụ, tài sản ròng (xanh/đỏ), cao điểm tiền mặt, món nợ lớn nhất, uy tín, số lần suýt phá sản, bậc nợ tệ nhất, seed; "Chơi lại cùng seed" / "Chơi seed mới" tạo ván mới và đặt lại trạng thái UI. "Bán hết, lên thành phố" nằm cuối sổ nợ (M2.8), có hỏi lại.

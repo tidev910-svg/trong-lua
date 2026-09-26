@@ -18,6 +18,7 @@ import { Briefing } from "./paper/Briefing";
 import { SkipDialog } from "./paper/SkipDialog";
 import { LedgerBook, ledgerDoneText } from "./paper/LedgerBook";
 import { SettlementBook } from "./paper/SettlementBook";
+import { SummaryBook } from "./paper/SummaryBook";
 import { saleText, TraderBook } from "./paper/TraderBook";
 import { PinnedNote, type Box } from "./paper/PinnedNote";
 import { PlotNote } from "./paper/PlotNote";
@@ -231,6 +232,21 @@ export function App() {
     [busy, view, openNote, runTarget],
   );
 
+  /** New run: fresh game state and fresh UI state (UI state is not part of the save). */
+  const restart = useCallback(
+    (seed?: number) => {
+      game.newGame(seed);
+      setDayBegun(false);
+      setBook("briefing");
+      setNote(null);
+      setNight(false);
+      setPage(null);
+      setFarmerAt(FARMER_HOME);
+      setBusy(false);
+    },
+    [game],
+  );
+
   const onHover = useCallback((label: string | null, cx?: number, cy?: number) => {
     const g = gameRef.current?.getBoundingClientRect();
     setHover((h) => ({ label, x: cx !== undefined && g ? cx - g.left : h.x, y: cy !== undefined && g ? cy - g.top : h.y }));
@@ -367,6 +383,8 @@ export function App() {
           }}
         />
       )}
+
+      {view.summary && <SummaryBook summary={view.summary} onReplaySameSeed={() => restart(view.summary?.seed)} onNewSeed={() => restart()} />}
 
       {debug && <DebugPanel game={game} />}
     </div>
